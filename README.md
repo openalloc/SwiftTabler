@@ -6,15 +6,19 @@ Available as an open source Swift library to be incorporated in other apps.
 
 _SwiftTabular_ is part of the [OpenAlloc](https://github.com/openalloc) family of open source Swift software tools.
 
+macOS | iOS
+:---:|:---:
+![](https://github.com/openalloc/SwiftTabler/blob/main/Images/macOSa.png)  |  ![](https://github.com/openalloc/SwiftTabler/blob/main/Images/iOSa.png)
+
 ## Features
 
-* Convenient display of `RandomAccessCollection` tabular data in your app
+* Convenient display of tabular data from a `RandomAccessCollection` source
 * Presently targeting macOS v11+ and iOS v14+\*\*
 * Supporting bound and unbound arrays, and Core Data too
 * With bound data, add inline controls to interactively change (and mutate) your data model
 * Optional sort by column support, with concise syntax
 * Optional support for colored rows, with selection overlay
-* No type erasure (i.e., use of `AnyView`) which can impact scalability and performance
+* No View type erasure (i.e., use of `AnyView`) which can impact scalability and performance
 * No external dependencies!
 
 For `List`-based tables:
@@ -56,10 +60,10 @@ struct ContentView: View {
     ]
     
     private var gridItems: [GridItem] = [
-        GridItem(.flexible(minimum: 10, maximum: 40), alignment: .leading),
+        GridItem(.flexible(minimum: 35, maximum: 40), alignment: .leading),
         GridItem(.flexible(minimum: 100), alignment: .leading),
-        GridItem(.flexible(minimum: 40), alignment: .trailing),
-        GridItem(.flexible(minimum: 40), alignment: .leading),
+        GridItem(.flexible(minimum: 40, maximum: 80), alignment: .trailing),
+        GridItem(.flexible(minimum: 35, maximum: 50), alignment: .leading),
     ]
 
     private func header(_ ctx: TablerSortContext<Fruit>) -> some View {
@@ -104,37 +108,28 @@ You can choose from any of ten (10) variants, which break down along the followi
 * Both `List`-based and `ScrollView`/`LazyVStack`-based.
 * Selection types offered: none, single-select, and multi-select (`List` only presently)
 * Unbound elements in row view, where you're presenting table rows read-only\*
-* Bound elements in row view, where you're presenting tables rows that can be updated directly
+* Bound elements in row view, where you're presenting tables rows that can be updated directly (see Bound section below)
 
-|--------------|-----------------------------------------|-------------------|------------------|
-| Based on     |  Selection of rows                      | Element wrapping  | View name        |
-|--------------|-----------------------------------------|-------------------|------------------|
-|              |  No Select                              | (none)            | `TablerList`     |
-|              |  `List {}`                              |-------------------|------------------|
-|              |                                         | Binding\<Element> | `TablerListB`    |
-|              |-----------------------------------------|-------------------|------------------|
-|              |  Single-select                          | (none)            | `TablerList1`    |               
-| `List`-based |  `List(selection: Element?) {}`         |-------------------|------------------|
-|              |                                         | Binding\<Element> | `TablerList1B`   | 
-|              |-----------------------------------------|-------------------|------------------|
-|              |  Multi-select                           | (none)            | `TablerListM`    |
-|              |  `List(selection: Set<Element.ID>) {}`  |-------------------|------------------|
-|              |                                         | Binding\<Element> | `TablerListMB`   |
-|--------------|-----------------------------------------|-------------------|------------------|
-|              |  No Select                              | (none)            | `TablerStack`    |
-|              |  `ScrollView`/`LazyVStack`              |-------------------|------------------|
-|              |                                         | Binding\<Element> | `TablerStackB`   |
-| Stack-based  |-----------------------------------------|-------------------|------------------|
-|              |  Single-select                          | (none)            | `TablerStack1`   |           
-|              |  `ScrollView`/`LazyVStack` w/`Element?` |-------------------|------------------|
-|              |                                         | Binding\<Element> | `TablerStack1B`  | 
-|--------------|-----------------------------------------|-------------------|------------------|
+| Base   | Selection of rows  | Element wrapping  | View name        |
+| ---    | ---                | ---               | ---              |
+| `List` |  No Select         | (none)            | `TablerList`     |
+| `List` |  No Select         | Binding\<Element> | `TablerListB`    |
+| `List` |  Single-select     | (none)            | `TablerList1`    |               
+| `List` |  Single-select     | Binding\<Element> | `TablerList1B`   | 
+| `List` |  Multi-select      | (none)            | `TablerListM`    |
+| `List` |  Multi-select      | Binding\<Element> | `TablerListMB`   |
+| Stack  |  No Select         | (none)            | `TablerStack`    |
+| Stack  |  No Select         | Binding\<Element> | `TablerStackB`   |
+| Stack  |  Single-select     | (none)            | `TablerStack1`   |           
+| Stack  |  Single-select     | Binding\<Element> | `TablerStack1B`  | 
 
 \* 'unbound' variants can be used with Core Data (where values are bound by alternative means)
 
 ## Column Sorting
 
-From the demo app, an example of using the sort capability. When the user clicks on a header column for the first time, it is sorted in ascending order, with an up-arrow "▲" indicator. If clicked a successive time, a descending sort is executed, with a down-arrow "▼" indicator.
+Column sorting is available through `tablerSort` view function.
+
+From the demo app, an example of using the sort capability: 
 
 ```swift
 private func header(_ ctx: TablerSortContext<Fruit>) -> some View {
@@ -150,16 +145,22 @@ private func header(_ ctx: TablerSortContext<Fruit>) -> some View {
 }
 ```
 
+When the user clicks on a header column for the first time, it is sorted in ascending order, with an up-arrow "▲" indicator. If clicked a successive time, a descending sort is executed, with a down-arrow "▼" indicator.
+
 ## Bound data
 
-When used with 'bound' variants (e.g., `TablerListB`), the data can be modified directly. From the demo:
+macOS | iOS
+:---:|:---:
+![](https://github.com/openalloc/SwiftTabler/blob/main/Images/macOSb.png)  |  ![](https://github.com/openalloc/SwiftTabler/blob/main/Images/iOSb.png)
+
+When used with 'bound' variants (e.g., `TablerListB`), the data can be modified directly, mutating your data source. From the demo:
 
 ```swift
 private func brow(_ element: Binding<Fruit>) -> some View {
     LazyVGrid(columns: gridItems) {
         Text(element.wrappedValue.id)
         TextField("Name", text: element.name)
-            .textFieldStyle(RoundedBorderTextFieldStyle())
+            .textFieldStyle(.roundedBorder)
         Text(String(format: "%.0f g", element.wrappedValue.weight))
         ColorPicker("Color", selection: element.color)
             .labelsHidden()
@@ -169,13 +170,17 @@ private func brow(_ element: Binding<Fruit>) -> some View {
 
 ## Colored Rows
 
+macOS | iOS
+:---:|:---:
+![](https://github.com/openalloc/SwiftTabler/blob/main/Images/macOSc.png)  |  ![](https://github.com/openalloc/SwiftTabler/blob/main/Images/iOSc.png)
+
 The demo app (link below) shows how colored rows are implemented. 
 
-Because the normal selection is obscured with colored rows, the ability to use a 'selection overlay' is provided. An example is seen in the demo.
+Because the normal selection is obscured with colored rows, the ability to use a 'selection overlay' is provided. An example is available in the demo.
 
 ## Disable Header
 
-The demo app shows how to turn off the header, where a header isn't desired.
+The demo app shows how to toggle the display of the header, where a header may not be desired.
 
 ## Moving Rows
 

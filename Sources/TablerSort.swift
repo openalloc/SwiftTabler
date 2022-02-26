@@ -24,8 +24,6 @@ public typealias TablerSortContext<E> = Binding<TablerSort<E>?> where E: Identif
 public struct TablerSort<Element>
 where Element: Identifiable
 {
-    public typealias TSort = TablerSort<Element>
-    
     public enum Direction {
         case forward
         case reverse
