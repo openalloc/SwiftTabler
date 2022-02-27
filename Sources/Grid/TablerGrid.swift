@@ -20,24 +20,24 @@ import SwiftUI
 
 /// Grid-based table
 public struct TablerGrid<Element, Header, Row, Results>: View
-    where Element: Identifiable,
-    Header: View,
-    Row: View,
-    Results: RandomAccessCollection,
-    Results.Element == Element
+where Element: Identifiable,
+      Header: View,
+      Row: View,
+      Results: RandomAccessCollection,
+      Results.Element == Element
 {
     public typealias Config = TablerGridConfig<Element>
     public typealias Hovered = Element.ID?
     public typealias HeaderContent = (Binding<TablerSort<Element>?>) -> Header
     public typealias RowContent = (Element) -> Row
-
+    
     // MARK: Parameters
-
+    
     private let config: Config
     private let headerContent: HeaderContent
     private let rowContent: RowContent
     private var results: Results
-
+    
     public init(_ config: Config,
                 @ViewBuilder headerContent: @escaping HeaderContent,
                 @ViewBuilder rowContent: @escaping RowContent,
@@ -48,20 +48,20 @@ public struct TablerGrid<Element, Header, Row, Results>: View
         self.rowContent = rowContent
         self.results = results
     }
-
+    
     // MARK: Locals
-
+    
     @State private var hovered: Hovered = nil
-
+    
     // MARK: Views
-
+    
     public var body: some View {
         BaseGrid(config: config,
-                  headerContent: headerContent) {
+                 headerContent: headerContent) {
             ForEach(results.filter(config.filter ?? { _ in true })) { element in
                 BaseGridRow(config: config,
-                             element: element,
-                             hovered: $hovered) {
+                            element: element,
+                            hovered: $hovered) {
                     
                     // TODO how to provide a continuous hover block (selection, etc.)?
                     rowContent(element)
@@ -76,7 +76,7 @@ public extension TablerGrid {
     init(_ config: Config,
          @ViewBuilder rowContent: @escaping RowContent,
          results: Results)
-        where Header == EmptyView
+    where Header == EmptyView
     {
         self.init(config,
                   headerContent: { _ in EmptyView() },

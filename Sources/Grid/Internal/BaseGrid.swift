@@ -37,10 +37,7 @@ where Element: Identifiable,
                   headerContent: headerContent) { buildHeader in
             
             VStack(spacing: config.rowSpacing) {
-                LazyVGrid(columns: config.gridItems,
-                          alignment: config.alignment) {
-                    buildHeader()
-                }
+                buildHeader()
                 
                 ScrollView {
                     LazyVGrid(columns: config.gridItems,

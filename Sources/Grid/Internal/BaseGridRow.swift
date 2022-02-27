@@ -40,7 +40,7 @@ struct BaseGridRow<Element, Row>: View
         let colorPair = config.onRowColor?(element) // NOTE okay if nil
 
         rowContent()
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            //.frame(maxWidth: .infinity, maxHeight: .infinity)
             .foregroundColor(colorPair?.0 ?? Color.primary)
 
         // Colored rows get their background here.
