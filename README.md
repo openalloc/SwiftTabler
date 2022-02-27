@@ -21,12 +21,15 @@ macOS | iOS
 * No View type erasure (i.e., use of `AnyView`) which can impact scalability and performance
 * No external dependencies!
 
-For `List`-based tables:
+For List-based tables:
 * Optional moving of rows through drag and drop
-* Support for no-select, single-select, and multi-select
+* Support for single-select and multi-select
 
-For `ScrollView`/`LazyVStack`-based tables:
-* Support for no-select, single-select (possibily multi-select in future)
+For ScrollView/LazyVStack-based tables:
+* Support for single-select (possibily multi-select in future)
+
+For ScrollView/LazyVGrid-based tables:
+* Likely the most scalable and efficient
 
 On macOS:
 * Hovering highlight, indicating which row the mouse is over
@@ -105,23 +108,24 @@ struct ContentView: View {
 
 You can choose from any of ten (10) variants, which break down along the following lines:
 
-* Both `List`-based and `ScrollView`/`LazyVStack`-based.
-* Selection types offered: none, single-select, and multi-select (`List` only presently)
+* List-based, ScrollView/LazyVStack-based, and ScrollView/LazyVGrid-based
+* Selection types offered: none, single-select, and multi-select, depending on base
 * Unbound elements in row view, where you're presenting table rows read-only\*
 * Bound elements in row view, where you're presenting tables rows that can be updated directly (see Bound section below)
 
-| Base   | Selection of rows  | Element wrapping  | View name        |
-| ---    | ---                | ---               | ---              |
-| `List` |  No Select         | (none)            | `TablerList`     |
-| `List` |  No Select         | Binding\<Element> | `TablerListB`    |
-| `List` |  Single-select     | (none)            | `TablerList1`    |               
-| `List` |  Single-select     | Binding\<Element> | `TablerList1B`   | 
-| `List` |  Multi-select      | (none)            | `TablerListM`    |
-| `List` |  Multi-select      | Binding\<Element> | `TablerListMB`   |
+| Base   | Selection of rows  | Element wrapping  | View name        | Notes
+| ---    | ---                | ---               | ---              | ---
+| List   |  No Select         | (none)            | `TablerList`     |
+| List   |  No Select         | Binding\<Element> | `TablerListB`    |
+| List   |  Single-select     | (none)            | `TablerList1`    |               
+| List   |  Single-select     | Binding\<Element> | `TablerList1B`   | 
+| List   |  Multi-select      | (none)            | `TablerListM`    |
+| List   |  Multi-select      | Binding\<Element> | `TablerListMB`   |
 | Stack  |  No Select         | (none)            | `TablerStack`    |
 | Stack  |  No Select         | Binding\<Element> | `TablerStackB`   |
 | Stack  |  Single-select     | (none)            | `TablerStack1`   |           
 | Stack  |  Single-select     | Binding\<Element> | `TablerStack1B`  | 
+| Grid   |  No Select         | (none)            | `TablerGrid`     | Individual rows should not be wrapped by LazyVGrid
 
 \* 'unbound' variants can be used with Core Data (where values are bound by alternative means)
 
