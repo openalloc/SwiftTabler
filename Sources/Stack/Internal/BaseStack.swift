@@ -19,28 +19,29 @@
 import SwiftUI
 
 // Stack-based list
-struct BaseStack<Element, Header, Content>: View
+struct BaseStack<Element, Header, Rows>: View
     where Element: Identifiable,
     Header: View,
-    Content: View
+    Rows: View
 {
     typealias Config = TablerStackConfig<Element>
     typealias HeaderContent = (Binding<TablerSort<Element>?>) -> Header
+    typealias RowContent = () -> Rows
 
     let config: Config
     let headerContent: HeaderContent
-    @ViewBuilder var content: () -> Content
+    @ViewBuilder var rowsContent: RowContent
 
     var body: some View {
         BaseTable(config: config,
                   headerContent: headerContent) { buildHeader in
 
-            VStack(spacing: config.headerSpacing) {
+            VStack(spacing: config.rowSpacing) {
                 buildHeader()
 
                 ScrollView {
                     LazyVStack(alignment: .leading, spacing: config.rowSpacing) {
-                        content()
+                        rowsContent()
                     }
                 }
             }

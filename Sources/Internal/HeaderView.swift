@@ -22,8 +22,11 @@ struct HeaderView<Element, Header>: View
     where Element: Identifiable,
     Header: View
 {
+    typealias Config = TablerConfig<Element>
+    
     // MARK: Parameters
 
+    var config: Config
     @ViewBuilder var content: (Binding<TablerSort<Element>?>) -> Header
 
     // MARK: Locals
@@ -34,6 +37,9 @@ struct HeaderView<Element, Header>: View
     // MARK: Views
 
     var body: some View {
-        content($sort)
+        LazyVGrid(columns: config.gridItems,
+                  alignment: config.alignment) {
+            content($sort)
+        }
     }
 }

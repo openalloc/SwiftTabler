@@ -19,22 +19,26 @@
 import SwiftUI
 
 public class TablerListConfig<Element>: TablerConfig<Element>
-    where Element: Identifiable
+where Element: Identifiable
 {
     public typealias CanMove<Element> = (Element) -> Bool
     public typealias OnMove<Element> = (IndexSet, Int) -> Void
-
+    
     public let canMove: CanMove<Element>
     public let onMove: OnMove<Element>?
-
-    public init(filter: Filter? = nil,
+    
+    public init(gridItems: [GridItem],
+                alignment: HorizontalAlignment = TablerConfigDefaults.alignment,
+                filter: Filter? = nil,
                 onRowColor: OnRowColor? = nil,
                 canMove: @escaping CanMove<Element> = { _ in true },
                 onMove: OnMove<Element>? = nil)
     {
         self.canMove = canMove
         self.onMove = onMove
-        super.init(filter: filter,
+        super.init(gridItems: gridItems,
+                   alignment: alignment,
+                   filter: filter,
                    onRowColor: onRowColor)
     }
 }

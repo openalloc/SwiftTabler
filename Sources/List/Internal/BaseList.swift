@@ -19,24 +19,25 @@
 import SwiftUI
 
 // List with no selection
-struct BaseList<Element, Header, Content>: View
+struct BaseList<Element, Header, Rows>: View
     where Element: Identifiable,
     Header: View,
-    Content: View
+    Rows: View
 {
     typealias Config = TablerListConfig<Element>
     typealias HeaderContent = (Binding<TablerSort<Element>?>) -> Header
+    typealias RowContent = () -> Rows
 
     let config: Config
     let headerContent: HeaderContent
-    @ViewBuilder var content: () -> Content
+    @ViewBuilder var rowsContent: RowContent
 
     var body: some View {
         BaseTable(config: config,
                   headerContent: headerContent) { buildHeader in
             List {
                 buildHeader()
-                content()
+                rowsContent()
             }
         }
     }

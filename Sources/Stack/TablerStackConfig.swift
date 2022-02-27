@@ -21,11 +21,9 @@ import SwiftUI
 public enum TablerStackConfigDefaults {
     // approximately match the layout of Stack
     #if os(macOS)
-        public static let headerSpacing: CGFloat = 8
         public static let rowSpacing: CGFloat = 8
         public static let paddingInsets = EdgeInsets(top: 14, leading: 16, bottom: 15, trailing: 16)
     #elseif os(iOS)
-        public static let headerSpacing: CGFloat = 17
         public static let rowSpacing: CGFloat = 17
         public static let paddingInsets = EdgeInsets(top: 48, leading: 32, bottom: 20, trailing: 32)
     #endif
@@ -34,20 +32,18 @@ public enum TablerStackConfigDefaults {
 public class TablerStackConfig<Element>: TablerConfig<Element>
     where Element: Identifiable
 {
-    public let headerSpacing: CGFloat
-    public let rowSpacing: CGFloat
-    public let paddingInsets: EdgeInsets
-
-    public init(filter: Filter? = nil,
+    public override init(gridItems: [GridItem],
+                alignment: HorizontalAlignment = TablerConfigDefaults.alignment,
+                filter: Filter? = nil,
                 onRowColor: OnRowColor? = nil,
-                headerSpacing: CGFloat = TablerStackConfigDefaults.headerSpacing,
                 rowSpacing: CGFloat = TablerStackConfigDefaults.rowSpacing,
                 paddingInsets: EdgeInsets = TablerStackConfigDefaults.paddingInsets)
     {
-        self.headerSpacing = headerSpacing
-        self.rowSpacing = rowSpacing
-        self.paddingInsets = paddingInsets
-        super.init(filter: filter,
-                   onRowColor: onRowColor)
+        super.init(gridItems: gridItems,
+                   alignment: alignment,
+                   filter: filter,
+                   onRowColor: onRowColor,
+                   rowSpacing: rowSpacing,
+                   paddingInsets: paddingInsets)
     }
 }

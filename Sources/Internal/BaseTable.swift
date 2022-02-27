@@ -32,15 +32,15 @@ struct BaseTable<Element, Header, Content>: View
     // MARK: Parameters
 
     var config: Config
-    let headerContent: HeaderContent
+    var headerContent: HeaderContent
     var content: TableBuilder
 
     // MARK: Views
 
     var body: some View {
         content {
-            HeaderView(content: headerContent)
+            HeaderView(config: config, content: headerContent)
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+        //.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
     }
 }

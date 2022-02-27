@@ -19,26 +19,27 @@
 import SwiftUI
 
 // List with single-selection
-struct BaseList1<Element, Header, Content>: View
+struct BaseList1<Element, Header, Rows>: View
     where Element: Identifiable,
     Header: View,
-    Content: View
+    Rows: View
 {
     typealias Config = TablerListConfig<Element>
     typealias HeaderContent = (Binding<TablerSort<Element>?>) -> Header
+    typealias RowContent = () -> Rows
     typealias Selected = Element.ID?
 
     let config: Config
     let headerContent: HeaderContent
     @Binding var selected: Selected
-    @ViewBuilder var content: () -> Content
+    @ViewBuilder var rowsContent: RowContent
 
     var body: some View {
         BaseTable(config: config,
                   headerContent: headerContent) { buildHeader in
             List(selection: $selected) {
                 buildHeader()
-                content()
+                rowsContent()
             }
         }
     }

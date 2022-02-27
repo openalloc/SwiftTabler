@@ -21,37 +21,30 @@ import SwiftUI
 public enum TablerGridConfigDefaults {
     
     // TODO these values probably need to be tweaked to match the basic layout of `List`
-    #if os(macOS)
-        public static let rowSpacing: CGFloat = 8
-        public static let paddingInsets = EdgeInsets(top: 14, leading: 16, bottom: 15, trailing: 16)
-    #elseif os(iOS)
-        public static let rowSpacing: CGFloat = 17
-        public static let paddingInsets = EdgeInsets(top: 48, leading: 32, bottom: 20, trailing: 32)
-    #endif
-    
-    public static let alignment: HorizontalAlignment = .leading
+#if os(macOS)
+    public static let rowSpacing: CGFloat = 8
+    public static let paddingInsets = EdgeInsets(top: 14, leading: 16, bottom: 15, trailing: 16)
+#elseif os(iOS)
+    public static let rowSpacing: CGFloat = 17
+    public static let paddingInsets = EdgeInsets(top: 48, leading: 32, bottom: 20, trailing: 32)
+#endif
 }
 
 public class TablerGridConfig<Element>: TablerConfig<Element>
-    where Element: Identifiable
+where Element: Identifiable
 {
-    public let gridItems: [GridItem]
-    public let alignment: HorizontalAlignment
-    public let rowSpacing: CGFloat
-    public let paddingInsets: EdgeInsets
-
-    public init(filter: Filter? = nil,
-                onRowColor: OnRowColor? = nil,
-                gridItems: [GridItem],
-                alignment: HorizontalAlignment = TablerGridConfigDefaults.alignment,
-                rowSpacing: CGFloat = TablerGridConfigDefaults.rowSpacing,
-                paddingInsets: EdgeInsets = TablerGridConfigDefaults.paddingInsets)
+    public override init(gridItems: [GridItem],
+                         alignment: HorizontalAlignment = TablerConfigDefaults.alignment,
+                         filter: Filter? = nil,
+                         onRowColor: OnRowColor? = nil,
+                         rowSpacing: CGFloat = TablerGridConfigDefaults.rowSpacing,
+                         paddingInsets: EdgeInsets = TablerGridConfigDefaults.paddingInsets)
     {
-        self.gridItems = gridItems
-        self.alignment = alignment
-        self.rowSpacing = rowSpacing
-        self.paddingInsets = paddingInsets
-        super.init(filter: filter,
-                   onRowColor: onRowColor)
+        super.init(gridItems: gridItems,
+                   alignment: alignment,
+                   filter: filter,
+                   onRowColor: onRowColor,
+                   rowSpacing: rowSpacing,
+                   paddingInsets: paddingInsets)
     }
 }

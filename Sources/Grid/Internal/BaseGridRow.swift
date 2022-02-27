@@ -19,26 +19,27 @@
 import SwiftUI
 
 // Row for stack-based list
-struct BaseGridRow<Element, Content>: View
+struct BaseGridRow<Element, Row>: View
     where Element: Identifiable,
-    Content: View
+    Row: View
 {
     typealias Config = TablerGridConfig<Element>
     typealias Hovered = Element.ID?
+    typealias RowContent = () -> Row
 
     // MARK: Parameters
 
     var config: Config
     var element: Element
     @Binding var hovered: Hovered
-    var content: () -> Content
+    var rowContent: RowContent
 
     // MARK: Views
 
     var body: some View {
         let colorPair = config.onRowColor?(element) // NOTE okay if nil
 
-        content()
+        rowContent()
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .foregroundColor(colorPair?.0 ?? Color.primary)
 

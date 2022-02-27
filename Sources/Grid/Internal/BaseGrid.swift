@@ -26,10 +26,11 @@ where Element: Identifiable,
 {
     typealias Config = TablerGridConfig<Element>
     typealias HeaderContent = (Binding<TablerSort<Element>?>) -> Header
+    typealias RowContent = () -> Rows
     
     let config: Config
-    let headerContent: HeaderContent
-    @ViewBuilder var rowsContent: () -> Rows
+    @ViewBuilder let headerContent: HeaderContent
+    @ViewBuilder let rowsContent: RowContent
     
     var body: some View {
         BaseTable(config: config,
