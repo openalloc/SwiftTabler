@@ -1,5 +1,5 @@
 //
-//  BaseTable.swift
+//  BaseList.swift
 //
 // Copyright 2022 FlowAllocator LLC
 //
@@ -18,29 +18,27 @@
 
 import SwiftUI
 
-// Base table
-struct BaseTable<Element, Header, Content>: View
+// List with no selection
+struct BaseList<Element, Header, Rows>: View
     where Element: Identifiable,
     Header: View,
-    Content: View
+    Rows: View
 {
-    typealias Config = TablerConfig<Element>
+    typealias Config = TablerListConfig<Element>
     typealias HeaderContent = (Binding<TablerSort<Element>?>) -> Header
-    typealias HeaderBuilder = () -> HeaderView<Element, Header>
-    typealias TableBuilder = (@escaping HeaderBuilder) -> Content
+    typealias RowContent = () -> Rows
 
-    // MARK: Parameters
-
-    var config: Config
-    var headerContent: HeaderContent
-    var content: TableBuilder
-
-    // MARK: Views
+    let config: Config
+    let headerContent: HeaderContent
+    @ViewBuilder var rowsContent: RowContent
 
     var body: some View {
-        content {
-            HeaderView(config: config, content: headerContent)
+        BaseTable(config: config,
+                  headerContent: headerContent) { buildHeader in
+            List {
+                buildHeader()
+                rowsContent()
+            }
         }
-        //.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
     }
 }

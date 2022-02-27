@@ -1,5 +1,5 @@
 //
-//  BaseList.swift
+//  BaseList1.swift
 //
 // Copyright 2022 FlowAllocator LLC
 //
@@ -18,25 +18,28 @@
 
 import SwiftUI
 
-// List with no selection
-struct BaseList<Element, Header, Content>: View
+// List with single-selection
+struct BaseList1<Element, Header, Rows>: View
     where Element: Identifiable,
     Header: View,
-    Content: View
+    Rows: View
 {
     typealias Config = TablerListConfig<Element>
     typealias HeaderContent = (Binding<TablerSort<Element>?>) -> Header
+    typealias RowContent = () -> Rows
+    typealias Selected = Element.ID?
 
     let config: Config
     let headerContent: HeaderContent
-    @ViewBuilder var content: () -> Content
+    @Binding var selected: Selected
+    @ViewBuilder var rowsContent: RowContent
 
     var body: some View {
         BaseTable(config: config,
                   headerContent: headerContent) { buildHeader in
-            List {
+            List(selection: $selected) {
                 buildHeader()
-                content()
+                rowsContent()
             }
         }
     }

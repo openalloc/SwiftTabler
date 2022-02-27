@@ -2,7 +2,7 @@
 
 A multi-platform SwiftUI component for displaying (and interacting with) tabular data.
 
-Available as an open source Swift library to be incorporated in other apps.
+Available as an open source library to be incorporated in SwiftUI apps.
 
 _SwiftTabular_ is part of the [OpenAlloc](https://github.com/openalloc) family of open source Swift software tools.
 
@@ -21,12 +21,15 @@ macOS | iOS
 * No View type erasure (i.e., use of `AnyView`) which can impact scalability and performance
 * No external dependencies!
 
-For `List`-based tables:
+For List-based tables:
 * Optional moving of rows through drag and drop
-* Support for no-select, single-select, and multi-select
+* Support for single-select and multi-select
 
-For `ScrollView`/`LazyVStack`-based tables:
-* Support for no-select, single-select (possibily multi-select in future)
+For ScrollView/LazyVStack-based tables:
+* Support for single-select (possibily multi-select in future)
+
+For ScrollView/LazyVGrid-based tables:
+* Likely the most scalable and efficient, but least flexible
 
 On macOS:
 * Hovering highlight, indicating which row the mouse is over
@@ -66,25 +69,20 @@ struct ContentView: View {
         GridItem(.flexible(minimum: 35, maximum: 50), alignment: .leading),
     ]
 
+    @ViewBuilder
     private func header(_ ctx: TablerSortContext<Fruit>) -> some View {
-        LazyVGrid(columns: gridItems) {
-            Text("ID")
-            Text("Name")
-            Text("Weight")
-            Text("Color")
-        }
-        .padding(.horizontal)
+        Text("ID")
+        Text("Name")
+        Text("Weight")
+        Text("Color")
     }
     
+    @ViewBuilder
     private func row(_ element: Fruit) -> some View {
-        LazyVGrid(columns: gridItems) {
-            Text(element.id)
-            Text(element.name).foregroundColor(element.color)
-            Text(String(format: "%.0f g", element.weight))
-            Image(systemName: "rectangle.fill").foregroundColor(element.color)
-        }
-        .padding(.horizontal)
-        .padding(.vertical, 5)
+        Text(element.id)
+        Text(element.name).foregroundColor(element.color)
+        Text(String(format: "%.0f g", element.weight))
+        Image(systemName: "rectangle.fill").foregroundColor(element.color)
     }
 
     var body: some View {
@@ -96,7 +94,7 @@ struct ContentView: View {
     }
     
     private var config: TablerListConfig<Fruit> {
-        TablerListConfig<Fruit>()
+        TablerListConfig<Fruit>(gridItems: gridItems)
     }
 }
 ```
@@ -105,23 +103,24 @@ struct ContentView: View {
 
 You can choose from any of ten (10) variants, which break down along the following lines:
 
-* Both `List`-based and `ScrollView`/`LazyVStack`-based.
-* Selection types offered: none, single-select, and multi-select (`List` only presently)
+* List-based, ScrollView/LazyVStack-based, and ScrollView/LazyVGrid-based
+* Selection types offered: none, single-select, and multi-select, depending on base
 * Unbound elements in row view, where you're presenting table rows read-only\*
 * Bound elements in row view, where you're presenting tables rows that can be updated directly (see Bound section below)
 
-| Base   | Selection of rows  | Element wrapping  | View name        |
-| ---    | ---                | ---               | ---              |
-| `List` |  No Select         | (none)            | `TablerList`     |
-| `List` |  No Select         | Binding\<Element> | `TablerListB`    |
-| `List` |  Single-select     | (none)            | `TablerList1`    |               
-| `List` |  Single-select     | Binding\<Element> | `TablerList1B`   | 
-| `List` |  Multi-select      | (none)            | `TablerListM`    |
-| `List` |  Multi-select      | Binding\<Element> | `TablerListMB`   |
-| Stack  |  No Select         | (none)            | `TablerStack`    |
-| Stack  |  No Select         | Binding\<Element> | `TablerStackB`   |
-| Stack  |  Single-select     | (none)            | `TablerStack1`   |           
-| Stack  |  Single-select     | Binding\<Element> | `TablerStack1B`  | 
+Base   | Selection of rows | Element wrapping  | View name     | Notes
+---    | ---               | ---               | ---           | ---
+List   | No Select         | (none)            | TablerList    |
+List   | No Select         | Binding\<Element> | TablerListB   |
+List   | Single-select     | (none)            | TablerList1   |               
+List   | Single-select     | Binding\<Element> | TablerList1B  | 
+List   | Multi-select      | (none)            | TablerListM   |
+List   | Multi-select      | Binding\<Element> | TablerListMB  |
+Stack  | No Select         | (none)            | TablerStack   |
+Stack  | No Select         | Binding\<Element> | TablerStackB  |
+Stack  | Single-select     | (none)            | TablerStack1  |           
+Stack  | Single-select     | Binding\<Element> | TablerStack1B | 
+Grid   | No Select         | (none)            | TablerGrid    | Experimental. Needs bound version, select, etc.
 
 \* 'unbound' variants can be used with Core Data (where values are bound by alternative means)
 
@@ -132,16 +131,15 @@ Column sorting is available through `tablerSort` view function.
 From the demo app, an example of using the sort capability: 
 
 ```swift
+@ViewBuilder
 private func header(_ ctx: TablerSortContext<Fruit>) -> some View {
-    LazyVGrid(columns: gridItems) {
-        Text("ID \(Sort.indicator(ctx, \.id))")
-            .onTapGesture { tablerSort(ctx, &fruits, \.id) { $0.id < $1.id } }
-        Text("Name \(Sort.indicator(ctx, \.name))")
-            .onTapGesture { tablerSort(ctx, &fruits, \.name) { $0.name < $1.name } }
-        Text("Weight \(Sort.indicator(ctx, \.weight))")
-            .onTapGesture { tablerSort(ctx, &fruits, \.weight) { $0.weight < $1.weight } }
-        Text("Color")
-    }
+    Text("ID \(Sort.indicator(ctx, \.id))")
+        .onTapGesture { tablerSort(ctx, &fruits, \.id) { $0.id < $1.id } }
+    Text("Name \(Sort.indicator(ctx, \.name))")
+        .onTapGesture { tablerSort(ctx, &fruits, \.name) { $0.name < $1.name } }
+    Text("Weight \(Sort.indicator(ctx, \.weight))")
+        .onTapGesture { tablerSort(ctx, &fruits, \.weight) { $0.weight < $1.weight } }
+    Text("Color")
 }
 ```
 
@@ -156,15 +154,14 @@ macOS | iOS
 When used with 'bound' variants (e.g., `TablerListB`), the data can be modified directly, mutating your data source. From the demo:
 
 ```swift
+@ViewBuilder
 private func brow(_ element: Binding<Fruit>) -> some View {
-    LazyVGrid(columns: gridItems) {
-        Text(element.wrappedValue.id)
-        TextField("Name", text: element.name)
-            .textFieldStyle(.roundedBorder)
-        Text(String(format: "%.0f g", element.wrappedValue.weight))
-        ColorPicker("Color", selection: element.color)
-            .labelsHidden()
-    }
+    Text(element.wrappedValue.id)
+    TextField("Name", text: element.name)
+        .textFieldStyle(.roundedBorder)
+    Text(String(format: "%.0f g", element.wrappedValue.weight))
+    ColorPicker("Color", selection: element.color)
+        .labelsHidden()
 }
 ```
 

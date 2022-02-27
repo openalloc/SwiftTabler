@@ -19,42 +19,46 @@
 import SwiftUI
 
 // Row for stack-based list
-struct BaseStackRow<Element, Content>: View
-    where Element: Identifiable,
-    Content: View
+struct BaseStackRow<Element, Row>: View
+where Element: Identifiable,
+      Row: View
 {
     typealias Config = TablerStackConfig<Element>
     typealias Hovered = Element.ID?
-
+    typealias RowContent = () -> Row
+    
     // MARK: Parameters
-
+    
     var config: Config
     var element: Element
     @Binding var hovered: Hovered
-    var content: () -> Content
-
+    var content: RowContent
+    
     // MARK: Locals
-
+    
     // MARK: Views
-
+    
     var body: some View {
         let colorPair = config.onRowColor?(element) // NOTE okay if nil
-
-        content()
-            .foregroundColor(colorPair?.0 ?? Color.primary)
-
+        
+        LazyVGrid(columns: config.gridItems,
+                  alignment: config.alignment) {
+            content()
+        }
+        .foregroundColor(colorPair?.0 ?? Color.primary)
+        
         // Colored rows get their background here.
         // For non-colored rows, use accent color background to indicate selection.
-        #if os(macOS) || targetEnvironment(macCatalyst)
+#if os(macOS) || targetEnvironment(macCatalyst)
         // support hovering, but not for colored rows (yet)
         .onHover { if $0 { hovered = element.id } }
-
+        
         // If hovering, set the background here.
         .background(colorPair?.1 ?? (
             hovered == element.id ? Color.accentColor.opacity(0.2) : Color.clear
         ))
-        #elseif os(iOS)
+#elseif os(iOS)
         .background(colorPair?.1 ?? Color.clear)
-        #endif
+#endif
     }
 }

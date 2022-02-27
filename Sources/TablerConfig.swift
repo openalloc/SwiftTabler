@@ -18,6 +18,13 @@
 
 import SwiftUI
 
+public enum TablerConfigDefaults {
+    public static let headerSpacing: CGFloat = 0
+    public static let rowSpacing: CGFloat = 0
+    public static let paddingInsets = EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
+    public static let alignment: HorizontalAlignment = .leading
+}
+
 open class TablerConfig<Element>
     where Element: Identifiable
 {
@@ -29,13 +36,25 @@ open class TablerConfig<Element>
 
     // MARK: Parameters
 
+    public let gridItems: [GridItem]
+    public let alignment: HorizontalAlignment
     public let filter: Filter?
     public let onRowColor: OnRowColor?
+    public let rowSpacing: CGFloat
+    public let paddingInsets: EdgeInsets
 
-    public init(filter: Filter? = nil,
-                onRowColor: OnRowColor? = nil)
+    public init(gridItems: [GridItem],
+                alignment: HorizontalAlignment = TablerConfigDefaults.alignment,
+                filter: Filter? = nil,
+                onRowColor: OnRowColor? = nil,
+                rowSpacing: CGFloat = TablerConfigDefaults.rowSpacing,
+                paddingInsets: EdgeInsets = TablerConfigDefaults.paddingInsets)
     {
+        self.gridItems = gridItems
+        self.alignment = alignment
         self.filter = filter
         self.onRowColor = onRowColor
+        self.rowSpacing = rowSpacing
+        self.paddingInsets = paddingInsets
     }
 }

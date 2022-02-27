@@ -1,5 +1,5 @@
 //
-//  BaseList1.swift
+//  BaseGrid.swift
 //
 // Copyright 2022 FlowAllocator LLC
 //
@@ -18,28 +18,36 @@
 
 import SwiftUI
 
-// List with single-selection
-struct BaseList1<Element, Header, Content>: View
-    where Element: Identifiable,
-    Header: View,
-    Content: View
+// Grid-based list
+struct BaseGrid<Element, Header, Rows>: View
+where Element: Identifiable,
+      Header: View,
+      Rows: View
 {
-    typealias Config = TablerListConfig<Element>
+    typealias Config = TablerGridConfig<Element>
     typealias HeaderContent = (Binding<TablerSort<Element>?>) -> Header
-    typealias Selected = Element.ID?
-
+    typealias RowContent = () -> Rows
+    
     let config: Config
-    let headerContent: HeaderContent
-    @Binding var selected: Selected
-    @ViewBuilder var content: () -> Content
-
+    @ViewBuilder let headerContent: HeaderContent
+    @ViewBuilder let rowsContent: RowContent
+    
     var body: some View {
         BaseTable(config: config,
                   headerContent: headerContent) { buildHeader in
-            List(selection: $selected) {
+            
+            VStack(spacing: config.rowSpacing) {
                 buildHeader()
-                content()
+                
+                ScrollView {
+                    LazyVGrid(columns: config.gridItems,
+                              alignment: config.alignment,
+                              spacing: config.rowSpacing) {
+                        rowsContent()
+                    }
+                }
             }
+            .padding(config.paddingInsets)
         }
     }
 }

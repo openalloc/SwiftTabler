@@ -1,5 +1,5 @@
 //
-//  TablerStackConfig.swift
+//  TablerGridConfig.swift
 //
 // Copyright 2022 FlowAllocator LLC
 //
@@ -18,8 +18,9 @@
 
 import SwiftUI
 
-public enum TablerStackConfigDefaults {
-    // approximately match the layout of Stack
+public enum TablerGridConfigDefaults {
+    
+    // TODO these values probably need to be tweaked to match the basic layout of `List`
 #if os(macOS)
     public static let rowSpacing: CGFloat = 8
     public static let paddingInsets = EdgeInsets(top: 14, leading: 16, bottom: 15, trailing: 16)
@@ -29,15 +30,15 @@ public enum TablerStackConfigDefaults {
 #endif
 }
 
-public class TablerStackConfig<Element>: TablerConfig<Element>
+public class TablerGridConfig<Element>: TablerConfig<Element>
 where Element: Identifiable
 {
     public override init(gridItems: [GridItem],
                          alignment: HorizontalAlignment = TablerConfigDefaults.alignment,
                          filter: Filter? = nil,
                          onRowColor: OnRowColor? = nil,
-                         rowSpacing: CGFloat = TablerStackConfigDefaults.rowSpacing,
-                         paddingInsets: EdgeInsets = TablerStackConfigDefaults.paddingInsets)
+                         rowSpacing: CGFloat = TablerGridConfigDefaults.rowSpacing,
+                         paddingInsets: EdgeInsets = TablerGridConfigDefaults.paddingInsets)
     {
         super.init(gridItems: gridItems,
                    alignment: alignment,

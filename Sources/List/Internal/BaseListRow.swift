@@ -18,39 +18,43 @@
 
 import SwiftUI
 
-struct BaseListRow<Element, Content>: View
-    where Element: Identifiable,
-    Content: View
+struct BaseListRow<Element, Row>: View
+where Element: Identifiable,
+      Row: View
 {
     typealias Config = TablerListConfig<Element>
     typealias Hovered = Element.ID?
-
+    typealias RowContent = () -> Row
+    
     // MARK: Parameters
-
+    
     var config: Config
     var element: Element
     @Binding var hovered: Hovered
-    var content: () -> Content
-
+    var rowContent: RowContent
+    
     // MARK: Views
-
+    
     var body: some View {
         let colorPair = config.onRowColor?(element) // NOTE okay if nil
-
-        content()
-            .moveDisabled(!config.canMove(element))
-
-            .foregroundColor(colorPair?.0 ?? Color.primary)
-
-        #if os(macOS) || targetEnvironment(macCatalyst)
-            // support hovering, but not for colored rows (yet)
-            // no background for colored rows (yet)
-            .onHover { if $0 { hovered = element.id } }
-            .background((colorPair == nil && hovered == element.id)
-                ? Color.accentColor.opacity(0.2)
-                : Color.clear)
-        #endif
-
-            .listRowBackground(colorPair?.1 ?? Color.clear)
+        
+        LazyVGrid(columns: config.gridItems,
+                  alignment: config.alignment) {
+            rowContent()
+        }
+        .moveDisabled(!config.canMove(element))
+        
+        .foregroundColor(colorPair?.0 ?? Color.primary)
+        
+#if os(macOS) || targetEnvironment(macCatalyst)
+        // support hovering, but not for colored rows (yet)
+        // no background for colored rows (yet)
+        .onHover { if $0 { hovered = element.id } }
+        .background((colorPair == nil && hovered == element.id)
+                    ? Color.accentColor.opacity(0.2)
+                    : Color.clear)
+#endif
+        
+        .listRowBackground(colorPair?.1 ?? Color.clear)
     }
 }
