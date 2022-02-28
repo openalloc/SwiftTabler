@@ -136,11 +136,11 @@ private typealias Sort = TablerSort<Fruit>
 
 @ViewBuilder
 private func header(_ ctx: Binding<Context>) -> some View {
-    Sort.title("ID", ctx, \.id)
+    Sort.columnTitle("ID", ctx, \.id)
         .onTapGesture { tablerSort(ctx, &fruits, \.id) { $0.id < $1.id } }
-    Sort.title("Name", ctx, \.name)
+    Sort.columnTitle("Name", ctx, \.name)
         .onTapGesture { tablerSort(ctx, &fruits, \.name) { $0.name < $1.name } }
-    Sort.title("Weight", ctx, \.weight)
+    Sort.columnTitle("Weight", ctx, \.weight)
         .onTapGesture { tablerSort(ctx, &fruits, \.weight) { $0.weight < $1.weight } }
     Text("Color")
 }
