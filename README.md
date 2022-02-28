@@ -38,7 +38,7 @@ On macOS:
 
 ## Tabler Example
 
-The basic example below shows the basic display of tabular data using `TablerList`, which is for the display of unbound data without any selection capability.
+The basic example below shows the display of tabular data using `TablerList`, which is for the display of unbound data without any selection capability.
 
 ```swift
 import SwiftUI
@@ -101,7 +101,7 @@ struct ContentView: View {
 
 ## Tables
 
-You can choose from any of ten (10) variants, which break down along the following lines:
+You can choose from any of eleven (11) variants, which break down along the following lines:
 
 * List-based, ScrollView/LazyVStack-based, and ScrollView/LazyVGrid-based
 * Selection types offered: none, single-select, and multi-select, depending on base
@@ -128,22 +128,25 @@ Grid   | No Select         | (none)            | TablerGrid    | Experimental. N
 
 Column sorting is available through `tablerSort` view function.
 
-From the demo app, an example of using the sort capability: 
+From the demo app, an example of using the sort capability, where an indicator displays in the header if the column is actively sorted: 
 
 ```swift
+private typealias Context = TablerContext<Fruit>
+private typealias Sort = TablerSort<Fruit>
+
 @ViewBuilder
-private func header(_ ctx: TablerSortContext<Fruit>) -> some View {
-    Text("ID \(Sort.indicator(ctx, \.id))")
+private func header(_ ctx: Binding<Context>) -> some View {
+    Sort.title("ID", ctx, \.id)
         .onTapGesture { tablerSort(ctx, &fruits, \.id) { $0.id < $1.id } }
-    Text("Name \(Sort.indicator(ctx, \.name))")
+    Sort.title("Name", ctx, \.name)
         .onTapGesture { tablerSort(ctx, &fruits, \.name) { $0.name < $1.name } }
-    Text("Weight \(Sort.indicator(ctx, \.weight))")
+    Sort.title("Weight", ctx, \.weight)
         .onTapGesture { tablerSort(ctx, &fruits, \.weight) { $0.weight < $1.weight } }
     Text("Color")
 }
 ```
 
-When the user clicks on a header column for the first time, it is sorted in ascending order, with an up-arrow "▲" indicator. If clicked a successive time, a descending sort is executed, with a down-arrow "▼" indicator.
+When the user clicks on a header column for the first time, it is sorted in ascending order, with an up-arrow "▲" indicator. If clicked a successive time, a descending sort is executed, with a down-arrow "▼" indicator. These are configurable.
 
 For sorting with Core Data, see the _TablerCoreDemo_ app.
 

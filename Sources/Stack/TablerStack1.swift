@@ -28,15 +28,15 @@ public struct TablerStack1<Element, Header, Row, Select, Results>: View
     Results.Element == Element
 {
     public typealias Config = TablerStackConfig<Element>
+    public typealias Context = TablerContext<Element>
     public typealias Hovered = Element.ID?
-    public typealias HeaderContent = (Binding<TablerSort<Element>?>) -> Header
+    public typealias HeaderContent = (Binding<Context>) -> Header
     public typealias RowContent = (Element) -> Row
     public typealias SelectContent = (Bool) -> Select
     public typealias Selected = Element.ID?
 
     // MARK: Parameters
 
-    private let config: Config
     private let headerContent: HeaderContent
     private let rowContent: RowContent
     private let selectContent: SelectContent
@@ -50,22 +50,23 @@ public struct TablerStack1<Element, Header, Row, Select, Results>: View
                 results: Results,
                 selected: Binding<Selected>)
     {
-        self.config = config
         self.headerContent = headerContent
         self.rowContent = rowContent
         self.selectContent = selectContent
         self.results = results
         _selected = selected
+        _context = State(initialValue: TablerContext(config: config))
     }
 
     // MARK: Locals
 
     @State private var hovered: Hovered = nil
+    @State private var context: Context
 
     // MARK: Views
 
     public var body: some View {
-        BaseStack(config: config,
+        BaseStack(context: $context,
                   headerContent: headerContent) {
             ForEach(results.filter(config.filter ?? { _ in true })) { element in
                 // TODO: can likely refactor to move ForEach into this view
@@ -80,6 +81,11 @@ public struct TablerStack1<Element, Header, Row, Select, Results>: View
                 }
             }
         }
+    }
+    
+    private var config: Config {
+        guard let c = context.config as? Config else { return Config(gridItems: []) }
+        return c
     }
 }
 

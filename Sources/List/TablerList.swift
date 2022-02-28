@@ -27,13 +27,13 @@ public struct TablerList<Element, Header, Row, Results>: View
     Results.Element == Element
 {
     public typealias Config = TablerListConfig<Element>
+    public typealias Context = TablerContext<Element>
     public typealias Hovered = Element.ID?
-    public typealias HeaderContent = (Binding<TablerSort<Element>?>) -> Header
+    public typealias HeaderContent = (Binding<Context>) -> Header
     public typealias RowContent = (Element) -> Row
 
     // MARK: Parameters
 
-    private let config: Config
     private let headerContent: HeaderContent
     private let rowContent: RowContent
     private var results: Results
@@ -43,20 +43,21 @@ public struct TablerList<Element, Header, Row, Results>: View
                 @ViewBuilder rowContent: @escaping RowContent,
                 results: Results)
     {
-        self.config = config
         self.headerContent = headerContent
         self.rowContent = rowContent
         self.results = results
+        _context = State(initialValue: TablerContext(config: config))
     }
 
     // MARK: Locals
 
     @State private var hovered: Hovered = nil
+    @State private var context: Context
 
     // MARK: Views
 
     public var body: some View {
-        BaseList(config: config,
+        BaseList(context: $context,
                  headerContent: headerContent) {
             ForEach(results.filter(config.filter ?? { _ in true })) { element in
                 BaseListRow(config: config,
@@ -67,6 +68,11 @@ public struct TablerList<Element, Header, Row, Results>: View
             }
             .onMove(perform: config.onMove)
         }
+    }
+    
+    private var config: Config {
+        guard let c = context.config as? Config else { return Config(gridItems: []) }
+        return c
     }
 }
 

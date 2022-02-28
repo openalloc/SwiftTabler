@@ -32,13 +32,19 @@ where Element: Identifiable
                 filter: Filter? = nil,
                 onRowColor: OnRowColor? = nil,
                 canMove: @escaping CanMove<Element> = { _ in true },
-                onMove: OnMove<Element>? = nil)
+                onMove: OnMove<Element>? = nil,
+                sortIndicatorForward: String = TablerConfigDefaults.sortIndicatorForward,
+                sortIndicatorReverse: String = TablerConfigDefaults.sortIndicatorReverse,
+                sortIndicatorUndefined: String = TablerConfigDefaults.sortIndicatorUndefined)
     {
         self.canMove = canMove
         self.onMove = onMove
         super.init(gridItems: gridItems,
                    alignment: alignment,
                    filter: filter,
-                   onRowColor: onRowColor)
+                   onRowColor: onRowColor,
+                   sortIndicatorForward: sortIndicatorForward,
+                   sortIndicatorReverse: sortIndicatorReverse,
+                   sortIndicatorUndefined: sortIndicatorUndefined)
     }
 }

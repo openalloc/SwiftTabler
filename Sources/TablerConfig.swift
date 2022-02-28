@@ -23,6 +23,10 @@ public enum TablerConfigDefaults {
     public static let rowSpacing: CGFloat = 0
     public static let paddingInsets = EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
     public static let alignment: HorizontalAlignment = .leading
+    
+    public static let sortIndicatorForward = "arrowtriangle.up.fill"
+    public static let sortIndicatorReverse = "arrowtriangle.down.fill"
+    public static let sortIndicatorUndefined = "square.fill"  // use with opacity 0
 }
 
 open class TablerConfig<Element>
@@ -42,13 +46,20 @@ open class TablerConfig<Element>
     public let onRowColor: OnRowColor?
     public let rowSpacing: CGFloat
     public let paddingInsets: EdgeInsets
+    public let sortIndicatorForward: String
+    public let sortIndicatorReverse: String
+    public let sortIndicatorUndefined: String
+
 
     public init(gridItems: [GridItem],
                 alignment: HorizontalAlignment = TablerConfigDefaults.alignment,
                 filter: Filter? = nil,
                 onRowColor: OnRowColor? = nil,
                 rowSpacing: CGFloat = TablerConfigDefaults.rowSpacing,
-                paddingInsets: EdgeInsets = TablerConfigDefaults.paddingInsets)
+                paddingInsets: EdgeInsets = TablerConfigDefaults.paddingInsets,
+                sortIndicatorForward: String = TablerConfigDefaults.sortIndicatorForward,
+                sortIndicatorReverse: String = TablerConfigDefaults.sortIndicatorReverse,
+                sortIndicatorUndefined: String = TablerConfigDefaults.sortIndicatorUndefined)
     {
         self.gridItems = gridItems
         self.alignment = alignment
@@ -56,5 +67,8 @@ open class TablerConfig<Element>
         self.onRowColor = onRowColor
         self.rowSpacing = rowSpacing
         self.paddingInsets = paddingInsets
+        self.sortIndicatorForward = sortIndicatorForward
+        self.sortIndicatorReverse = sortIndicatorReverse
+        self.sortIndicatorUndefined = sortIndicatorUndefined
     }
 }

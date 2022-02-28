@@ -38,13 +38,19 @@ where Element: Identifiable
                          filter: Filter? = nil,
                          onRowColor: OnRowColor? = nil,
                          rowSpacing: CGFloat = TablerGridConfigDefaults.rowSpacing,
-                         paddingInsets: EdgeInsets = TablerGridConfigDefaults.paddingInsets)
+                         paddingInsets: EdgeInsets = TablerGridConfigDefaults.paddingInsets,
+                         sortIndicatorForward: String = TablerConfigDefaults.sortIndicatorForward,
+                         sortIndicatorReverse: String = TablerConfigDefaults.sortIndicatorReverse,
+                         sortIndicatorUndefined: String = TablerConfigDefaults.sortIndicatorUndefined)
     {
         super.init(gridItems: gridItems,
                    alignment: alignment,
                    filter: filter,
                    onRowColor: onRowColor,
                    rowSpacing: rowSpacing,
-                   paddingInsets: paddingInsets)
+                   paddingInsets: paddingInsets,
+                   sortIndicatorForward: sortIndicatorForward,
+                   sortIndicatorReverse: sortIndicatorReverse,
+                   sortIndicatorUndefined: sortIndicatorUndefined)
     }
 }

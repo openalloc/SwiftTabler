@@ -29,15 +29,15 @@ public struct TablerListMB<Element, Header, Row, Select, Results>: View
     Results.Index: Hashable
 {
     public typealias Config = TablerListConfig<Element>
+    public typealias Context = TablerContext<Element>
     public typealias Hovered = Element.ID?
-    public typealias HeaderContent = (Binding<TablerSort<Element>?>) -> Header // Binding<SwSort<Field>?>
+    public typealias HeaderContent = (Binding<Context>) -> Header // Binding<SwSort<Field>?>
     public typealias RowContent = (Binding<Element>) -> Row
     public typealias SelectContent = (Bool) -> Select
     public typealias Selected = Set<Element.ID>
 
     // MARK: Parameters
 
-    private let config: Config
     private let headerContent: HeaderContent
     private let rowContent: RowContent
     private let selectContent: SelectContent
@@ -51,24 +51,25 @@ public struct TablerListMB<Element, Header, Row, Select, Results>: View
                 results: Binding<Results>,
                 selected: Binding<Selected>)
     {
-        self.config = config
         self.headerContent = headerContent
         self.rowContent = rowContent
         self.selectContent = selectContent
         _results = results
         _selected = selected
+        _context = State(initialValue: TablerContext(config: config))
     }
 
     // MARK: Locals
 
     @State private var hovered: Hovered = nil
+    @State private var context: Context
 
     // MARK: Views
 
     public var body: some View {
-        BaseListM(config: config,
-                  headerContent: headerContent,
-                  selected: $selected) {
+        BaseListM(context: $context,
+                  selected: $selected,
+                  headerContent: headerContent) {
             // TODO: is there a better way to filter bound data source?
             if let _filter = config.filter {
                 ForEach($results) { $element in
@@ -95,6 +96,11 @@ public struct TablerListMB<Element, Header, Row, Select, Results>: View
                     selectContent(selected.contains(element.wrappedValue.id))
                 )
         }
+    }
+    
+    private var config: Config {
+        guard let c = context.config as? Config else { return Config(gridItems: []) }
+        return c
     }
 }
 

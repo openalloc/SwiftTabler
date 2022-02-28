@@ -28,15 +28,15 @@ public struct TablerList1<Element, Header, Row, Select, Results>: View
     Results.Element == Element
 {
     public typealias Config = TablerListConfig<Element>
+    public typealias Context = TablerContext<Element>
     public typealias Hovered = Element.ID?
-    public typealias HeaderContent = (Binding<TablerSort<Element>?>) -> Header // Binding<SwSort<Field>?>
+    public typealias HeaderContent = (Binding<Context>) -> Header // Binding<SwSort<Field>?>
     public typealias RowContent = (Element) -> Row
     public typealias SelectContent = (Bool) -> Select
     public typealias Selected = Element.ID?
 
     // MARK: Parameters
 
-    private let config: Config
     private let headerContent: HeaderContent
     private let rowContent: RowContent
     private let selectContent: SelectContent
@@ -50,24 +50,25 @@ public struct TablerList1<Element, Header, Row, Select, Results>: View
                 results: Results,
                 selected: Binding<Selected>)
     {
-        self.config = config
         self.headerContent = headerContent
         self.rowContent = rowContent
         self.selectContent = selectContent
         self.results = results
         _selected = selected
+        _context = State(initialValue: TablerContext(config: config))
     }
 
     // MARK: Locals
 
     @State private var hovered: Hovered = nil
+    @State private var context: Context
 
     // MARK: Views
 
     public var body: some View {
-        BaseList1(config: config,
-                  headerContent: headerContent,
-                  selected: $selected) {
+        BaseList1(context: $context,
+                  selected: $selected,
+                  headerContent: headerContent) {
             ForEach(results.filter(config.filter ?? { _ in true })) { element in
                 BaseListRow(config: config,
                             element: element,
@@ -80,6 +81,11 @@ public struct TablerList1<Element, Header, Row, Select, Results>: View
             }
             .onMove(perform: config.onMove)
         }
+    }
+    
+    private var config: Config {
+        guard let c = context.config as? Config else { return Config(gridItems: []) }
+        return c
     }
 }
 

@@ -23,23 +23,28 @@ struct HeaderView<Element, Header>: View
     Header: View
 {
     typealias Config = TablerConfig<Element>
-    
+    typealias Context = TablerContext<Element>
+
     // MARK: Parameters
 
-    var config: Config
-    @ViewBuilder var content: (Binding<TablerSort<Element>?>) -> Header
+    @Binding var context: Context
+    @ViewBuilder var content: (Binding<Context>) -> Header
 
-    // MARK: Locals
-
-    /// used to track most recent sorted field
-    @State private var sort: TablerSort<Element>? = nil
-
+    init(context: Binding<Context>, content: @escaping (Binding<Context>) -> Header) {
+        _context = context
+        self.content = content
+    }
+    
     // MARK: Views
 
     var body: some View {
         LazyVGrid(columns: config.gridItems,
                   alignment: config.alignment) {
-            content($sort)
+            content($context)
         }
+    }
+    
+    private var config: Config {
+        context.config
     }
 }

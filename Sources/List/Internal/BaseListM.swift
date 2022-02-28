@@ -24,18 +24,28 @@ struct BaseListM<Element, Header, Rows>: View
     Header: View,
     Rows: View
 {
-    typealias Config = TablerListConfig<Element>
-    typealias HeaderContent = (Binding<TablerSort<Element>?>) -> Header // (Binding<SwSort<Field>?>) -> Header
+    typealias Context = TablerContext<Element>
+    typealias HeaderContent = (Binding<Context>) -> Header // (Binding<SwSort<Field>?>) -> Header
     typealias RowContent = () -> Rows
     typealias Selected = Set<Element.ID>
 
-    let config: Config
+    @Binding var context: Context
     let headerContent: HeaderContent
     @Binding var selected: Selected
-    @ViewBuilder var rowsContent: RowContent
+    let rowsContent: RowContent
 
+    init(context: Binding<Context>,
+         selected: Binding<Selected>,
+         @ViewBuilder headerContent: @escaping HeaderContent,
+         @ViewBuilder rowsContent: @escaping RowContent) {
+        _context = context
+        _selected = selected
+        self.headerContent = headerContent
+        self.rowsContent = rowsContent
+    }
+    
     var body: some View {
-        BaseTable(config: config,
+        BaseTable(context: $context,
                   headerContent: headerContent) { buildHeader in
             List(selection: $selected) {
                 buildHeader()
