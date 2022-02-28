@@ -12,21 +12,21 @@ macOS | iOS
 
 ## Features
 
-* Convenient display of tabular data from a `RandomAccessCollection` source
+* Convenient display of tabular data from a `RandomAccessCollection` or Core Data source
 * Presently targeting macOS v11+ and iOS v14+\*\*
 * Supporting bound and unbound arrays, and Core Data too
 * With bound data, add inline controls to interactively change (and mutate) your data model
-* Optional sort by column support, with concise syntax
+* Optional sort-by-column support, with concise syntax
 * Optional support for colored rows, with selection overlay
-* No View type erasure (i.e., use of `AnyView`) which can impact scalability and performance
+* No View type erasure (i.e., use of `AnyView`), which can impact scalability and performance
 * No external dependencies!
 
 For List-based tables:
 * Optional moving of rows through drag and drop
-* Support for single-select and multi-select
+* Support for no-select, single-select, and multi-select
 
 For ScrollView/LazyVStack-based tables:
-* Support for single-select (possibily multi-select in future)
+* Support for no-select and single-select (possibily multi-select in future)
 
 For ScrollView/LazyVGrid-based tables:
 * Likely the most scalable and efficient, but least flexible
@@ -145,6 +145,8 @@ private func header(_ ctx: TablerSortContext<Fruit>) -> some View {
 
 When the user clicks on a header column for the first time, it is sorted in ascending order, with an up-arrow "▲" indicator. If clicked a successive time, a descending sort is executed, with a down-arrow "▼" indicator.
 
+For sorting with Core Data, see the _TablerCoreDemo_ app.
+
 ## Bound data
 
 macOS | iOS
@@ -185,7 +187,8 @@ TODO add details here, with example of move action handler.
 
 ## See Also
 
-* [TablerDemo](https://github.com/openalloc/TablerDemo) - the demonstration app for this library
+* [TablerDemo](https://github.com/openalloc/TablerDemo) - the demonstration app for this library, for `RandomAccessCollection` data sources
+* [TablerCoreDemo](https://github.com/openalloc/TablerCoreDemo) - the demonstration app for this library, for Core Data sources
 
 Swift open-source libraries (by the same author):
 

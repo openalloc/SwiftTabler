@@ -64,14 +64,27 @@ where Element: Identifiable
     }
 }
 
-public extension View {
-    func tablerSort<Element, Results, T>(_ ctx: TablerSortContext<Element>,
-                                         _ results: inout Results,
-                                         _ keyPath: KeyPath<Element, T>,
-                                         _ onSort: (Element, Element) -> Bool)
+extension View {
+    
+    /// RandomAccessCollection support
+    public func tablerSort<Element, Results, T>(_ ctx: TablerSortContext<Element>,
+                                                _ results: inout Results,
+                                                _ keyPath: KeyPath<Element, T>,
+                                                _ onSort: (Element, Element) -> Bool)
     where Results: RandomAccessCollection & MutableCollection,
           Results.Element == Element
     {
+        let otherDirection = updateSort(ctx, keyPath)
+        
+        if otherDirection == .forward {
+            results.sort(by: onSort)
+        } else {
+            results.sort(by: { !onSort($0, $1) })
+        }
+    }
+    
+    func updateSort<Element, T>(_ ctx: TablerSortContext<Element>,
+                                _ keyPath: KeyPath<Element, T>) -> TablerSort<Element>.Direction {
         // NOTE type-erase to track sort state
         let anyKeyPath: AnyKeyPath = keyPath
         
@@ -87,10 +100,48 @@ public extension View {
         // store the new direction for future header taps for the field
         ctx.wrappedValue = TablerSort(anyKeyPath, otherDirection)
         
-        if otherDirection == .forward {
-            results.sort(by: onSort)
-        } else {
-            results.sort(by: { !onSort($0, $1) })
-        }
+        return otherDirection
+    }
+}
+
+@available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
+public extension View {
+    
+    /// Core-data support
+    func tablerSort<E: NSObject>(_ c: TablerSortContext<E>, _ k: KeyPath<E, Bool   >) -> SortDescriptor<E> { SortDescriptor<E>(k, order: xlat(updateSort(c, k))) }
+    func tablerSort<E: NSObject>(_ c: TablerSortContext<E>, _ k: KeyPath<E, Bool?  >) -> SortDescriptor<E> { SortDescriptor<E>(k, order: xlat(updateSort(c, k))) }
+    func tablerSort<E: NSObject>(_ c: TablerSortContext<E>, _ k: KeyPath<E, Date   >) -> SortDescriptor<E> { SortDescriptor<E>(k, order: xlat(updateSort(c, k))) }
+    func tablerSort<E: NSObject>(_ c: TablerSortContext<E>, _ k: KeyPath<E, Date?  >) -> SortDescriptor<E> { SortDescriptor<E>(k, order: xlat(updateSort(c, k))) }
+    func tablerSort<E: NSObject>(_ c: TablerSortContext<E>, _ k: KeyPath<E, Double >) -> SortDescriptor<E> { SortDescriptor<E>(k, order: xlat(updateSort(c, k))) }
+    func tablerSort<E: NSObject>(_ c: TablerSortContext<E>, _ k: KeyPath<E, Double?>) -> SortDescriptor<E> { SortDescriptor<E>(k, order: xlat(updateSort(c, k))) }
+    func tablerSort<E: NSObject>(_ c: TablerSortContext<E>, _ k: KeyPath<E, Float  >) -> SortDescriptor<E> { SortDescriptor<E>(k, order: xlat(updateSort(c, k))) }
+    func tablerSort<E: NSObject>(_ c: TablerSortContext<E>, _ k: KeyPath<E, Float? >) -> SortDescriptor<E> { SortDescriptor<E>(k, order: xlat(updateSort(c, k))) }
+    func tablerSort<E: NSObject>(_ c: TablerSortContext<E>, _ k: KeyPath<E, Int    >) -> SortDescriptor<E> { SortDescriptor<E>(k, order: xlat(updateSort(c, k))) }
+    func tablerSort<E: NSObject>(_ c: TablerSortContext<E>, _ k: KeyPath<E, Int16  >) -> SortDescriptor<E> { SortDescriptor<E>(k, order: xlat(updateSort(c, k))) }
+    func tablerSort<E: NSObject>(_ c: TablerSortContext<E>, _ k: KeyPath<E, Int16? >) -> SortDescriptor<E> { SortDescriptor<E>(k, order: xlat(updateSort(c, k))) }
+    func tablerSort<E: NSObject>(_ c: TablerSortContext<E>, _ k: KeyPath<E, Int32  >) -> SortDescriptor<E> { SortDescriptor<E>(k, order: xlat(updateSort(c, k))) }
+    func tablerSort<E: NSObject>(_ c: TablerSortContext<E>, _ k: KeyPath<E, Int32? >) -> SortDescriptor<E> { SortDescriptor<E>(k, order: xlat(updateSort(c, k))) }
+    func tablerSort<E: NSObject>(_ c: TablerSortContext<E>, _ k: KeyPath<E, Int64  >) -> SortDescriptor<E> { SortDescriptor<E>(k, order: xlat(updateSort(c, k))) }
+    func tablerSort<E: NSObject>(_ c: TablerSortContext<E>, _ k: KeyPath<E, Int64? >) -> SortDescriptor<E> { SortDescriptor<E>(k, order: xlat(updateSort(c, k))) }
+    func tablerSort<E: NSObject>(_ c: TablerSortContext<E>, _ k: KeyPath<E, Int8   >) -> SortDescriptor<E> { SortDescriptor<E>(k, order: xlat(updateSort(c, k))) }
+    func tablerSort<E: NSObject>(_ c: TablerSortContext<E>, _ k: KeyPath<E, Int8?  >) -> SortDescriptor<E> { SortDescriptor<E>(k, order: xlat(updateSort(c, k))) }
+    func tablerSort<E: NSObject>(_ c: TablerSortContext<E>, _ k: KeyPath<E, Int?   >) -> SortDescriptor<E> { SortDescriptor<E>(k, order: xlat(updateSort(c, k))) }
+    func tablerSort<E: NSObject>(_ c: TablerSortContext<E>, _ k: KeyPath<E, String >) -> SortDescriptor<E> { SortDescriptor<E>(k, order: xlat(updateSort(c, k))) }
+    func tablerSort<E: NSObject>(_ c: TablerSortContext<E>, _ k: KeyPath<E, String?>) -> SortDescriptor<E> { SortDescriptor<E>(k, order: xlat(updateSort(c, k))) }
+    func tablerSort<E: NSObject>(_ c: TablerSortContext<E>, _ k: KeyPath<E, UInt   >) -> SortDescriptor<E> { SortDescriptor<E>(k, order: xlat(updateSort(c, k))) }
+    func tablerSort<E: NSObject>(_ c: TablerSortContext<E>, _ k: KeyPath<E, UInt16 >) -> SortDescriptor<E> { SortDescriptor<E>(k, order: xlat(updateSort(c, k))) }
+    func tablerSort<E: NSObject>(_ c: TablerSortContext<E>, _ k: KeyPath<E, UInt16?>) -> SortDescriptor<E> { SortDescriptor<E>(k, order: xlat(updateSort(c, k))) }
+    func tablerSort<E: NSObject>(_ c: TablerSortContext<E>, _ k: KeyPath<E, UInt32 >) -> SortDescriptor<E> { SortDescriptor<E>(k, order: xlat(updateSort(c, k))) }
+    func tablerSort<E: NSObject>(_ c: TablerSortContext<E>, _ k: KeyPath<E, UInt32?>) -> SortDescriptor<E> { SortDescriptor<E>(k, order: xlat(updateSort(c, k))) }
+    func tablerSort<E: NSObject>(_ c: TablerSortContext<E>, _ k: KeyPath<E, UInt64 >) -> SortDescriptor<E> { SortDescriptor<E>(k, order: xlat(updateSort(c, k))) }
+    func tablerSort<E: NSObject>(_ c: TablerSortContext<E>, _ k: KeyPath<E, UInt64?>) -> SortDescriptor<E> { SortDescriptor<E>(k, order: xlat(updateSort(c, k))) }
+    func tablerSort<E: NSObject>(_ c: TablerSortContext<E>, _ k: KeyPath<E, UInt8  >) -> SortDescriptor<E> { SortDescriptor<E>(k, order: xlat(updateSort(c, k))) }
+    func tablerSort<E: NSObject>(_ c: TablerSortContext<E>, _ k: KeyPath<E, UInt8? >) -> SortDescriptor<E> { SortDescriptor<E>(k, order: xlat(updateSort(c, k))) }
+    func tablerSort<E: NSObject>(_ c: TablerSortContext<E>, _ k: KeyPath<E, UInt?  >) -> SortDescriptor<E> { SortDescriptor<E>(k, order: xlat(updateSort(c, k))) }
+    func tablerSort<E: NSObject>(_ c: TablerSortContext<E>, _ k: KeyPath<E, UUID   >) -> SortDescriptor<E> { SortDescriptor<E>(k, order: xlat(updateSort(c, k))) }
+    func tablerSort<E: NSObject>(_ c: TablerSortContext<E>, _ k: KeyPath<E, UUID?  >) -> SortDescriptor<E> { SortDescriptor<E>(k, order: xlat(updateSort(c, k))) }
+    
+    private func xlat<Element>(_ direction: TablerSort<Element>.Direction) -> SortOrder {
+        direction == .forward ? SortOrder.forward : SortOrder.reverse
     }
 }
