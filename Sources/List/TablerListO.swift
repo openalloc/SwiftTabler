@@ -19,33 +19,31 @@
 import SwiftUI
 import CoreData
 
-/// List-based table, with support for bound values
+/// List-based table, with support for bound values through Core Data
 @available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
 public struct TablerListO<Element, Header, Row>: View
 where Element: Identifiable & NSFetchRequestResult & ObservableObject,
       Header: View,
       Row: View
-//,
-//    Results: RandomAccessCollection,
-//    Results.Element == Element,
-//    Results.Index: Hashable
 {
     public typealias Config = TablerListConfig<Element>
     public typealias Context = TablerContext<Element>
     public typealias Hovered = Element.ID?
     public typealias HeaderContent = (Binding<Context>) -> Header
-    public typealias RowContent = (ObservedObject<Element>.Wrapper) -> Row
+    public typealias ProjectedValue = ObservedObject<Element>.Wrapper
+    public typealias RowContent = (ProjectedValue) -> Row
+    public typealias Fetched = FetchedResults<Element>
     
     // MARK: Parameters
     
     private let headerContent: HeaderContent
     private let rowContent: RowContent
-    private var results: FetchedResults<Element>
+    private var results: Fetched
     
     public init(_ config: Config,
                 @ViewBuilder headerContent: @escaping HeaderContent,
                 @ViewBuilder rowContent: @escaping RowContent,
-                results: FetchedResults<Element>)
+                results: Fetched)
     {
         self.headerContent = headerContent
         self.rowContent = rowContent
@@ -63,11 +61,11 @@ where Element: Identifiable & NSFetchRequestResult & ObservableObject,
     public var body: some View {
         BaseList(context: $context,
                  headerContent: headerContent) {
-            ForEach(results.filter(config.filter ?? { _ in true })) { element in
+            ForEach(results) { rawElem in
                 BaseListRowO(config: config,
-                             element: element,
-                             hovered: $hovered) { e in
-                    rowContent(e)
+                             element: rawElem,
+                             hovered: $hovered) { observedElem in
+                    rowContent(observedElem)
                 }
             }
             .onMove(perform: config.onMove)
@@ -80,17 +78,17 @@ where Element: Identifiable & NSFetchRequestResult & ObservableObject,
     }
 }
 
-//@available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
-//public extension TablerListO {
-//    // omitting Header
-//    init(_ config: Config,
-//         @ViewBuilder rowContent: @escaping RowContent,
-//         results: Binding<Results>)
-//        where Header == EmptyView
-//    {
-//        self.init(config,
-//                  headerContent: { _ in EmptyView() },
-//                  rowContent: rowContent,
-//                  results: results)
-//    }
-//}
+@available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
+public extension TablerListO {
+    // omitting Header
+    init(_ config: Config,
+         @ViewBuilder rowContent: @escaping RowContent,
+         results: Fetched)
+        where Header == EmptyView
+    {
+        self.init(config,
+                  headerContent: { _ in EmptyView() },
+                  rowContent: rowContent,
+                  results: results)
+    }
+}

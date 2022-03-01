@@ -24,7 +24,8 @@ where Element: Identifiable & ObservableObject,
 {
     typealias Config = TablerListConfig<Element>
     typealias Hovered = Element.ID?
-    typealias RowContent = (ObservedObject<Element>.Wrapper) -> Row
+    typealias ProjectedValue = ObservedObject<Element>.Wrapper
+    typealias RowContent = (ProjectedValue) -> Row
     
     // MARK: Parameters
     

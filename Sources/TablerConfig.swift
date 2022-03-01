@@ -52,6 +52,8 @@ open class TablerConfig<Element>
 
     public let gridItems: [GridItem]
     public let alignment: HorizontalAlignment
+    
+    /// NOTE filtering not supported in Core Data-based tables, as it's assumed you'll use a predicate in your FetchRequest.
     public let filter: Filter?
     public let onRowColor: OnRowColor?
     public let rowSpacing: CGFloat
