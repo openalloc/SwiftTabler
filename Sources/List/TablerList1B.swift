@@ -31,7 +31,7 @@ public struct TablerList1B<Element, Header, Row, Select, Results>: View
     public typealias Config = TablerListConfig<Element>
     public typealias Context = TablerContext<Element>
     public typealias Hovered = Element.ID?
-    public typealias HeaderContent = (Binding<Context>) -> Header // Binding<SwSort<Field>?>
+    public typealias HeaderContent = (Binding<Context>) -> Header
     public typealias RowContent = (Binding<Element>) -> Row
     public typealias SelectContent = (Bool) -> Select
     public typealias Selected = Element.ID?
