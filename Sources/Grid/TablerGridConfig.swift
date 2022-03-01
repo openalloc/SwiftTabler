@@ -39,9 +39,9 @@ where Element: Identifiable
                          onRowColor: OnRowColor? = nil,
                          rowSpacing: CGFloat = TablerGridConfigDefaults.rowSpacing,
                          paddingInsets: EdgeInsets = TablerGridConfigDefaults.paddingInsets,
-                         sortIndicatorForward: String = TablerConfigDefaults.sortIndicatorForward,
-                         sortIndicatorReverse: String = TablerConfigDefaults.sortIndicatorReverse,
-                         sortIndicatorUndefined: String = TablerConfigDefaults.sortIndicatorUndefined)
+                         sortIndicatorForward: AnyView = TablerConfigDefaults.sortIndicatorForward,
+                         sortIndicatorReverse: AnyView = TablerConfigDefaults.sortIndicatorReverse,
+                         sortIndicatorNeutral: AnyView = TablerConfigDefaults.sortIndicatorNeutral)
     {
         super.init(gridItems: gridItems,
                    alignment: alignment,
@@ -51,6 +51,6 @@ where Element: Identifiable
                    paddingInsets: paddingInsets,
                    sortIndicatorForward: sortIndicatorForward,
                    sortIndicatorReverse: sortIndicatorReverse,
-                   sortIndicatorUndefined: sortIndicatorUndefined)
+                   sortIndicatorNeutral: sortIndicatorNeutral)
     }
 }

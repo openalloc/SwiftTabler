@@ -13,12 +13,12 @@ macOS | iOS
 ## Features
 
 * Convenient display of tabular data from a `RandomAccessCollection` or Core Data source
-* Presently targeting macOS v11+ and iOS v14+\*\*
+* Presently targeting macOS v11+ and iOS v14+\*
 * Supporting bound and unbound arrays, and Core Data too
 * With bound data, add inline controls to interactively change (and mutate) your data model
 * Optional sort-by-column support, with concise syntax
 * Optional support for colored rows, with selection overlay
-* No View type erasure (i.e., use of `AnyView`), which can impact scalability and performance
+* MINIMAL use of View erasure (i.e., use of `AnyView`), which can impact scalability and performance\*\*
 * No external dependencies!
 
 For List-based tables:
@@ -34,7 +34,9 @@ For ScrollView/LazyVGrid-based tables:
 On macOS:
 * Hovering highlight, indicating which row the mouse is over
 
-\*\* Other platforms like macCatalyst, iPad on Mac, watchOS, tvOS, etc. are poorly supported, if at all. Please contribute to improve support!
+\* Other platforms like macCatalyst, iPad on Mac, watchOS, tvOS, etc. are poorly supported, if at all. Please contribute to improve support!
+
+\*\* AnyView only used to specify sort configuration images in configuration, which shouldn't impact scalability.
 
 ## Tabler Example
 
@@ -146,7 +148,7 @@ private func header(_ ctx: Binding<Context>) -> some View {
 }
 ```
 
-When the user clicks on a header column for the first time, it is sorted in ascending order, with an up-arrow "▲" indicator. If clicked a successive time, a descending sort is executed, with a down-arrow "▼" indicator. These are configurable.
+When the user clicks on a header column for the first time, it is sorted in ascending order, with an up-chevron "^" indicator. If clicked a successive time, a descending sort is executed, with a down-chevron "v" indicator. See `TablerConfig` for configuration.
 
 For sorting with Core Data, see the _TablerCoreDemo_ app.
 

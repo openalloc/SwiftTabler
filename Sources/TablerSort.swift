@@ -51,18 +51,18 @@ where Element: Identifiable
             return ctx.wrappedValue.sort?.direction ?? .undefined
         }()
         
-        let systemName: String = {
+        let image: AnyView = {
             switch direction {
             case .forward:
                 return ctx.wrappedValue.config.sortIndicatorForward
             case .reverse:
                 return ctx.wrappedValue.config.sortIndicatorReverse
             case .undefined:
-                return ctx.wrappedValue.config.sortIndicatorUndefined
+                return ctx.wrappedValue.config.sortIndicatorNeutral
             }
         }()
 
-        return Image(systemName: systemName).opacity(direction != .undefined ? 1 : 0)
+        return image
     }
 
     // MARK: convenience methods
@@ -71,6 +71,7 @@ where Element: Identifiable
     public static func columnTitle<E, T>(_ title: String, _ ctx: Binding<TablerContext<E>>, _ keyPath: KeyPath<E, T>) -> some View {
         HStack {
             Text(title)
+            Spacer()
             indicator(ctx, keyPath)
         }
     }

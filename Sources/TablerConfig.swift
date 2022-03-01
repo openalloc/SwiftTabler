@@ -18,15 +18,25 @@
 
 import SwiftUI
 
-public enum TablerConfigDefaults {
+public struct TablerConfigDefaults {
     public static let headerSpacing: CGFloat = 0
     public static let rowSpacing: CGFloat = 0
     public static let paddingInsets = EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
     public static let alignment: HorizontalAlignment = .leading
     
-    public static let sortIndicatorForward = "arrowtriangle.up.fill"
-    public static let sortIndicatorReverse = "arrowtriangle.down.fill"
-    public static let sortIndicatorUndefined = "square.fill"  // use with opacity 0
+    public static let sortIndicatorForward = AnyView(
+        Image(systemName: "chevron.up")
+            .foregroundColor(.secondary)
+    )
+    public static let sortIndicatorReverse = AnyView(
+        Image(systemName: "chevron.down")
+            .foregroundColor(.secondary)
+    )
+    public static let sortIndicatorNeutral = AnyView(
+        // The same width as the other two, to avoid title changing position as indicator changes.
+        Image(systemName: "chevron.up")
+            .opacity(0)
+    )
 }
 
 open class TablerConfig<Element>
@@ -46,10 +56,9 @@ open class TablerConfig<Element>
     public let onRowColor: OnRowColor?
     public let rowSpacing: CGFloat
     public let paddingInsets: EdgeInsets
-    public let sortIndicatorForward: String
-    public let sortIndicatorReverse: String
-    public let sortIndicatorUndefined: String
-
+    public let sortIndicatorForward: AnyView
+    public let sortIndicatorReverse: AnyView
+    public let sortIndicatorNeutral: AnyView
 
     public init(gridItems: [GridItem],
                 alignment: HorizontalAlignment = TablerConfigDefaults.alignment,
@@ -57,9 +66,9 @@ open class TablerConfig<Element>
                 onRowColor: OnRowColor? = nil,
                 rowSpacing: CGFloat = TablerConfigDefaults.rowSpacing,
                 paddingInsets: EdgeInsets = TablerConfigDefaults.paddingInsets,
-                sortIndicatorForward: String = TablerConfigDefaults.sortIndicatorForward,
-                sortIndicatorReverse: String = TablerConfigDefaults.sortIndicatorReverse,
-                sortIndicatorUndefined: String = TablerConfigDefaults.sortIndicatorUndefined)
+                sortIndicatorForward: AnyView = TablerConfigDefaults.sortIndicatorForward,
+                sortIndicatorReverse: AnyView = TablerConfigDefaults.sortIndicatorReverse,
+                sortIndicatorNeutral: AnyView = TablerConfigDefaults.sortIndicatorNeutral)
     {
         self.gridItems = gridItems
         self.alignment = alignment
@@ -69,6 +78,6 @@ open class TablerConfig<Element>
         self.paddingInsets = paddingInsets
         self.sortIndicatorForward = sortIndicatorForward
         self.sortIndicatorReverse = sortIndicatorReverse
-        self.sortIndicatorUndefined = sortIndicatorUndefined
+        self.sortIndicatorNeutral = sortIndicatorNeutral
     }
 }

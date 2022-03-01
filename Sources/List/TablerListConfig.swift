@@ -33,9 +33,9 @@ where Element: Identifiable
                 onRowColor: OnRowColor? = nil,
                 canMove: @escaping CanMove<Element> = { _ in true },
                 onMove: OnMove<Element>? = nil,
-                sortIndicatorForward: String = TablerConfigDefaults.sortIndicatorForward,
-                sortIndicatorReverse: String = TablerConfigDefaults.sortIndicatorReverse,
-                sortIndicatorUndefined: String = TablerConfigDefaults.sortIndicatorUndefined)
+                sortIndicatorForward: AnyView = TablerConfigDefaults.sortIndicatorForward,
+                sortIndicatorReverse: AnyView = TablerConfigDefaults.sortIndicatorReverse,
+                sortIndicatorNeutral: AnyView = TablerConfigDefaults.sortIndicatorNeutral)
     {
         self.canMove = canMove
         self.onMove = onMove
@@ -45,6 +45,6 @@ where Element: Identifiable
                    onRowColor: onRowColor,
                    sortIndicatorForward: sortIndicatorForward,
                    sortIndicatorReverse: sortIndicatorReverse,
-                   sortIndicatorUndefined: sortIndicatorUndefined)
+                   sortIndicatorNeutral: sortIndicatorNeutral)
     }
 }
