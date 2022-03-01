@@ -22,9 +22,9 @@ import CoreData
 /// List-based table, with support for bound values
 @available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
 public struct TablerListO<Element, Header, Row>: View
-    where Element: Identifiable & NSFetchRequestResult & ObservableObject,
-    Header: View,
-    Row: View
+where Element: Identifiable & NSFetchRequestResult & ObservableObject,
+      Header: View,
+      Row: View
 //,
 //    Results: RandomAccessCollection,
 //    Results.Element == Element,
@@ -35,13 +35,13 @@ public struct TablerListO<Element, Header, Row>: View
     public typealias Hovered = Element.ID?
     public typealias HeaderContent = (Binding<Context>) -> Header
     public typealias RowContent = (ObservedObject<Element>.Wrapper) -> Row
-
+    
     // MARK: Parameters
-
+    
     private let headerContent: HeaderContent
     private let rowContent: RowContent
     private var results: FetchedResults<Element>
-
+    
     public init(_ config: Config,
                 @ViewBuilder headerContent: @escaping HeaderContent,
                 @ViewBuilder rowContent: @escaping RowContent,
@@ -52,35 +52,27 @@ public struct TablerListO<Element, Header, Row>: View
         self.results = results
         _context = State(initialValue: TablerContext(config: config))
     }
-
+    
     // MARK: Locals
-
+    
     @State private var hovered: Hovered = nil
     @State private var context: Context
-
+    
     // MARK: Views
-
+    
     public var body: some View {
         BaseList(context: $context,
                  headerContent: headerContent) {
-            ForEach(results) { element in          // TODO filter
+            ForEach(results.filter(config.filter ?? { _ in true })) { element in
                 BaseListRowO(config: config,
-                            element: element,
-                            hovered: $hovered) { e in
+                             element: element,
+                             hovered: $hovered) { e in
                     rowContent(e)
                 }
             }
             .onMove(perform: config.onMove)
         }
     }
-
-//    private func row(_ element: Element) -> some View {
-//        BaseListRowO(config: config,
-//                    element: element,
-//                    hovered: $hovered) {
-//            rowContent(element)
-//        }
-//    }
     
     private var config: Config {
         guard let c = context.config as? Config else { return Config(gridItems: []) }
