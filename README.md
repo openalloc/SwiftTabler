@@ -1,6 +1,6 @@
 # SwiftTabler
 
-A multi-platform SwiftUI component for displaying (and interacting with) tabular data.
+A multi-platform SwiftUI component for tabular data.
 
 Available as an open source library to be incorporated in SwiftUI apps.
 
