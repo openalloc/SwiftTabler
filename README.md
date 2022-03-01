@@ -190,6 +190,35 @@ The demo app shows how to toggle the display of the header, where a header may n
 
 TODO add details here, with example of move action handler.
 
+## Horizontal Scrolling
+
+On compact displays you may wish to scroll the table horizontally. _TablerDemo_ does this through a `ScrollView` wrapper:
+
+```swift
+public struct SidewaysScroller<Content: View>: View {
+    var minWidth: CGFloat
+    @ViewBuilder var content: () -> Content
+
+    public init(minWidth: CGFloat,
+                @ViewBuilder content: @escaping () -> Content)
+    {
+        self.minWidth = minWidth
+        self.content = content
+    }
+
+    public var body: some View {
+        GeometryReader { geo in
+            ScrollView(.horizontal) {
+                VStack(alignment: .leading) {
+                    content()
+                }
+                .frame(minWidth: max(minWidth, geo.size.width))
+            }
+        }
+    }
+}
+```
+
 ## See Also
 
 * [TablerDemo](https://github.com/openalloc/TablerDemo) - the demonstration app for this library, for `RandomAccessCollection` data sources
