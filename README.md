@@ -141,7 +141,6 @@ From the demo app, an example of using the sort capability, where an indicator d
 private typealias Context = TablerContext<Fruit>
 private typealias Sort = TablerSort<Fruit>
 
-@ViewBuilder
 private func header(_ ctx: Binding<Context>) -> some View {
     LazyVGrid(columns: gridItems) {
         Sort.columnTitle("ID", ctx, \.id)
@@ -168,7 +167,6 @@ macOS | iOS
 When used with 'bound' variants (e.g., `TablerListB`), the data can be modified directly, mutating your data source. From the demo:
 
 ```swift
-@ViewBuilder
 private func brow(_ element: Binding<Fruit>) -> some View {
     LazyVGrid(columns: gridItems) {
         Text(element.wrappedValue.id)
