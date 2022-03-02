@@ -20,34 +20,35 @@ import SwiftUI
 
 // Grid-based list
 struct BaseGrid<Element, Header, Rows>: View
-where Element: Identifiable,
-      Header: View,
-      Rows: View
+    where Element: Identifiable,
+    Header: View,
+    Rows: View
 {
     typealias Config = TablerGridConfig<Element>
     typealias Context = TablerContext<Element>
     typealias HeaderContent = (Binding<Context>) -> Header
     typealias RowContent = () -> Rows
-    
+
     @Binding private var context: Context
     private let headerContent: HeaderContent
     private let rowsContent: RowContent
 
     init(context: Binding<Context>,
          headerContent: @escaping HeaderContent,
-         rowsContent: @escaping RowContent) {
+         rowsContent: @escaping RowContent)
+    {
         _context = context
         self.headerContent = headerContent
         self.rowsContent = rowsContent
     }
-    
+
     var body: some View {
         BaseTable(context: $context,
                   headerContent: headerContent) { buildHeader in
 
             VStack(spacing: config.rowSpacing) {
                 buildHeader()
-                
+
                 ScrollView {
                     LazyVGrid(columns: config.gridItems,
                               alignment: config.alignment,
@@ -59,7 +60,7 @@ where Element: Identifiable,
             .padding(config.paddingInsets)
         }
     }
-    
+
     private var config: Config {
         guard let c = context.config as? Config else { return Config(gridItems: []) }
         return c

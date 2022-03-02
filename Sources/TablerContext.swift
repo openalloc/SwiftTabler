@@ -26,8 +26,6 @@ public struct TablerContext<Element>
 
     public init(config: TablerConfig<Element>) {
         self.config = config
-        self.sort = nil
+        sort = nil
     }
 }
-
-

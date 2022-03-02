@@ -34,13 +34,13 @@ struct BaseTable<Element, Header, Rows>: View
     @Binding var context: Context
     var headerContent: HeaderContent
     var content: TableBuilder
-        
+
     // MARK: Views
 
     var body: some View {
         content {
             HeaderView(context: $context, content: headerContent)
         }
-        //.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+        // .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
     }
 }

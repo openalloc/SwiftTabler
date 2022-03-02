@@ -35,12 +35,13 @@ struct BaseStack<Element, Header, Rows>: View
 
     init(context: Binding<Context>,
          @ViewBuilder headerContent: @escaping HeaderContent,
-         @ViewBuilder rowsContent: @escaping RowContent) {
+         @ViewBuilder rowsContent: @escaping RowContent)
+    {
         _context = context
         self.headerContent = headerContent
         self.rowsContent = rowsContent
     }
-    
+
     var body: some View {
         BaseTable(context: $context,
                   headerContent: headerContent) { buildHeader in
@@ -57,9 +58,9 @@ struct BaseStack<Element, Header, Rows>: View
             .padding(config.paddingInsets)
         }
     }
-     
+
     private var config: Config {
-        guard let gridConfig = context.config as? Config else { return Config(gridItems: []) }
+        guard let gridConfig = context.config as? Config else { return Config() }
         return gridConfig
     }
 }

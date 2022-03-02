@@ -19,65 +19,56 @@
 import SwiftUI
 
 /// List-based table
-public struct TablerList<Element, Header, Row, RowMod, Results>: View
-where Element: Identifiable,
-      Header: View,
-      Row: View,
-      RowMod: ViewModifier,
-      Results: RandomAccessCollection,
-      Results.Element == Element
+public struct TablerList<Element, Header, Row, Results>: View
+    where Element: Identifiable,
+    Header: View,
+    Row: View,
+    Results: RandomAccessCollection,
+    Results.Element == Element
 {
     public typealias Config = TablerListConfig<Element>
     public typealias Context = TablerContext<Element>
     public typealias Hovered = Element.ID?
     public typealias HeaderContent = (Binding<Context>) -> Header
     public typealias RowContent = (Element) -> Row
-    public typealias RowModifier = (Element) -> RowMod
-    
+
     // MARK: Parameters
-    
+
     private let headerContent: HeaderContent
     private let rowContent: RowContent
-    private let rowModifier: RowModifier
     private var results: Results
-    
+
     public init(_ config: Config,
                 @ViewBuilder headerContent: @escaping HeaderContent,
                 @ViewBuilder rowContent: @escaping RowContent,
-                rowModifier: @escaping RowModifier,
                 results: Results)
     {
         self.headerContent = headerContent
         self.rowContent = rowContent
-        self.rowModifier = rowModifier
         self.results = results
         _context = State(initialValue: TablerContext(config: config))
     }
-    
+
     // MARK: Locals
-    
+
     @State private var hovered: Hovered = nil
     @State private var context: Context
-    
+
     // MARK: Views
-    
+
     public var body: some View {
         BaseList(context: $context,
                  headerContent: headerContent) {
             ForEach(results.filter(config.filter ?? { _ in true })) { element in
-                LazyVGrid(columns: config.gridItems,
-                          alignment: config.alignment) {
-                    rowContent(element)
-                }
-                .modifier(ListRowMod(config, element, $hovered))
-                .modifier(rowModifier(element))
+                rowContent(element)
+                    .modifier(ListRowMod(config, element, $hovered))
             }
             .onMove(perform: config.onMove)
         }
     }
-    
+
     private var config: Config {
-        guard let c = context.config as? Config else { return Config(gridItems: []) }
+        guard let c = context.config as? Config else { return Config() }
         return c
     }
 }
@@ -86,41 +77,12 @@ public extension TablerList {
     // omitting Header
     init(_ config: Config,
          @ViewBuilder rowContent: @escaping RowContent,
-         rowModifier: @escaping RowModifier,
          results: Results)
-    where Header == EmptyView
+        where Header == EmptyView
     {
         self.init(config,
                   headerContent: { _ in EmptyView() },
                   rowContent: rowContent,
-                  rowModifier: rowModifier,
-                  results: results)
-    }
-    
-    // omitting View Modifier
-    init(_ config: Config,
-         @ViewBuilder headerContent: @escaping HeaderContent,
-         @ViewBuilder rowContent: @escaping RowContent,
-         results: Results)
-    where RowMod == EmptyModifier
-    {
-        self.init(config,
-                  headerContent: headerContent,
-                  rowContent: rowContent,
-                  rowModifier: { _ in EmptyModifier() },
-                  results: results)
-    }
-    
-    // omitting Header and View Modifier
-    init(_ config: Config,
-         @ViewBuilder rowContent: @escaping RowContent,
-         results: Results)
-    where Header == EmptyView, RowMod == EmptyModifier
-    {
-        self.init(config,
-                  headerContent: { _ in EmptyView() },
-                  rowContent: rowContent,
-                  rowModifier: { _ in EmptyModifier() },
                   results: results)
     }
 }

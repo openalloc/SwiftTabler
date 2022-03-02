@@ -19,12 +19,12 @@
 import SwiftUI
 
 struct ObservableHolder<Element, Row>: View
-where Element: Identifiable & ObservableObject,
-      Row: View {
-    
+    where Element: Identifiable & ObservableObject,
+    Row: View
+{
     public typealias ProjectedValue = ObservedObject<Element>.Wrapper
     public typealias RowContent = (ProjectedValue) -> Row
-    
+
     @ObservedObject var element: Element
     let rowContent: RowContent
 

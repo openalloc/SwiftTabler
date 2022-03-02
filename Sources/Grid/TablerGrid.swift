@@ -19,57 +19,57 @@
 import SwiftUI
 
 /// Grid-based table
-public struct TablerGrid<Element, Header, Row, ItemMod, Results>: View
-where Element: Identifiable,
-      Header: View,
-      Row: View,
-      ItemMod: ViewModifier,
-      Results: RandomAccessCollection,
-      Results.Element == Element
+public struct TablerGrid<Element, Header, Row, Results>: View // , ItemMod
+    where Element: Identifiable,
+    Header: View,
+    Row: View,
+    // ItemMod: ViewModifier,
+    Results: RandomAccessCollection,
+    Results.Element == Element
 {
     public typealias Config = TablerGridConfig<Element>
     public typealias Context = TablerContext<Element>
     public typealias HeaderContent = (Binding<Context>) -> Header
     public typealias RowContent = (Element) -> Row
-    public typealias ItemModifier = (Element) -> ItemMod
+    // public typealias ItemModifier = (Element) -> ItemMod
 
     // MARK: Parameters
-    
+
     private let headerContent: HeaderContent
     private let rowContent: RowContent
-    private let itemModifier: ItemModifier
+    // private let itemModifier: ItemModifier
     private var results: Results
-    
+
     public init(_ config: Config,
                 @ViewBuilder headerContent: @escaping HeaderContent,
                 @ViewBuilder rowContent: @escaping RowContent,
-                itemModifier: @escaping ItemModifier,
+                // itemModifier: @escaping ItemModifier,
                 results: Results)
     {
         self.headerContent = headerContent
         self.rowContent = rowContent
-        self.itemModifier = itemModifier
+        // self.itemModifier = itemModifier
         self.results = results
         _context = State(initialValue: TablerContext(config: config))
     }
 
     // MARK: Locals
-    
+
     @State private var context: Context
 
     // MARK: Views
-    
+
     public var body: some View {
         BaseGrid(context: $context,
                  headerContent: headerContent) {
             ForEach(results.filter(config.filter ?? { _ in true })) { element in
                 rowContent(element)
                     .modifier(GridItemMod(config, element))
-                    .modifier(itemModifier(element))
+                // .modifier(itemModifier(element))
             }
         }
     }
-    
+
     private var config: Config {
         guard let c = context.config as? Config else { return Config(gridItems: []) }
         return c
@@ -80,14 +80,14 @@ public extension TablerGrid {
     // omitting Header
     init(_ config: Config,
          @ViewBuilder rowContent: @escaping RowContent,
-         itemModifier: @escaping ItemModifier,
+         // itemModifier: @escaping ItemModifier,
          results: Results)
-    where Header == EmptyView
+        where Header == EmptyView
     {
         self.init(config,
                   headerContent: { _ in EmptyView() },
                   rowContent: rowContent,
-                  itemModifier: itemModifier,
+                  // itemModifier: itemModifier,
                   results: results)
     }
 }

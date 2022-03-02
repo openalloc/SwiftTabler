@@ -19,38 +19,33 @@
 import SwiftUI
 
 /// List-based table, with support for bound values
-public struct TablerListB<Element, Header, Row, RowMod, Results>: View
-where Element: Identifiable,
-      Header: View,
-      Row: View,
-      RowMod: ViewModifier,
-      Results: RandomAccessCollection & MutableCollection,
-      Results.Element == Element,
-      Results.Index: Hashable
+public struct TablerListB<Element, Header, Row, Results>: View
+    where Element: Identifiable,
+    Header: View,
+    Row: View,
+    Results: RandomAccessCollection & MutableCollection,
+    Results.Element == Element,
+    Results.Index: Hashable
 {
     public typealias Config = TablerListConfig<Element>
     public typealias Context = TablerContext<Element>
     public typealias Hovered = Element.ID?
     public typealias HeaderContent = (Binding<Context>) -> Header
     public typealias RowContent = (Binding<Element>) -> Row
-    public typealias RowModifier = (Element) -> RowMod
 
     // MARK: Parameters
 
     private let headerContent: HeaderContent
     private let rowContent: RowContent
-    private let rowModifier: RowModifier
     @Binding private var results: Results
 
     public init(_ config: Config,
                 @ViewBuilder headerContent: @escaping HeaderContent,
                 @ViewBuilder rowContent: @escaping RowContent,
-                rowModifier: @escaping RowModifier,
                 results: Binding<Results>)
     {
         self.headerContent = headerContent
         self.rowContent = rowContent
-        self.rowModifier = rowModifier
         _results = results
         _context = State(initialValue: TablerContext(config: config))
     }
@@ -83,16 +78,12 @@ where Element: Identifiable,
     }
 
     private func row(_ element: Binding<Element>) -> some View {
-        LazyVGrid(columns: config.gridItems,
-                  alignment: config.alignment) {
-            rowContent(element)
-        }
-        .modifier(ListRowMod(config, element.wrappedValue, $hovered))
-        .modifier(rowModifier(element.wrappedValue))
+        rowContent(element)
+            .modifier(ListRowMod(config, element.wrappedValue, $hovered))
     }
-    
+
     private var config: Config {
-        guard let c = context.config as? Config else { return Config(gridItems: []) }
+        guard let c = context.config as? Config else { return Config() }
         return c
     }
 }
@@ -101,14 +92,12 @@ public extension TablerListB {
     // omitting Header
     init(_ config: Config,
          @ViewBuilder rowContent: @escaping RowContent,
-         rowModifier: @escaping RowModifier,
          results: Binding<Results>)
         where Header == EmptyView
     {
         self.init(config,
                   headerContent: { _ in EmptyView() },
                   rowContent: rowContent,
-                  rowModifier: rowModifier,
                   results: results)
     }
 }

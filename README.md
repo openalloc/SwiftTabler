@@ -74,20 +74,22 @@ struct ContentView: View {
         GridItem(.flexible(minimum: 35, maximum: 50), alignment: .leading),
     ]
 
-    @ViewBuilder
     private func header(_ ctx: TablerSortContext<Fruit>) -> some View {
-        Text("ID")
-        Text("Name")
-        Text("Weight")
-        Text("Color")
+        LazyVGrid(columns: gridItems) {
+            Text("ID")
+            Text("Name")
+            Text("Weight")
+            Text("Color")
+        }
     }
     
-    @ViewBuilder
     private func row(_ element: Fruit) -> some View {
-        Text(element.id)
-        Text(element.name).foregroundColor(element.color)
-        Text(String(format: "%.0f g", element.weight))
-        Image(systemName: "rectangle.fill").foregroundColor(element.color)
+        LazyVGrid(columns: gridItems) {
+            Text(element.id)
+            Text(element.name).foregroundColor(element.color)
+            Text(String(format: "%.0f g", element.weight))
+            Image(systemName: "rectangle.fill").foregroundColor(element.color)
+        }
     }
 
     var body: some View {
@@ -141,13 +143,15 @@ private typealias Sort = TablerSort<Fruit>
 
 @ViewBuilder
 private func header(_ ctx: Binding<Context>) -> some View {
-    Sort.columnTitle("ID", ctx, \.id)
-        .onTapGesture { tablerSort(ctx, &fruits, \.id) { $0.id < $1.id } }
-    Sort.columnTitle("Name", ctx, \.name)
-        .onTapGesture { tablerSort(ctx, &fruits, \.name) { $0.name < $1.name } }
-    Sort.columnTitle("Weight", ctx, \.weight)
-        .onTapGesture { tablerSort(ctx, &fruits, \.weight) { $0.weight < $1.weight } }
-    Text("Color")
+    LazyVGrid(columns: gridItems) {
+        Sort.columnTitle("ID", ctx, \.id)
+            .onTapGesture { tablerSort(ctx, &fruits, \.id) { $0.id < $1.id } }
+        Sort.columnTitle("Name", ctx, \.name)
+            .onTapGesture { tablerSort(ctx, &fruits, \.name) { $0.name < $1.name } }
+        Sort.columnTitle("Weight", ctx, \.weight)
+            .onTapGesture { tablerSort(ctx, &fruits, \.weight) { $0.weight < $1.weight } }
+        Text("Color")
+    }
 }
 ```
 
@@ -166,12 +170,14 @@ When used with 'bound' variants (e.g., `TablerListB`), the data can be modified 
 ```swift
 @ViewBuilder
 private func brow(_ element: Binding<Fruit>) -> some View {
-    Text(element.wrappedValue.id)
-    TextField("Name", text: element.name)
-        .textFieldStyle(.roundedBorder)
-    Text(String(format: "%.0f g", element.wrappedValue.weight))
-    ColorPicker("Color", selection: element.color)
-        .labelsHidden()
+    LazyVGrid(columns: gridItems) {
+        Text(element.wrappedValue.id)
+        TextField("Name", text: element.name)
+            .textFieldStyle(.roundedBorder)
+        Text(String(format: "%.0f g", element.wrappedValue.weight))
+        ColorPicker("Color", selection: element.color)
+            .labelsHidden()
+    }
 }
 ```
 

@@ -19,33 +19,37 @@
 import SwiftUI
 
 public enum TablerGridConfigDefaults {
-    
-    // TODO these values probably need to be tweaked to match the basic layout of `List`
-#if os(macOS)
-    public static let rowSpacing: CGFloat = 8
-    public static let paddingInsets = EdgeInsets(top: 14, leading: 16, bottom: 15, trailing: 16)
-#elseif os(iOS)
-    public static let rowSpacing: CGFloat = 17
-    public static let paddingInsets = EdgeInsets(top: 48, leading: 32, bottom: 20, trailing: 32)
-#endif
+    // TODO: these values probably need to be tweaked to match the basic layout of `List`
+    #if os(macOS)
+        public static let rowSpacing: CGFloat = 8
+        public static let paddingInsets = EdgeInsets(top: 14, leading: 16, bottom: 15, trailing: 16)
+    #elseif os(iOS)
+        public static let rowSpacing: CGFloat = 17
+        public static let paddingInsets = EdgeInsets(top: 48, leading: 32, bottom: 20, trailing: 32)
+    #endif
+
+    public static let alignment: HorizontalAlignment = .leading
 }
 
 public class TablerGridConfig<Element>: TablerConfig<Element>
-where Element: Identifiable
+    where Element: Identifiable
 {
-    public override init(gridItems: [GridItem],
-                         alignment: HorizontalAlignment = TablerConfigDefaults.alignment,
-                         filter: Filter? = nil,
-                         onRowColor: OnRowColor? = nil,
-                         rowSpacing: CGFloat = TablerGridConfigDefaults.rowSpacing,
-                         paddingInsets: EdgeInsets = TablerGridConfigDefaults.paddingInsets,
-                         sortIndicatorForward: AnyView = TablerConfigDefaults.sortIndicatorForward,
-                         sortIndicatorReverse: AnyView = TablerConfigDefaults.sortIndicatorReverse,
-                         sortIndicatorNeutral: AnyView = TablerConfigDefaults.sortIndicatorNeutral)
+    public let gridItems: [GridItem]
+    public let alignment: HorizontalAlignment
+
+    public init(gridItems: [GridItem],
+                alignment: HorizontalAlignment = TablerGridConfigDefaults.alignment,
+                filter: Filter? = nil,
+                onRowColor: OnRowColor? = nil,
+                rowSpacing: CGFloat = TablerGridConfigDefaults.rowSpacing,
+                paddingInsets: EdgeInsets = TablerGridConfigDefaults.paddingInsets,
+                sortIndicatorForward: AnyView = TablerConfigDefaults.sortIndicatorForward,
+                sortIndicatorReverse: AnyView = TablerConfigDefaults.sortIndicatorReverse,
+                sortIndicatorNeutral: AnyView = TablerConfigDefaults.sortIndicatorNeutral)
     {
-        super.init(gridItems: gridItems,
-                   alignment: alignment,
-                   filter: filter,
+        self.gridItems = gridItems
+        self.alignment = alignment
+        super.init(filter: filter,
                    onRowColor: onRowColor,
                    rowSpacing: rowSpacing,
                    paddingInsets: paddingInsets,

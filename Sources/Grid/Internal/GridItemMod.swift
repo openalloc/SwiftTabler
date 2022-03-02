@@ -22,24 +22,25 @@ struct GridItemMod<Element>: ViewModifier
     where Element: Identifiable
 {
     typealias Config = TablerGridConfig<Element>
-    
+
     let config: Config
     let element: Element
-    
+
     init(_ config: Config,
-         _ element: Element) {
+         _ element: Element)
+    {
         self.config = config
         self.element = element
     }
-    
+
     func body(content: Content) -> some View {
         content
             .foregroundColor(colorPair?.0 ?? Color.primary)
             .background(colorPair?.1 ?? Color.clear)
     }
-    
+
     // MARK: Helpers
-    
+
     private var colorPair: (Color, Color)? {
         config.onRowColor?(element)
     }
