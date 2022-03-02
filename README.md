@@ -2,7 +2,8 @@
 
 A multi-platform SwiftUI component for tabular data.
 
-**NOTE** this component is BRAND NEW and under active development. If you need stability, you should fork, at least until the API has stabilized with version 1.x.x.
+**NOTE** <em>this component is BRAND NEW and under active development. If you need stability, you should fork, at least until the API has stabilized with version 1.x.x.</em>
+
 
 Available as an open source library to be incorporated in SwiftUI apps.
 
