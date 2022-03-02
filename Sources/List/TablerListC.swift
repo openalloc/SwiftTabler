@@ -1,5 +1,5 @@
 //
-//  TablerListO.swift
+//  TablerListC.swift
 //
 // Copyright 2022 FlowAllocator LLC
 //
@@ -21,7 +21,7 @@ import CoreData
 
 /// List-based table, with support for bound values through Core Data
 @available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
-public struct TablerListO<Element, Header, Row>: View
+public struct TablerListC<Element, Header, Row>: View
 where Element: Identifiable & NSFetchRequestResult & ObservableObject,
       Header: View,
       Row: View
@@ -62,7 +62,7 @@ where Element: Identifiable & NSFetchRequestResult & ObservableObject,
         BaseList(context: $context,
                  headerContent: headerContent) {
             ForEach(results) { rawElem in
-                BaseListRowO(config: config,
+                BaseListRowC(config: config,
                              element: rawElem,
                              hovered: $hovered) { observedElem in
                     rowContent(observedElem)
@@ -79,7 +79,7 @@ where Element: Identifiable & NSFetchRequestResult & ObservableObject,
 }
 
 @available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
-public extension TablerListO {
+public extension TablerListC {
     // omitting Header
     init(_ config: Config,
          @ViewBuilder rowContent: @escaping RowContent,

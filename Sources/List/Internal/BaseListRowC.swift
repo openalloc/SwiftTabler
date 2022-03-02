@@ -1,5 +1,5 @@
 //
-//  BaseListRowO.swift
+//  BaseListRowC.swift
 //
 // Copyright 2022 FlowAllocator LLC
 //
@@ -18,7 +18,7 @@
 
 import SwiftUI
 
-struct BaseListRowO<Element, Row>: View
+struct BaseListRowC<Element, Row>: View
 where Element: Identifiable & ObservableObject,
       Row: View
 {
