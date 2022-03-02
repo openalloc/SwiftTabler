@@ -19,10 +19,11 @@
 import SwiftUI
 
 /// Stack-based table, with support for single-select and bound values
-public struct TablerStack1B<Element, Header, Row, Select, Results>: View
+public struct TablerStack1B<Element, Header, Row, RowMod, Select, Results>: View
     where Element: Identifiable,
     Header: View,
     Row: View,
+    RowMod: ViewModifier,
     Select: View,
     Results: RandomAccessCollection & MutableCollection,
     Results.Element == Element,
@@ -33,6 +34,7 @@ public struct TablerStack1B<Element, Header, Row, Select, Results>: View
     public typealias Hovered = Element.ID?
     public typealias HeaderContent = (Binding<Context>) -> Header
     public typealias RowContent = (Binding<Element>) -> Row
+    public typealias RowModifier = (Element) -> RowMod
     public typealias SelectContent = (Bool) -> Select
     public typealias Selected = Element.ID?
 
@@ -40,6 +42,7 @@ public struct TablerStack1B<Element, Header, Row, Select, Results>: View
 
     private let headerContent: HeaderContent
     private let rowContent: RowContent
+    private let rowModifier: RowModifier
     private let selectContent: SelectContent
     @Binding private var results: Results
     @Binding private var selected: Selected
@@ -47,12 +50,14 @@ public struct TablerStack1B<Element, Header, Row, Select, Results>: View
     public init(_ config: Config,
                 @ViewBuilder headerContent: @escaping HeaderContent,
                 @ViewBuilder rowContent: @escaping RowContent,
+                rowModifier: @escaping RowModifier,
                 @ViewBuilder selectContent: @escaping SelectContent,
                 results: Binding<Results>,
                 selected: Binding<Selected>)
     {
         self.headerContent = headerContent
         self.rowContent = rowContent
+        self.rowModifier = rowModifier
         self.selectContent = selectContent
         _results = results
         _selected = selected
@@ -85,15 +90,15 @@ public struct TablerStack1B<Element, Header, Row, Select, Results>: View
     }
 
     private func row(_ element: Binding<Element>) -> some View {
-        BaseStackRow1(config: config,
-                      element: element.wrappedValue,
-                      hovered: $hovered,
-                      selected: $selected) {
+        LazyVGrid(columns: config.gridItems,
+                  alignment: config.alignment) {
             rowContent(element)
-                .overlay(
-                    selectContent(element.wrappedValue.id == selected)
-                )
         }
+        .modifier(StackRowMod1(config, element.wrappedValue, $hovered, $selected))
+        .modifier(rowModifier(element.wrappedValue))
+        .overlay(
+            selectContent(element.wrappedValue.id == selected)
+        )
     }
     
     private var config: Config {
@@ -106,6 +111,7 @@ public extension TablerStack1B {
     // omitting Header
     init(_ config: Config,
          @ViewBuilder rowContent: @escaping RowContent,
+         rowModifier: @escaping RowModifier,
          @ViewBuilder selectContent: @escaping SelectContent,
          results: Binding<Results>,
          selected: Binding<Selected>)
@@ -114,6 +120,7 @@ public extension TablerStack1B {
         self.init(config,
                   headerContent: { _ in EmptyView() },
                   rowContent: rowContent,
+                  rowModifier: rowModifier,
                   selectContent: selectContent,
                   results: results,
                   selected: selected)
@@ -123,6 +130,7 @@ public extension TablerStack1B {
     init(_ config: Config,
          @ViewBuilder headerContent: @escaping HeaderContent,
          @ViewBuilder rowContent: @escaping RowContent,
+         rowModifier: @escaping RowModifier,
          results: Binding<Results>,
          selected: Binding<Selected>)
         where Select == EmptyView
@@ -130,6 +138,7 @@ public extension TablerStack1B {
         self.init(config,
                   headerContent: headerContent,
                   rowContent: rowContent,
+                  rowModifier: rowModifier,
                   selectContent: { _ in EmptyView() },
                   results: results,
                   selected: selected)
@@ -138,6 +147,7 @@ public extension TablerStack1B {
     // omitting Header AND Select
     init(_ config: Config,
          @ViewBuilder rowContent: @escaping RowContent,
+         rowModifier: @escaping RowModifier,
          results: Binding<Results>,
          selected: Binding<Selected>)
         where Header == EmptyView, Select == EmptyView
@@ -145,6 +155,7 @@ public extension TablerStack1B {
         self.init(config,
                   headerContent: { _ in EmptyView() },
                   rowContent: rowContent,
+                  rowModifier: rowModifier,
                   selectContent: { _ in EmptyView() },
                   results: results,
                   selected: selected)

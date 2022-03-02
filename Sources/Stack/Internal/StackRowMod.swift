@@ -1,5 +1,5 @@
 //
-//  ListRowMod.swift
+//  StackRowMod.swift
 //
 // Copyright 2022 FlowAllocator LLC
 //
@@ -18,10 +18,10 @@
 
 import SwiftUI
 
-struct ListRowMod<Element>: ViewModifier
+struct StackRowMod<Element>: ViewModifier
     where Element: Identifiable
 {
-    typealias Config = TablerListConfig<Element>
+    typealias Config = TablerStackConfig<Element>
     typealias Hovered = Element.ID?
     
     let config: Config
@@ -38,18 +38,22 @@ struct ListRowMod<Element>: ViewModifier
     
     func body(content: Content) -> some View {
         content
-            .moveDisabled(!config.canMove(element))
             .foregroundColor(colorPair?.0 ?? Color.primary)
   
 #if os(macOS) || targetEnvironment(macCatalyst)
-  // support hovering, but not for colored rows (yet)
-  // no background for colored rows (yet)
+            // support hovering, but not for colored rows (yet)
+            // no background for colored rows (yet)
             .onHover { if $0 { hovered = element.id } }
-            .background((colorPair == nil && hovered == element.id)
+        
+            // If hovering, set the background here.
+            .background(colorPair?.1 ?? (
+                        hovered == element.id
                         ? Color.accentColor.opacity(0.2)
-                        : Color.clear)
+                        : Color.clear
+            ))
+#elseif os(iOS)
+            .background(colorPair?.1 ?? Color.clear)
 #endif
-            .listRowBackground(colorPair?.1 ?? Color.clear)
     }
     
     // MARK: Helpers

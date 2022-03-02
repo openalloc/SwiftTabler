@@ -19,39 +19,42 @@
 import SwiftUI
 
 /// Grid-based table
-public struct TablerGrid<Element, Header, Row, Results>: View
+public struct TablerGrid<Element, Header, Row, ItemMod, Results>: View
 where Element: Identifiable,
       Header: View,
       Row: View,
+      ItemMod: ViewModifier,
       Results: RandomAccessCollection,
       Results.Element == Element
 {
     public typealias Config = TablerGridConfig<Element>
     public typealias Context = TablerContext<Element>
-    public typealias Hovered = Element.ID?
     public typealias HeaderContent = (Binding<Context>) -> Header
     public typealias RowContent = (Element) -> Row
-    
+    public typealias ItemModifier = (Element) -> ItemMod
+
     // MARK: Parameters
     
     private let headerContent: HeaderContent
     private let rowContent: RowContent
+    private let itemModifier: ItemModifier
     private var results: Results
     
     public init(_ config: Config,
                 @ViewBuilder headerContent: @escaping HeaderContent,
                 @ViewBuilder rowContent: @escaping RowContent,
+                itemModifier: @escaping ItemModifier,
                 results: Results)
     {
         self.headerContent = headerContent
         self.rowContent = rowContent
+        self.itemModifier = itemModifier
         self.results = results
         _context = State(initialValue: TablerContext(config: config))
     }
 
     // MARK: Locals
     
-    @State private var hovered: Hovered = nil
     @State private var context: Context
 
     // MARK: Views
@@ -60,13 +63,9 @@ where Element: Identifiable,
         BaseGrid(context: $context,
                  headerContent: headerContent) {
             ForEach(results.filter(config.filter ?? { _ in true })) { element in
-                BaseGridRow(config: config,
-                            element: element,
-                            hovered: $hovered) {
-                    
-                    // TODO how to provide a continuous hover block (selection, etc.)?
-                    rowContent(element)
-                }
+                rowContent(element)
+                    .modifier(GridItemMod(config, element))
+                    .modifier(itemModifier(element))
             }
         }
     }
@@ -81,12 +80,14 @@ public extension TablerGrid {
     // omitting Header
     init(_ config: Config,
          @ViewBuilder rowContent: @escaping RowContent,
+         itemModifier: @escaping ItemModifier,
          results: Results)
     where Header == EmptyView
     {
         self.init(config,
                   headerContent: { _ in EmptyView() },
                   rowContent: rowContent,
+                  itemModifier: itemModifier,
                   results: results)
     }
 }

@@ -19,33 +19,38 @@
 import SwiftUI
 
 /// Stack-based table, with support for bound values
-public struct TablerStackB<Element, Header, Row, Results>: View
-    where Element: Identifiable,
-    Header: View,
-    Row: View,
-    Results: RandomAccessCollection & MutableCollection,
-    Results.Element == Element,
-    Results.Index: Hashable
+public struct TablerStackB<Element, Header, Row, RowMod, Results>: View
+where Element: Identifiable,
+      Header: View,
+      Row: View,
+      RowMod: ViewModifier,
+      Results: RandomAccessCollection & MutableCollection,
+      Results.Element == Element,
+      Results.Index: Hashable
 {
     public typealias Config = TablerStackConfig<Element>
     public typealias Context = TablerContext<Element>
     public typealias Hovered = Element.ID?
     public typealias HeaderContent = (Binding<Context>) -> Header
     public typealias RowContent = (Binding<Element>) -> Row
+    public typealias RowModifier = (Element) -> RowMod
 
     // MARK: Parameters
 
     private let headerContent: HeaderContent
     private let rowContent: RowContent
+    private let rowModifier: RowModifier
     @Binding private var results: Results
 
     public init(_ config: Config,
                 @ViewBuilder headerContent: @escaping HeaderContent,
                 @ViewBuilder rowContent: @escaping RowContent,
+                rowModifier: @escaping RowModifier,
                 results: Binding<Results>)
     {
         self.headerContent = headerContent
         self.rowContent = rowContent
+        self.rowModifier = rowModifier
         _results = results
         _context = State(initialValue: TablerContext(config: config))
     }
@@ -76,11 +81,12 @@ public struct TablerStackB<Element, Header, Row, Results>: View
     }
 
     private func row(_ element: Binding<Element>) -> some View {
-        BaseStackRow(config: config,
-                     element: element.wrappedValue,
-                     hovered: $hovered) {
+        LazyVGrid(columns: config.gridItems,
+                  alignment: config.alignment) {
             rowContent(element)
         }
+        .modifier(StackRowMod(config, element.wrappedValue, $hovered))
+        .modifier(rowModifier(element.wrappedValue))
     }
     
     private var config: Config {
@@ -93,12 +99,14 @@ public extension TablerStackB {
     // omitting Header
     init(_ config: Config,
          @ViewBuilder rowContent: @escaping RowContent,
+         rowModifier: @escaping RowModifier,
          results: Binding<Results>)
         where Header == EmptyView
     {
         self.init(config,
                   headerContent: { _ in EmptyView() },
                   rowContent: rowContent,
+                  rowModifier: rowModifier,
                   results: results)
     }
 }

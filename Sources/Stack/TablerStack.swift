@@ -19,32 +19,37 @@
 import SwiftUI
 
 /// Stack-based table
-public struct TablerStack<Element, Header, Row, Results>: View
-    where Element: Identifiable,
-    Header: View,
-    Row: View,
-    Results: RandomAccessCollection,
-    Results.Element == Element
+public struct TablerStack<Element, Header, Row, RowMod, Results>: View
+where Element: Identifiable,
+      Header: View,
+      Row: View,
+      RowMod: ViewModifier,
+      Results: RandomAccessCollection,
+      Results.Element == Element
 {
     public typealias Config = TablerStackConfig<Element>
     public typealias Context = TablerContext<Element>
     public typealias Hovered = Element.ID?
     public typealias HeaderContent = (Binding<Context>) -> Header
     public typealias RowContent = (Element) -> Row
+    public typealias RowModifier = (Element) -> RowMod
 
     // MARK: Parameters
 
     private let headerContent: HeaderContent
     private let rowContent: RowContent
+    private let rowModifier: RowModifier
     private var results: Results
 
     public init(_ config: Config,
                 @ViewBuilder headerContent: @escaping HeaderContent,
                 @ViewBuilder rowContent: @escaping RowContent,
+                rowModifier: @escaping RowModifier,
                 results: Results)
     {
         self.headerContent = headerContent
         self.rowContent = rowContent
+        self.rowModifier = rowModifier
         self.results = results
         _context = State(initialValue: TablerContext(config: config))
     }
@@ -60,11 +65,12 @@ public struct TablerStack<Element, Header, Row, Results>: View
         BaseStack(context: $context,
                   headerContent: headerContent) {
             ForEach(results.filter(config.filter ?? { _ in true })) { element in
-                BaseStackRow(config: config,
-                             element: element,
-                             hovered: $hovered) {
+                LazyVGrid(columns: config.gridItems,
+                          alignment: config.alignment) {
                     rowContent(element)
                 }
+                .modifier(StackRowMod(config, element, $hovered))
+                .modifier(rowModifier(element))
             }
         }
     }
@@ -79,12 +85,14 @@ public extension TablerStack {
     // omitting Header
     init(_ config: Config,
          @ViewBuilder rowContent: @escaping RowContent,
+         rowModifier: @escaping RowModifier,
          results: Results)
         where Header == EmptyView
     {
         self.init(config,
                   headerContent: { _ in EmptyView() },
                   rowContent: rowContent,
+                  rowModifier: rowModifier,
                   results: results)
     }
 }
