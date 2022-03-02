@@ -19,13 +19,13 @@
 import SwiftUI
 
 /// List-based table
-public struct TablerList<Element, Header, Row, Results, RowMod>: View
+public struct TablerList<Element, Header, Row, RowMod, Results>: View
 where Element: Identifiable,
       Header: View,
       Row: View,
+      RowMod: ViewModifier,
       Results: RandomAccessCollection,
-      Results.Element == Element,
-      RowMod: ViewModifier
+      Results.Element == Element
 {
     public typealias Config = TablerListConfig<Element>
     public typealias Context = TablerContext<Element>
@@ -38,7 +38,7 @@ where Element: Identifiable,
     
     private let headerContent: HeaderContent
     private let rowContent: RowContent
-    private var rowModifier: RowModifier
+    private let rowModifier: RowModifier
     private var results: Results
     
     public init(_ config: Config,
@@ -65,11 +65,11 @@ where Element: Identifiable,
         BaseList(context: $context,
                  headerContent: headerContent) {
             ForEach(results.filter(config.filter ?? { _ in true })) { element in
-                BaseListRow(config: config,
-                            element: element,
-                            hovered: $hovered) {
+                LazyVGrid(columns: config.gridItems,
+                          alignment: config.alignment) {
                     rowContent(element)
                 }
+                .modifier(ListRowMod(config, element, $hovered))
                 .modifier(rowModifier(element))
             }
             .onMove(perform: config.onMove)
@@ -86,8 +86,8 @@ public extension TablerList {
     // omitting Header
     init(_ config: Config,
          @ViewBuilder rowContent: @escaping RowContent,
-         results: Results,
-         rowModifier: @escaping RowModifier)
+         rowModifier: @escaping RowModifier,
+         results: Results)
     where Header == EmptyView
     {
         self.init(config,

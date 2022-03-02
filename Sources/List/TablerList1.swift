@@ -19,65 +19,71 @@
 import SwiftUI
 
 /// List-based table, with support for single-select
-public struct TablerList1<Element, Header, Row, Select, Results>: View
-    where Element: Identifiable,
-    Header: View,
-    Row: View,
-    Select: View,
-    Results: RandomAccessCollection,
-    Results.Element == Element
+public struct TablerList1<Element, Header, Row, RowMod, Select, Results>: View
+where Element: Identifiable,
+      Header: View,
+      Row: View,
+      RowMod: ViewModifier,
+      Select: View,
+      Results: RandomAccessCollection,
+      Results.Element == Element
 {
     public typealias Config = TablerListConfig<Element>
     public typealias Context = TablerContext<Element>
     public typealias Hovered = Element.ID?
     public typealias HeaderContent = (Binding<Context>) -> Header
     public typealias RowContent = (Element) -> Row
+    public typealias RowModifier = (Element) -> RowMod
     public typealias SelectContent = (Bool) -> Select
     public typealias Selected = Element.ID?
-
+    
     // MARK: Parameters
-
+    
     private let headerContent: HeaderContent
     private let rowContent: RowContent
+    private let rowModifier: RowModifier
     private let selectContent: SelectContent
     private var results: Results
     @Binding private var selected: Selected
-
+    
     public init(_ config: Config,
                 @ViewBuilder headerContent: @escaping HeaderContent,
                 @ViewBuilder rowContent: @escaping RowContent,
+                rowModifier: @escaping RowModifier,
                 @ViewBuilder selectContent: @escaping SelectContent,
                 results: Results,
                 selected: Binding<Selected>)
     {
         self.headerContent = headerContent
         self.rowContent = rowContent
+        self.rowModifier = rowModifier
         self.selectContent = selectContent
         self.results = results
         _selected = selected
         _context = State(initialValue: TablerContext(config: config))
     }
-
+    
     // MARK: Locals
-
+    
     @State private var hovered: Hovered = nil
     @State private var context: Context
-
+    
     // MARK: Views
-
+    
     public var body: some View {
         BaseList1(context: $context,
                   selected: $selected,
                   headerContent: headerContent) {
             ForEach(results.filter(config.filter ?? { _ in true })) { element in
-                BaseListRow(config: config,
-                            element: element,
-                            hovered: $hovered) {
+                LazyVGrid(columns: config.gridItems,
+                          alignment: config.alignment) {
                     rowContent(element)
-                        .overlay(
-                            selectContent(element.id == selected)
-                        )
                 }
+                .modifier(ListRowMod(config, element, $hovered))
+                .modifier(rowModifier(element))
+                .overlay(
+                selectContent(element.id == selected)
+                )
             }
             .onMove(perform: config.onMove)
         }
@@ -93,47 +99,55 @@ public extension TablerList1 {
     // omitting Header
     init(_ config: Config,
          @ViewBuilder rowContent: @escaping RowContent,
+         rowModifier: @escaping RowModifier,
          @ViewBuilder selectContent: @escaping SelectContent,
          results: Results,
          selected: Binding<Selected>)
-        where Header == EmptyView
+    where Header == EmptyView
     {
         self.init(config,
                   headerContent: { _ in EmptyView() },
                   rowContent: rowContent,
+                  rowModifier: rowModifier,
                   selectContent: selectContent,
                   results: results,
                   selected: selected)
     }
-
+    
     // omitting Select
     init(_ config: Config,
          @ViewBuilder headerContent: @escaping HeaderContent,
          @ViewBuilder rowContent: @escaping RowContent,
+         rowModifier: @escaping RowModifier,
          results: Results,
          selected: Binding<Selected>)
-        where Select == EmptyView
+    where Select == EmptyView
     {
         self.init(config,
                   headerContent: headerContent,
                   rowContent: rowContent,
+                  rowModifier: rowModifier,
                   selectContent: { _ in EmptyView() },
                   results: results,
                   selected: selected)
     }
-
+    
     // omitting Header AND Select
     init(_ config: Config,
          @ViewBuilder rowContent: @escaping RowContent,
+         rowModifier: @escaping RowModifier,
          results: Results,
          selected: Binding<Selected>)
-        where Header == EmptyView, Select == EmptyView
+    where Header == EmptyView, Select == EmptyView
     {
         self.init(config,
                   headerContent: { _ in EmptyView() },
                   rowContent: rowContent,
+                  rowModifier: rowModifier,
                   selectContent: { _ in EmptyView() },
                   results: results,
                   selected: selected)
     }
+    
+    // TODO omit rowModifier
 }
