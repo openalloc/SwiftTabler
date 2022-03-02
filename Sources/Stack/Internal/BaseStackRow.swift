@@ -29,10 +29,10 @@ where Element: Identifiable,
     
     // MARK: Parameters
     
-    var config: Config
-    var element: Element
+    let config: Config
+    let element: Element
     @Binding var hovered: Hovered
-    var content: RowContent
+    let content: RowContent
     
     // MARK: Locals
     

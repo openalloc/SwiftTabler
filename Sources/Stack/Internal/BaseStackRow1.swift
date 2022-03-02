@@ -30,11 +30,11 @@ where Element: Identifiable,
     
     // MARK: Parameters
     
-    var config: Config
-    var element: Element
+    let config: Config
+    let element: Element
     @Binding var hovered: Hovered
     @Binding var selected: Selected
-    var rowContent: RowContent
+    let rowContent: RowContent
     
     // MARK: Locals
     

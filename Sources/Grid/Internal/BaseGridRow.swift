@@ -29,10 +29,10 @@ struct BaseGridRow<Element, Row>: View
 
     // MARK: Parameters
 
-    var config: Config
-    var element: Element
+    let config: Config
+    let element: Element
     @Binding var hovered: Hovered
-    var rowContent: RowContent
+    let rowContent: RowContent
 
     // MARK: Views
 

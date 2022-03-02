@@ -29,10 +29,10 @@ where Element: Identifiable & ObservableObject,
     
     // MARK: Parameters
     
-    var config: Config
+    let config: Config
     @ObservedObject var element: Element
     @Binding var hovered: Hovered
-    var rowContent: RowContent
+    let rowContent: RowContent
     
     // MARK: Views
     
