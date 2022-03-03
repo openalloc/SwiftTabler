@@ -16,6 +16,7 @@
 // limitations under the License.
 //
 
+import CoreData
 import SwiftUI
 
 /// Stack-based table, with support for bound values
