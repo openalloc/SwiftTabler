@@ -27,7 +27,7 @@ public struct TablerGrid<Element, Header, Row, Results>: View // , ItemMod
     Results: RandomAccessCollection,
     Results.Element == Element
 {
-    public typealias Config = TablerConfig<Element>
+    public typealias Config = TablerGridConfig<Element>
     public typealias Context = TablerContext<Element>
     public typealias HeaderContent = (Binding<Context>) -> Header
     public typealias RowContent = (Element) -> Row

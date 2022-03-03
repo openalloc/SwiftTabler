@@ -24,7 +24,7 @@ struct BaseGrid<Element, Header, Rows>: View
     Header: View,
     Rows: View
 {
-    typealias Config = TablerConfig<Element>
+    typealias Config = TablerGridConfig<Element>
     typealias Context = TablerContext<Element>
     typealias HeaderContent = (Binding<Context>) -> Header
     typealias RowContent = () -> Rows

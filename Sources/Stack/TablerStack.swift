@@ -26,7 +26,7 @@ public struct TablerStack<Element, Header, Row, Results>: View
     Results: RandomAccessCollection,
     Results.Element == Element
 {
-    public typealias Config = TablerConfig<Element>
+    public typealias Config = TablerStackConfig<Element>
     public typealias Context = TablerContext<Element>
     public typealias Hovered = Element.ID?
     public typealias HeaderContent = (Binding<Context>) -> Header

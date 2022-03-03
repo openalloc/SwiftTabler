@@ -26,7 +26,7 @@ public struct TablerStack1C<Element, Header, Row, Select>: View
     Row: View,
     Select: View
 {
-    public typealias Config = TablerConfig<Element>
+    public typealias Config = TablerStackConfig<Element>
     public typealias Context = TablerContext<Element>
     public typealias Hovered = Element.ID?
     public typealias HeaderContent = (Binding<Context>) -> Header

@@ -27,7 +27,7 @@ public struct TablerStackB<Element, Header, Row, Results>: View
     Results.Element == Element,
     Results.Index: Hashable
 {
-    public typealias Config = TablerConfig<Element>
+    public typealias Config = TablerStackConfig<Element>
     public typealias Context = TablerContext<Element>
     public typealias Hovered = Element.ID?
     public typealias HeaderContent = (Binding<Context>) -> Header
