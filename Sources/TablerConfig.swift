@@ -19,10 +19,6 @@
 import SwiftUI
 
 public enum TablerConfigDefaults {
-    public static let headerSpacing: CGFloat = 0
-    public static let rowSpacing: CGFloat = 0
-    public static let paddingInsets = EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
-
     public static let sortIndicatorForward = AnyView(
         Image(systemName: "chevron.up")
             .foregroundColor(.secondary)
@@ -52,24 +48,18 @@ open class TablerConfig<Element>
     /// NOTE filtering not supported in Core Data-based tables, as it's assumed you'll use a predicate in your FetchRequest.
     public let filter: Filter?
     public let onRowColor: OnRowColor?
-    public let rowSpacing: CGFloat
-    public let paddingInsets: EdgeInsets
     public let sortIndicatorForward: AnyView
     public let sortIndicatorReverse: AnyView
     public let sortIndicatorNeutral: AnyView
 
     public init(filter: Filter? = nil,
                 onRowColor: OnRowColor? = nil,
-                rowSpacing: CGFloat = TablerConfigDefaults.rowSpacing,
-                paddingInsets: EdgeInsets = TablerConfigDefaults.paddingInsets,
                 sortIndicatorForward: AnyView = TablerConfigDefaults.sortIndicatorForward,
                 sortIndicatorReverse: AnyView = TablerConfigDefaults.sortIndicatorReverse,
                 sortIndicatorNeutral: AnyView = TablerConfigDefaults.sortIndicatorNeutral)
     {
         self.filter = filter
         self.onRowColor = onRowColor
-        self.rowSpacing = rowSpacing
-        self.paddingInsets = paddingInsets
         self.sortIndicatorForward = sortIndicatorForward
         self.sortIndicatorReverse = sortIndicatorReverse
         self.sortIndicatorNeutral = sortIndicatorNeutral

@@ -64,7 +64,7 @@ public struct TablerGrid<Element, Header, Row, Results>: View // , ItemMod
                  headerContent: headerContent) {
             ForEach(results.filter(config.filter ?? { _ in true })) { element in
                 rowContent(element)
-                    .modifier(GridItemMod(config, element))
+//                    .modifier(GridItemMod(config, element))
                 // .modifier(itemModifier(element))
             }
         }

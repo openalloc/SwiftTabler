@@ -27,10 +27,10 @@ public class TablerListConfig<Element>: TablerConfig<Element>
     public let canMove: CanMove<Element>
     public let onMove: OnMove<Element>?
 
-    public init(filter: Filter? = nil,
-                onRowColor: OnRowColor? = nil,
-                canMove: @escaping CanMove<Element> = { _ in true },
+    public init(canMove: @escaping CanMove<Element> = { _ in true },
                 onMove: OnMove<Element>? = nil,
+                filter: Filter? = nil,
+                onRowColor: OnRowColor? = nil,
                 sortIndicatorForward: AnyView = TablerConfigDefaults.sortIndicatorForward,
                 sortIndicatorReverse: AnyView = TablerConfigDefaults.sortIndicatorReverse,
                 sortIndicatorNeutral: AnyView = TablerConfigDefaults.sortIndicatorNeutral)

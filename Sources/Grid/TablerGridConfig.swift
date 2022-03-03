@@ -36,23 +36,25 @@ public class TablerGridConfig<Element>: TablerConfig<Element>
 {
     public let gridItems: [GridItem]
     public let alignment: HorizontalAlignment
+    public let rowSpacing: CGFloat
+    public let paddingInsets: EdgeInsets
 
     public init(gridItems: [GridItem],
                 alignment: HorizontalAlignment = TablerGridConfigDefaults.alignment,
-                filter: Filter? = nil,
-                onRowColor: OnRowColor? = nil,
                 rowSpacing: CGFloat = TablerGridConfigDefaults.rowSpacing,
                 paddingInsets: EdgeInsets = TablerGridConfigDefaults.paddingInsets,
+                filter: Filter? = nil,
+                onRowColor: OnRowColor? = nil,
                 sortIndicatorForward: AnyView = TablerConfigDefaults.sortIndicatorForward,
                 sortIndicatorReverse: AnyView = TablerConfigDefaults.sortIndicatorReverse,
                 sortIndicatorNeutral: AnyView = TablerConfigDefaults.sortIndicatorNeutral)
     {
         self.gridItems = gridItems
         self.alignment = alignment
+        self.rowSpacing = rowSpacing
+        self.paddingInsets = paddingInsets
         super.init(filter: filter,
                    onRowColor: onRowColor,
-                   rowSpacing: rowSpacing,
-                   paddingInsets: paddingInsets,
                    sortIndicatorForward: sortIndicatorForward,
                    sortIndicatorReverse: sortIndicatorReverse,
                    sortIndicatorNeutral: sortIndicatorNeutral)
