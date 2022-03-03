@@ -60,8 +60,7 @@ public struct TablerStackC<Element, Header, Row>: View
     // MARK: Views
 
     public var body: some View {
-        BaseStack(config: config,
-                  context: $context,
+        BaseStack(context: $context,
                   header: headerContent) {
             ForEach(results) { rawElem in
                 ObservableHolder(element: rawElem) { obsElem in

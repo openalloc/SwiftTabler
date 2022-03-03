@@ -65,8 +65,7 @@ public struct TablerGrid<Element, Header, Row, Results>: View // , ItemMod
     // MARK: Views
 
     public var body: some View {
-        BaseGrid(config: config,
-                 context: $context,
+        BaseGrid(context: $context,
                  gridItems: gridItems,
                  header: headerContent) {
             ForEach(results.filter(config.filter ?? { _ in true })) { element in

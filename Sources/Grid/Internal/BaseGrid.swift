@@ -29,19 +29,16 @@ struct BaseGrid<Element, Header, Rows>: View
     typealias HeaderContent = (Binding<Context>) -> Header
     typealias RowContent = () -> Rows
 
-    private var config: Config
     @Binding private var context: Context
     private let gridItems: [GridItem]
     private let headerContent: HeaderContent
     private let rowsContent: RowContent
 
-    init(config: Config,
-         context: Binding<Context>,
+    init(context: Binding<Context>,
          gridItems: [GridItem],
          header: @escaping HeaderContent,
          rows: @escaping RowContent)
     {
-        self.config = config
         _context = context
         self.gridItems = gridItems
         self.headerContent = header
@@ -65,5 +62,9 @@ struct BaseGrid<Element, Header, Rows>: View
             }
             .padding(config.paddingInsets)
         }
+    }
+    
+    private var config: Config {
+        context.config as? Config ?? Config()
     }
 }

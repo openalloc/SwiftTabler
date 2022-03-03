@@ -24,22 +24,18 @@ struct BaseList<Element, Header, Rows>: View
     Header: View,
     Rows: View
 {
-    typealias Config = TablerConfig<Element>
     typealias Context = TablerContext<Element>
     typealias HeaderContent = (Binding<Context>) -> Header
     typealias RowContent = () -> Rows
 
-    private let config: Config
     @Binding private var context: Context
     private let headerContent: HeaderContent
     private let rowsContent: RowContent
 
-    init(config: Config,
-         context: Binding<Context>,
+    init(context: Binding<Context>,
          @ViewBuilder header: @escaping HeaderContent,
          @ViewBuilder rowsContent: @escaping RowContent)
     {
-        self.config = config
         _context = context
         self.headerContent = header
         self.rowsContent = rowsContent

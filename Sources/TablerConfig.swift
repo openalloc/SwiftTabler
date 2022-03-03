@@ -34,8 +34,6 @@ public enum TablerConfigDefaults {
     )
 }
 
-extension TablerConfig: ObservableObject {}
-
 open class TablerConfig<Element>
     where Element: Identifiable
 {

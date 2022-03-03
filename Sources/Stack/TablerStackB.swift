@@ -60,8 +60,7 @@ public struct TablerStackB<Element, Header, Row, Results>: View
     // MARK: Views
 
     public var body: some View {
-        BaseStack(config: config,
-                  context: $context,
+        BaseStack(context: $context,
                   header: headerContent) {
             // TODO: is there a better way to filter bound data source?
             if let _filter = config.filter {

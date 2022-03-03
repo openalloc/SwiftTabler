@@ -59,8 +59,7 @@ public struct TablerList<Element, Header, Row, Results>: View
     // MARK: Views
 
     public var body: some View {
-        BaseList(config: config,
-                 context: $context,
+        BaseList(context: $context,
                  header: headerContent) {
             ForEach(results.filter(config.filter ?? { _ in true })) { element in
                 rowContent(element)

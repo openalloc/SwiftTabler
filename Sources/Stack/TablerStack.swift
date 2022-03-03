@@ -59,8 +59,7 @@ public struct TablerStack<Element, Header, Row, Results>: View
     // MARK: Views
 
     public var body: some View {
-        BaseStack(config: config,
-                  context: $context,
+        BaseStack(context: $context,
                   header: headerContent) {
             ForEach(results.filter(config.filter ?? { _ in true })) { element in
                 rowContent(element)

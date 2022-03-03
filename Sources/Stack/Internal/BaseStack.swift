@@ -29,17 +29,14 @@ struct BaseStack<Element, Header, Rows>: View
     typealias HeaderContent = (Binding<Context>) -> Header
     typealias RowContent = () -> Rows
 
-    private let config: Config
     @Binding private var context: Context
     private let headerContent: HeaderContent
     private let rowsContent: RowContent
 
-    init(config: Config,
-         context: Binding<Context>,
+    init(context: Binding<Context>,
          @ViewBuilder header: @escaping HeaderContent,
          @ViewBuilder rowsContent: @escaping RowContent)
     {
-        self.config = config
         _context = context
         self.headerContent = header
         self.rowsContent = rowsContent
@@ -60,5 +57,9 @@ struct BaseStack<Element, Header, Rows>: View
             }
             .padding(config.paddingInsets)
         }
+    }
+    
+    private var config: Config {
+        context.config as? Config ?? Config()
     }
 }
