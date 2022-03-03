@@ -32,8 +32,8 @@ public enum TablerStackConfigDefaults {
 public class TablerStackConfig<Element>: TablerConfig<Element>
     where Element: Identifiable
 {
-    public let rowSpacing: CGFloat
-    public let paddingInsets: EdgeInsets
+    public var rowSpacing: CGFloat
+    public var paddingInsets: EdgeInsets
 
     public init(rowSpacing: CGFloat = TablerStackConfigDefaults.rowSpacing,
                 paddingInsets: EdgeInsets = TablerStackConfigDefaults.paddingInsets,

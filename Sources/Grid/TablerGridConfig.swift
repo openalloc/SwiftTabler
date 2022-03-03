@@ -34,12 +34,12 @@ public enum TablerGridConfigDefaults {
 public class TablerGridConfig<Element>: TablerConfig<Element>
     where Element: Identifiable
 {
-    public let gridItems: [GridItem]
-    public let alignment: HorizontalAlignment
-    public let rowSpacing: CGFloat
-    public let paddingInsets: EdgeInsets
+    public var gridItems: [GridItem]
+    public var alignment: HorizontalAlignment
+    public var rowSpacing: CGFloat
+    public var paddingInsets: EdgeInsets
 
-    public init(gridItems: [GridItem],
+    public init(gridItems: [GridItem] = [],
                 alignment: HorizontalAlignment = TablerGridConfigDefaults.alignment,
                 rowSpacing: CGFloat = TablerGridConfigDefaults.rowSpacing,
                 paddingInsets: EdgeInsets = TablerGridConfigDefaults.paddingInsets,
