@@ -108,7 +108,7 @@ struct ContentView: View {
 
 ## Tables
 
-You can choose from any of eleven (11) variants, which break down along the following lines:
+You can choose from any of sixteen (16) variants, which break down along the following lines:
 
 * Three foundations: List-based, ScrollView/LazyVStack-based, and ScrollView/LazyVGrid-based
 * Selection types offered: none, single-select, and multi-select; availability depending on base
