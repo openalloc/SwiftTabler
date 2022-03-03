@@ -32,14 +32,14 @@ struct BaseTable<Element, Header, Rows>: View
     // MARK: Parameters
 
     @Binding var context: Context
-    var headerContent: HeaderContent
+    var header: HeaderContent
     var content: TableBuilder
 
     // MARK: Views
 
     var body: some View {
         content {
-            HeaderView(context: $context, content: headerContent)
+            HeaderView(context: $context, content: header)
         }
         // .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
     }

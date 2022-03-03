@@ -44,15 +44,15 @@ public struct TablerGrid<Element, Header, Row, Results>: View // , ItemMod
 
     public init(_ config: Config,
                 gridItems: [GridItem],
-                @ViewBuilder headerContent: @escaping HeaderContent,
-                @ViewBuilder rowContent: @escaping RowContent,
+                @ViewBuilder header: @escaping HeaderContent,
+                @ViewBuilder row: @escaping RowContent,
                 // itemModifier: @escaping ItemModifier,
                 results: Results)
     {
         self.gridItems = gridItems
         self.config = config
-        self.headerContent = headerContent
-        self.rowContent = rowContent
+        self.headerContent = header
+        self.rowContent = row
         // self.itemModifier = itemModifier
         self.results = results
         _context = State(initialValue: TablerContext(config))
@@ -68,7 +68,7 @@ public struct TablerGrid<Element, Header, Row, Results>: View // , ItemMod
         BaseGrid(config: config,
                  context: $context,
                  gridItems: gridItems,
-                 headerContent: headerContent) {
+                 header: headerContent) {
             ForEach(results.filter(config.filter ?? { _ in true })) { element in
                 rowContent(element)
                     .modifier(GridItemMod(config, element))
@@ -82,15 +82,15 @@ public extension TablerGrid {
     // omitting Header
     init(_ config: Config,
          gridItems: [GridItem],
-         @ViewBuilder rowContent: @escaping RowContent,
+         @ViewBuilder row: @escaping RowContent,
          // itemModifier: @escaping ItemModifier,
          results: Results)
         where Header == EmptyView
     {
         self.init(config,
                   gridItems: gridItems,
-                  headerContent: { _ in EmptyView() },
-                  rowContent: rowContent,
+                  header: { _ in EmptyView() },
+                  row: row,
                   // itemModifier: itemModifier,
                   results: results)
     }

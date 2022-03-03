@@ -38,19 +38,19 @@ struct BaseGrid<Element, Header, Rows>: View
     init(config: Config,
          context: Binding<Context>,
          gridItems: [GridItem],
-         headerContent: @escaping HeaderContent,
-         rowsContent: @escaping RowContent)
+         header: @escaping HeaderContent,
+         rows: @escaping RowContent)
     {
         self.config = config
         _context = context
         self.gridItems = gridItems
-        self.headerContent = headerContent
-        self.rowsContent = rowsContent
+        self.headerContent = header
+        self.rowsContent = rows
     }
 
     var body: some View {
         BaseTable(context: $context,
-                  headerContent: headerContent) { buildHeader in
+                  header: headerContent) { buildHeader in
 
             VStack(spacing: config.rowSpacing) {
                 buildHeader()

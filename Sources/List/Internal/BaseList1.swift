@@ -36,18 +36,18 @@ struct BaseList1<Element, Header, Rows>: View
 
     init(context: Binding<Context>,
          selected: Binding<Selected>,
-         @ViewBuilder headerContent: @escaping HeaderContent,
+         @ViewBuilder header: @escaping HeaderContent,
          @ViewBuilder rowsContent: @escaping RowContent)
     {
         _context = context
         _selected = selected
-        self.headerContent = headerContent
+        self.headerContent = header
         self.rowsContent = rowsContent
     }
 
     var body: some View {
         BaseTable(context: $context,
-                  headerContent: headerContent) { buildHeader in
+                  header: headerContent) { buildHeader in
             List(selection: $selected) {
                 buildHeader()
                 rowsContent()

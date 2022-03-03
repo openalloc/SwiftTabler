@@ -45,16 +45,16 @@ public struct TablerStack1<Element, Header, Row, Select, Results>: View
     @Binding private var selected: Selected
 
     public init(_ config: Config,
-                @ViewBuilder headerContent: @escaping HeaderContent,
-                @ViewBuilder rowContent: @escaping RowContent,
-                @ViewBuilder selectContent: @escaping SelectContent,
+                @ViewBuilder header: @escaping HeaderContent,
+                @ViewBuilder row: @escaping RowContent,
+                @ViewBuilder selectOverlay: @escaping SelectContent,
                 results: Results,
                 selected: Binding<Selected>)
     {
         self.config = config
-        self.headerContent = headerContent
-        self.rowContent = rowContent
-        self.selectContent = selectContent
+        self.headerContent = header
+        self.rowContent = row
+        self.selectContent = selectOverlay
         self.results = results
         _selected = selected
         _context = State(initialValue: TablerContext(config))
@@ -70,7 +70,7 @@ public struct TablerStack1<Element, Header, Row, Select, Results>: View
     public var body: some View {
         BaseStack(config: config,
                   context: $context,
-                  headerContent: headerContent) {
+                  header: headerContent) {
             ForEach(results.filter(config.filter ?? { _ in true })) { element in
                 rowContent(element)
                     .modifier(StackRowMod1(config, element, $hovered, $selected))
@@ -85,47 +85,47 @@ public struct TablerStack1<Element, Header, Row, Select, Results>: View
 public extension TablerStack1 {
     // omitting Header
     init(_ config: Config,
-         @ViewBuilder rowContent: @escaping RowContent,
-         @ViewBuilder selectContent: @escaping SelectContent,
+         @ViewBuilder row: @escaping RowContent,
+         @ViewBuilder selectOverlay: @escaping SelectContent,
          results: Results,
          selected: Binding<Selected>)
         where Header == EmptyView
     {
         self.init(config,
-                  headerContent: { _ in EmptyView() },
-                  rowContent: rowContent,
-                  selectContent: selectContent,
+                  header: { _ in EmptyView() },
+                  row: row,
+                  selectOverlay: selectOverlay,
                   results: results,
                   selected: selected)
     }
 
     // omitting Select
     init(_ config: Config,
-         @ViewBuilder headerContent: @escaping HeaderContent,
-         @ViewBuilder rowContent: @escaping RowContent,
+         @ViewBuilder header: @escaping HeaderContent,
+         @ViewBuilder row: @escaping RowContent,
          results: Results,
          selected: Binding<Selected>)
         where Select == EmptyView
     {
         self.init(config,
-                  headerContent: headerContent,
-                  rowContent: rowContent,
-                  selectContent: { _ in EmptyView() },
+                  header: header,
+                  row: row,
+                  selectOverlay: { _ in EmptyView() },
                   results: results,
                   selected: selected)
     }
 
     // omitting Header AND Select
     init(_ config: Config,
-         @ViewBuilder rowContent: @escaping RowContent,
+         @ViewBuilder row: @escaping RowContent,
          results: Results,
          selected: Binding<Selected>)
         where Header == EmptyView, Select == EmptyView
     {
         self.init(config,
-                  headerContent: { _ in EmptyView() },
-                  rowContent: rowContent,
-                  selectContent: { _ in EmptyView() },
+                  header: { _ in EmptyView() },
+                  row: row,
+                  selectOverlay: { _ in EmptyView() },
                   results: results,
                   selected: selected)
     }

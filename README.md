@@ -94,8 +94,8 @@ struct ContentView: View {
 
     var body: some View {
         TablerList(config,
-                   headerContent: header,
-                   rowContent: row,
+                   header: header,
+                   row: row,
                    results: fruits)
             .padding()
     }

@@ -41,13 +41,13 @@ public struct TablerStackC<Element, Header, Row>: View
     private var results: Fetched
 
     public init(_ config: Config,
-                @ViewBuilder headerContent: @escaping HeaderContent,
-                @ViewBuilder rowContent: @escaping RowContent,
+                @ViewBuilder header: @escaping HeaderContent,
+                @ViewBuilder row: @escaping RowContent,
                 results: Fetched)
     {
         self.config = config
-        self.headerContent = headerContent
-        self.rowContent = rowContent
+        self.headerContent = header
+        self.rowContent = row
         self.results = results
         _context = State(initialValue: TablerContext(config))
     }
@@ -62,7 +62,7 @@ public struct TablerStackC<Element, Header, Row>: View
     public var body: some View {
         BaseStack(config: config,
                   context: $context,
-                  headerContent: headerContent) {
+                  header: headerContent) {
             ForEach(results) { rawElem in
                 ObservableHolder(element: rawElem) { obsElem in
                     rowContent(obsElem)
@@ -76,13 +76,13 @@ public struct TablerStackC<Element, Header, Row>: View
 public extension TablerStackC {
     // omitting Header
     init(_ config: Config,
-         @ViewBuilder rowContent: @escaping RowContent,
+         @ViewBuilder row: @escaping RowContent,
          results: Fetched)
         where Header == EmptyView
     {
         self.init(config,
-                  headerContent: { _ in EmptyView() },
-                  rowContent: rowContent,
+                  header: { _ in EmptyView() },
+                  row: row,
                   results: results)
     }
 }

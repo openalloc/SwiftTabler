@@ -36,18 +36,18 @@ struct BaseStack<Element, Header, Rows>: View
 
     init(config: Config,
          context: Binding<Context>,
-         @ViewBuilder headerContent: @escaping HeaderContent,
+         @ViewBuilder header: @escaping HeaderContent,
          @ViewBuilder rowsContent: @escaping RowContent)
     {
         self.config = config
         _context = context
-        self.headerContent = headerContent
+        self.headerContent = header
         self.rowsContent = rowsContent
     }
 
     var body: some View {
         BaseTable(context: $context,
-                  headerContent: headerContent) { buildHeader in
+                  header: headerContent) { buildHeader in
 
             VStack(spacing: config.rowSpacing) {
                 buildHeader()
