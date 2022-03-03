@@ -19,7 +19,7 @@
 import SwiftUI
 
 /// Stack-based table, with support for bound values
-public struct TablerStack1C<Element, Header, Row, Select, Results>: View
+public struct TablerStack1C<Element, Header, Row, Select>: View
     where Element: Identifiable & NSFetchRequestResult & ObservableObject,
     Header: View,
     Row: View,
