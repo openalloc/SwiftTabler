@@ -26,7 +26,7 @@ public struct TablerStack<Element, Header, Row, Results>: View
     Results: RandomAccessCollection,
     Results.Element == Element
 {
-    public typealias Config = TablerConfig<Element>
+    public typealias Config = TablerStackConfig<Element>
     public typealias Context = TablerContext<Element>
     public typealias Hovered = Element.ID?
     public typealias HeaderContent = (Binding<Context>) -> Header
@@ -40,13 +40,13 @@ public struct TablerStack<Element, Header, Row, Results>: View
     private var results: Results
 
     public init(_ config: Config,
-                @ViewBuilder headerContent: @escaping HeaderContent,
-                @ViewBuilder rowContent: @escaping RowContent,
+                @ViewBuilder header: @escaping HeaderContent,
+                @ViewBuilder row: @escaping RowContent,
                 results: Results)
     {
         self.config = config
-        self.headerContent = headerContent
-        self.rowContent = rowContent
+        self.headerContent = header
+        self.rowContent = row
         self.results = results
         _context = State(initialValue: TablerContext(config))
     }
@@ -59,9 +59,8 @@ public struct TablerStack<Element, Header, Row, Results>: View
     // MARK: Views
 
     public var body: some View {
-        BaseStack(config: config,
-                  context: $context,
-                  headerContent: headerContent) {
+        BaseStack(context: $context,
+                  header: headerContent) {
             ForEach(results.filter(config.filter ?? { _ in true })) { element in
                 rowContent(element)
                     .modifier(StackRowMod(config, element, $hovered))
@@ -73,13 +72,13 @@ public struct TablerStack<Element, Header, Row, Results>: View
 public extension TablerStack {
     // omitting Header
     init(_ config: Config,
-         @ViewBuilder rowContent: @escaping RowContent,
+         @ViewBuilder row: @escaping RowContent,
          results: Results)
         where Header == EmptyView
     {
         self.init(config,
-                  headerContent: { _ in EmptyView() },
-                  rowContent: rowContent,
+                  header: { _ in EmptyView() },
+                  row: row,
                   results: results)
     }
 }

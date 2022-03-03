@@ -24,33 +24,30 @@ struct BaseGrid<Element, Header, Rows>: View
     Header: View,
     Rows: View
 {
-    typealias Config = TablerConfig<Element>
+    typealias Config = TablerGridConfig<Element>
     typealias Context = TablerContext<Element>
     typealias HeaderContent = (Binding<Context>) -> Header
     typealias RowContent = () -> Rows
 
-    private var config: Config
     @Binding private var context: Context
     private let gridItems: [GridItem]
     private let headerContent: HeaderContent
     private let rowsContent: RowContent
 
-    init(config: Config,
-         context: Binding<Context>,
+    init(context: Binding<Context>,
          gridItems: [GridItem],
-         headerContent: @escaping HeaderContent,
-         rowsContent: @escaping RowContent)
+         header: @escaping HeaderContent,
+         rows: @escaping RowContent)
     {
-        self.config = config
         _context = context
         self.gridItems = gridItems
-        self.headerContent = headerContent
-        self.rowsContent = rowsContent
+        self.headerContent = header
+        self.rowsContent = rows
     }
 
     var body: some View {
         BaseTable(context: $context,
-                  headerContent: headerContent) { buildHeader in
+                  header: headerContent) { buildHeader in
 
             VStack(spacing: config.rowSpacing) {
                 buildHeader()
@@ -65,5 +62,9 @@ struct BaseGrid<Element, Header, Rows>: View
             }
             .padding(config.paddingInsets)
         }
+    }
+    
+    private var config: Config {
+        context.config as? Config ?? Config()
     }
 }

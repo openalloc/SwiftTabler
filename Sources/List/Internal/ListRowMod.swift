@@ -21,7 +21,7 @@ import SwiftUI
 struct ListRowMod<Element>: ViewModifier
     where Element: Identifiable
 {
-    typealias Config = TablerConfig<Element>
+    typealias Config = TablerListConfig<Element>
     typealias Hovered = Element.ID?
 
     let config: Config

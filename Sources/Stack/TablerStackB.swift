@@ -27,7 +27,7 @@ public struct TablerStackB<Element, Header, Row, Results>: View
     Results.Element == Element,
     Results.Index: Hashable
 {
-    public typealias Config = TablerConfig<Element>
+    public typealias Config = TablerStackConfig<Element>
     public typealias Context = TablerContext<Element>
     public typealias Hovered = Element.ID?
     public typealias HeaderContent = (Binding<Context>) -> Header
@@ -41,13 +41,13 @@ public struct TablerStackB<Element, Header, Row, Results>: View
     @Binding private var results: Results
 
     public init(_ config: Config,
-                @ViewBuilder headerContent: @escaping HeaderContent,
-                @ViewBuilder rowContent: @escaping RowContent,
+                @ViewBuilder header: @escaping HeaderContent,
+                @ViewBuilder row: @escaping RowContent,
                 results: Binding<Results>)
     {
         self.config = config
-        self.headerContent = headerContent
-        self.rowContent = rowContent
+        self.headerContent = header
+        self.rowContent = row
         _results = results
         _context = State(initialValue: TablerContext(config))
     }
@@ -60,9 +60,8 @@ public struct TablerStackB<Element, Header, Row, Results>: View
     // MARK: Views
 
     public var body: some View {
-        BaseStack(config: config,
-                  context: $context,
-                  headerContent: headerContent) {
+        BaseStack(context: $context,
+                  header: headerContent) {
             // TODO: is there a better way to filter bound data source?
             if let _filter = config.filter {
                 ForEach($results) { $element in
@@ -87,13 +86,13 @@ public struct TablerStackB<Element, Header, Row, Results>: View
 public extension TablerStackB {
     // omitting Header
     init(_ config: Config,
-         @ViewBuilder rowContent: @escaping RowContent,
+         @ViewBuilder row: @escaping RowContent,
          results: Binding<Results>)
         where Header == EmptyView
     {
         self.init(config,
-                  headerContent: { _ in EmptyView() },
-                  rowContent: rowContent,
+                  header: { _ in EmptyView() },
+                  row: row,
                   results: results)
     }
 }

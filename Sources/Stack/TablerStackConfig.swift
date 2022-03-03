@@ -29,3 +29,27 @@ public enum TablerStackConfigDefaults {
     #endif
 }
 
+public class TablerStackConfig<Element>: TablerConfig<Element>
+where Element: Identifiable
+{
+    public let rowSpacing: CGFloat
+    public let paddingInsets: EdgeInsets
+
+    public init(rowSpacing: CGFloat = TablerStackConfigDefaults.rowSpacing,
+                paddingInsets: EdgeInsets = TablerStackConfigDefaults.paddingInsets,
+                filter: Filter? = nil,
+                onRowColor: OnRowColor? = nil,
+                sortIndicatorForward: AnyView = TablerConfigDefaults.sortIndicatorForward,
+                sortIndicatorReverse: AnyView = TablerConfigDefaults.sortIndicatorReverse,
+                sortIndicatorNeutral: AnyView = TablerConfigDefaults.sortIndicatorNeutral)
+    {
+        self.rowSpacing = rowSpacing
+        self.paddingInsets = paddingInsets
+
+        super.init(filter: filter,
+                   onRowColor: onRowColor,
+                   sortIndicatorForward: sortIndicatorForward,
+                   sortIndicatorReverse: sortIndicatorReverse,
+                   sortIndicatorNeutral: sortIndicatorNeutral)
+    }
+}

@@ -24,30 +24,26 @@ struct BaseList<Element, Header, Rows>: View
     Header: View,
     Rows: View
 {
-    typealias Config = TablerConfig<Element>
     typealias Context = TablerContext<Element>
     typealias HeaderContent = (Binding<Context>) -> Header
     typealias RowContent = () -> Rows
 
-    private let config: Config
     @Binding private var context: Context
     private let headerContent: HeaderContent
     private let rowsContent: RowContent
 
-    init(config: Config,
-         context: Binding<Context>,
-         @ViewBuilder headerContent: @escaping HeaderContent,
+    init(context: Binding<Context>,
+         @ViewBuilder header: @escaping HeaderContent,
          @ViewBuilder rowsContent: @escaping RowContent)
     {
-        self.config = config
         _context = context
-        self.headerContent = headerContent
+        self.headerContent = header
         self.rowsContent = rowsContent
     }
 
     var body: some View {
         BaseTable(context: $context,
-                  headerContent: headerContent) { buildHeader in
+                  header: headerContent) { buildHeader in
             List {
                 buildHeader()
                 rowsContent()

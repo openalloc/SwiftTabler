@@ -21,7 +21,7 @@ import SwiftUI
 struct StackRowMod1<Element>: ViewModifier
     where Element: Identifiable
 {
-    typealias Config = TablerConfig<Element>
+    typealias Config = TablerStackConfig<Element>
     typealias Hovered = Element.ID?
     typealias Selected = Element.ID?
 
