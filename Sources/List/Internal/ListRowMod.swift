@@ -21,7 +21,7 @@ import SwiftUI
 struct ListRowMod<Element>: ViewModifier
     where Element: Identifiable
 {
-    typealias Config = TablerListConfig<Element>
+    typealias Config = TablerConfig<Element>
     typealias Hovered = Element.ID?
 
     let config: Config
@@ -40,7 +40,7 @@ struct ListRowMod<Element>: ViewModifier
     func body(content: Content) -> some View {
         content
             .moveDisabled(!config.canMove(element))
-            .foregroundColor(colorPair?.0 ?? Color.primary)
+            .foregroundColor(colorPair?.0 ?? .primary)
 
         #if os(macOS) || targetEnvironment(macCatalyst)
             // support hovering, but not for colored rows (yet)

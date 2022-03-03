@@ -21,7 +21,7 @@ import SwiftUI
 struct StackRowMod1<Element>: ViewModifier
     where Element: Identifiable
 {
-    typealias Config = TablerStackConfig<Element>
+    typealias Config = TablerConfig<Element>
     typealias Hovered = Element.ID?
     typealias Selected = Element.ID?
 
@@ -43,7 +43,7 @@ struct StackRowMod1<Element>: ViewModifier
 
     func body(content: Content) -> some View {
         content
-            .foregroundColor(colorPair?.0 ?? Color.primary)
+            .foregroundColor(colorPair?.0 ?? .primary)
 
         #if os(macOS) || targetEnvironment(macCatalyst)
             // NOTE keeping selection part of mac, as on iOS you press to get the context menu

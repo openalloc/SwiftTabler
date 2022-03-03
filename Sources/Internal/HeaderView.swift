@@ -40,8 +40,4 @@ struct HeaderView<Element, Header>: View
     var body: some View {
         content($context)
     }
-
-    private var config: Config {
-        context.config
-    }
 }

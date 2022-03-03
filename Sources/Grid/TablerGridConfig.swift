@@ -1,5 +1,5 @@
 //
-//  TablerGridConfig.swift
+//  TablerConfig.swift
 //
 // Copyright 2022 FlowAllocator LLC
 //
@@ -27,36 +27,4 @@ public enum TablerGridConfigDefaults {
         public static let rowSpacing: CGFloat = 17
         public static let paddingInsets = EdgeInsets(top: 48, leading: 32, bottom: 20, trailing: 32)
     #endif
-
-    public static let alignment: HorizontalAlignment = .leading
-}
-
-public class TablerGridConfig<Element>: TablerConfig<Element>
-    where Element: Identifiable
-{
-    public var gridItems: [GridItem]
-    public var alignment: HorizontalAlignment
-    public var rowSpacing: CGFloat
-    public var paddingInsets: EdgeInsets
-
-    public init(gridItems: [GridItem] = [],
-                alignment: HorizontalAlignment = TablerGridConfigDefaults.alignment,
-                rowSpacing: CGFloat = TablerGridConfigDefaults.rowSpacing,
-                paddingInsets: EdgeInsets = TablerGridConfigDefaults.paddingInsets,
-                filter: Filter? = nil,
-                onRowColor: OnRowColor? = nil,
-                sortIndicatorForward: AnyView = TablerConfigDefaults.sortIndicatorForward,
-                sortIndicatorReverse: AnyView = TablerConfigDefaults.sortIndicatorReverse,
-                sortIndicatorNeutral: AnyView = TablerConfigDefaults.sortIndicatorNeutral)
-    {
-        self.gridItems = gridItems
-        self.alignment = alignment
-        self.rowSpacing = rowSpacing
-        self.paddingInsets = paddingInsets
-        super.init(filter: filter,
-                   onRowColor: onRowColor,
-                   sortIndicatorForward: sortIndicatorForward,
-                   sortIndicatorReverse: sortIndicatorReverse,
-                   sortIndicatorNeutral: sortIndicatorNeutral)
-    }
 }

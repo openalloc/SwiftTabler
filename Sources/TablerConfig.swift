@@ -32,34 +32,55 @@ public enum TablerConfigDefaults {
         Image(systemName: "chevron.up")
             .opacity(0)
     )
+    
+    public static let rowSpacing: CGFloat = 0
+    public static let paddingInsets = EdgeInsets()
+    public static let alignment: HorizontalAlignment = .leading
+    
+    public static let rowColor: (Color, Color) = (.primary, .clear)
 }
 
-open class TablerConfig<Element>
+public struct TablerConfig<Element>
     where Element: Identifiable
 {
     public typealias RowColor = (Color, Color)
     public typealias Filter = (Element) -> Bool
-    public typealias OnRowColor = (Element) -> RowColor?
-
-    public let DefaultRowColor: RowColor = (.primary, .clear)
+    public typealias OnRowColor = (Element) -> RowColor
+    public typealias CanMove<Element> = (Element) -> Bool
+    public typealias OnMove<Element> = (IndexSet, Int) -> Void
 
     // MARK: Parameters
 
     /// NOTE filtering not supported in Core Data-based tables, as it's assumed you'll use a predicate in your FetchRequest.
-    public var filter: Filter?
-    public var onRowColor: OnRowColor?
-    public var sortIndicatorForward: AnyView
-    public var sortIndicatorReverse: AnyView
-    public var sortIndicatorNeutral: AnyView
+    public let filter: Filter?
+    public let onRowColor: OnRowColor?
+    public let canMove: CanMove<Element>
+    public let onMove: OnMove<Element>?
+    public let rowSpacing: CGFloat
+    public let paddingInsets: EdgeInsets
+    public let alignment: HorizontalAlignment
+    public let sortIndicatorForward: AnyView
+    public let sortIndicatorReverse: AnyView
+    public let sortIndicatorNeutral: AnyView
 
     public init(filter: Filter? = nil,
                 onRowColor: OnRowColor? = nil,
+                canMove: @escaping CanMove<Element> = { _ in true },
+                onMove: OnMove<Element>? = nil,
+                rowSpacing: CGFloat = TablerConfigDefaults.rowSpacing,
+                paddingInsets: EdgeInsets = TablerConfigDefaults.paddingInsets,
+                alignment: HorizontalAlignment = TablerConfigDefaults.alignment,
                 sortIndicatorForward: AnyView = TablerConfigDefaults.sortIndicatorForward,
                 sortIndicatorReverse: AnyView = TablerConfigDefaults.sortIndicatorReverse,
                 sortIndicatorNeutral: AnyView = TablerConfigDefaults.sortIndicatorNeutral)
     {
         self.filter = filter
         self.onRowColor = onRowColor
+        self.canMove = canMove
+        self.onMove = onMove
+        self.rowSpacing = rowSpacing
+        self.paddingInsets = paddingInsets
+        self.alignment = alignment
         self.sortIndicatorForward = sortIndicatorForward
         self.sortIndicatorReverse = sortIndicatorReverse
         self.sortIndicatorNeutral = sortIndicatorNeutral

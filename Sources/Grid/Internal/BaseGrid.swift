@@ -24,20 +24,26 @@ struct BaseGrid<Element, Header, Rows>: View
     Header: View,
     Rows: View
 {
-    typealias Config = TablerGridConfig<Element>
+    typealias Config = TablerConfig<Element>
     typealias Context = TablerContext<Element>
     typealias HeaderContent = (Binding<Context>) -> Header
     typealias RowContent = () -> Rows
 
+    private var config: Config
     @Binding private var context: Context
+    private let gridItems: [GridItem]
     private let headerContent: HeaderContent
     private let rowsContent: RowContent
 
-    init(context: Binding<Context>,
+    init(config: Config,
+         context: Binding<Context>,
+         gridItems: [GridItem],
          headerContent: @escaping HeaderContent,
          rowsContent: @escaping RowContent)
     {
+        self.config = config
         _context = context
+        self.gridItems = gridItems
         self.headerContent = headerContent
         self.rowsContent = rowsContent
     }
@@ -50,7 +56,7 @@ struct BaseGrid<Element, Header, Rows>: View
                 buildHeader()
 
                 ScrollView {
-                    LazyVGrid(columns: config.gridItems,
+                    LazyVGrid(columns: gridItems,
                               alignment: config.alignment,
                               spacing: config.rowSpacing) {
                         rowsContent()
@@ -59,10 +65,5 @@ struct BaseGrid<Element, Header, Rows>: View
             }
             .padding(config.paddingInsets)
         }
-    }
-
-    private var config: Config {
-        guard let c = context.config as? Config else { return Config(gridItems: []) }
-        return c
     }
 }

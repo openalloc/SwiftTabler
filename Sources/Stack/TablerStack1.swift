@@ -27,7 +27,7 @@ public struct TablerStack1<Element, Header, Row, Select, Results>: View
     Results: RandomAccessCollection,
     Results.Element == Element
 {
-    public typealias Config = TablerStackConfig<Element>
+    public typealias Config = TablerConfig<Element>
     public typealias Context = TablerContext<Element>
     public typealias Hovered = Element.ID?
     public typealias HeaderContent = (Binding<Context>) -> Header
@@ -37,6 +37,7 @@ public struct TablerStack1<Element, Header, Row, Select, Results>: View
 
     // MARK: Parameters
 
+    private let config: Config
     private let headerContent: HeaderContent
     private let rowContent: RowContent
     private let selectContent: SelectContent
@@ -50,12 +51,13 @@ public struct TablerStack1<Element, Header, Row, Select, Results>: View
                 results: Results,
                 selected: Binding<Selected>)
     {
+        self.config = config
         self.headerContent = headerContent
         self.rowContent = rowContent
         self.selectContent = selectContent
         self.results = results
         _selected = selected
-        _context = State(initialValue: TablerContext(config: config))
+        _context = State(initialValue: TablerContext(config))
     }
 
     // MARK: Locals
@@ -66,7 +68,8 @@ public struct TablerStack1<Element, Header, Row, Select, Results>: View
     // MARK: Views
 
     public var body: some View {
-        BaseStack(context: $context,
+        BaseStack(config: config,
+                  context: $context,
                   headerContent: headerContent) {
             ForEach(results.filter(config.filter ?? { _ in true })) { element in
                 rowContent(element)
@@ -76,11 +79,6 @@ public struct TablerStack1<Element, Header, Row, Select, Results>: View
                     )
             }
         }
-    }
-
-    private var config: Config {
-        guard let c = context.config as? Config else { return Config() }
-        return c
     }
 }
 

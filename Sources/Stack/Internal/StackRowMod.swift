@@ -21,7 +21,7 @@ import SwiftUI
 struct StackRowMod<Element>: ViewModifier
     where Element: Identifiable
 {
-    typealias Config = TablerStackConfig<Element>
+    typealias Config = TablerConfig<Element>
     typealias Hovered = Element.ID?
 
     let config: Config
@@ -39,7 +39,7 @@ struct StackRowMod<Element>: ViewModifier
 
     func body(content: Content) -> some View {
         content
-            .foregroundColor(colorPair?.0 ?? Color.primary)
+            .foregroundColor(colorPair?.0 ?? .primary)
 
         #if os(macOS) || targetEnvironment(macCatalyst)
             // support hovering, but not for colored rows (yet)

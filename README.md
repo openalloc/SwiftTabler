@@ -100,8 +100,8 @@ struct ContentView: View {
             .padding()
     }
     
-    private var config: TablerListConfig<Fruit> {
-        TablerListConfig<Fruit>(gridItems: gridItems)
+    private var config: TablerConfig<Fruit> {
+        TablerConfig<Fruit>()
     }
 }
 ```
@@ -112,28 +112,27 @@ You can choose from any of eleven (11) variants, which break down along the foll
 
 * Three foundations: List-based, ScrollView/LazyVStack-based, and ScrollView/LazyVGrid-based
 * Selection types offered: none, single-select, and multi-select; availability depending on base
-* Unbound: where you're presenting table rows read-only; for Core Data too
-* Bound: where you're presenting tables rows that can be updated directly (see Bound section below)
-* Observed Object: the binding approach for Core Data
+* RAC - usable with `RandomAccessCollection` (e.g., array of struct), with or without binding
+* CD - usable with Core Data, with or without binding
 
-Base   | Selection of rows | Element wrapping  | View name     | Notes
----    | ---               | ---               | ---           | ---
-List   | No Select         | (none)            | TablerList    |
-List   | No Select         | Binding\<Element> | TablerListB   |
-List   | No Select         | ObservedObject    | TablerListC   | for Core Data         
-List   | Single-select     | (none)            | TablerList1   |               
-List   | Single-select     | Binding\<Element> | TablerList1B  | 
-List   | Single-Select     | ObservedObject    | TablerList1C  | for Core Data         
-List   | Multi-select      | (none)            | TablerListM   |
-List   | Multi-select      | Binding\<Element> | TablerListMB  |
-List   | Multi-select      | ObservedObject    | TablerListMC  | for Core Data
-Stack  | No Select         | (none)            | TablerStack   |
-Stack  | No Select         | Binding\<Element> | TablerStackB  |
-Stack  | No Select         | ObservedObject    | TablerStackC  | for Core Data
-Stack  | Single-select     | (none)            | TablerStack1  |           
-Stack  | Single-select     | Binding\<Element> | TablerStack1B | 
-Stack  | Single-select     | ObservedObject    | TablerStack1C | for Core Data
-Grid   | No Select         | (none)            | TablerGrid    | Experimental. Needs bound version, select, etc.
+Base   | Row Selection | RAC | CD  | View name     | Element wrapping  | Notes
+---    | ---           | --- | --- | ---           | ---               | ---
+List   | No Select     |  ✓  |  ✓  | TablerList    | (none)            |
+List   | No Select     |  ✓  |     | TablerListB   | Binding\<Element> |
+List   | No Select     |     |  ✓  | TablerListC   | ObservedObject    |       
+List   | Single-select |  ✓  |  ✓  | TablerList1   | (none)            | 
+List   | Single-select |  ✓  |     | TablerList1B  | Binding\<Element> | 
+List   | Single-Select |     |  ✓  | TablerList1C  | ObservedObject    |       
+List   | Multi-select  |  ✓  |  ✓  | TablerListM   | (none)            |
+List   | Multi-select  |  ✓  |     | TablerListMB  | Binding\<Element> |
+List   | Multi-select  |     |  ✓  | TablerListMC  | ObservedObject    | 
+Stack  | No Select     |  ✓  |  ✓  | TablerStack   | (none)            |
+Stack  | No Select     |  ✓  |     | TablerStackB  | Binding\<Element> |
+Stack  | No Select     |     |  ✓  | TablerStackC  | ObservedObject    | 
+Stack  | Single-select |  ✓  |  ✓  | TablerStack1  | (none)            | 
+Stack  | Single-select |  ✓  |     | TablerStack1B | Binding\<Element> | 
+Stack  | Single-select |     |  ✓  | TablerStack1C | ObservedObject    | 
+Grid   | No Select     |  ✓  |  ✓  | TablerGrid    | (none)            | Experimental. Needs bound version, select, etc.
 
 ## Column Sorting
 

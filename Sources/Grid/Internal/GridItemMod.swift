@@ -21,7 +21,7 @@ import SwiftUI
 struct GridItemMod<Element>: ViewModifier
     where Element: Identifiable
 {
-    typealias Config = TablerGridConfig<Element>
+    typealias Config = TablerConfig<Element>
 
     let config: Config
     let element: Element
@@ -35,7 +35,7 @@ struct GridItemMod<Element>: ViewModifier
 
     func body(content: Content) -> some View {
         content
-            .foregroundColor(colorPair?.0 ?? Color.primary)
+            .foregroundColor(colorPair?.0 ?? .primary)
             .background(colorPair?.1 ?? Color.clear)
     }
 

@@ -26,7 +26,7 @@ public struct TablerList1C<Element, Header, Row, Select>: View
     Row: View,
     Select: View
 {
-    public typealias Config = TablerListConfig<Element>
+    public typealias Config = TablerConfig<Element>
     public typealias Context = TablerContext<Element>
     public typealias Hovered = Element.ID?
     public typealias HeaderContent = (Binding<Context>) -> Header
@@ -38,6 +38,7 @@ public struct TablerList1C<Element, Header, Row, Select>: View
 
     // MARK: Parameters
 
+    private let config: Config
     private let headerContent: HeaderContent
     private let rowContent: RowContent
     private let selectContent: SelectContent
@@ -51,12 +52,13 @@ public struct TablerList1C<Element, Header, Row, Select>: View
                 results: Fetched,
                 selected: Binding<Selected>)
     {
+        self.config = config
         self.headerContent = headerContent
         self.rowContent = rowContent
         self.selectContent = selectContent
         self.results = results
         _selected = selected
-        _context = State(initialValue: TablerContext(config: config))
+        _context = State(initialValue: TablerContext(config))
     }
 
     // MARK: Locals
@@ -78,11 +80,6 @@ public struct TablerList1C<Element, Header, Row, Select>: View
             }
             .onMove(perform: config.onMove)
         }
-    }
-
-    private var config: Config {
-        guard let c = context.config as? Config else { return Config() }
-        return c
     }
 }
 

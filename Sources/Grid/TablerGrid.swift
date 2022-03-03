@@ -27,7 +27,7 @@ public struct TablerGrid<Element, Header, Row, Results>: View // , ItemMod
     Results: RandomAccessCollection,
     Results.Element == Element
 {
-    public typealias Config = TablerGridConfig<Element>
+    public typealias Config = TablerConfig<Element>
     public typealias Context = TablerContext<Element>
     public typealias HeaderContent = (Binding<Context>) -> Header
     public typealias RowContent = (Element) -> Row
@@ -35,22 +35,27 @@ public struct TablerGrid<Element, Header, Row, Results>: View // , ItemMod
 
     // MARK: Parameters
 
+    private let gridItems: [GridItem]
+    private let config: Config
     private let headerContent: HeaderContent
     private let rowContent: RowContent
     // private let itemModifier: ItemModifier
     private var results: Results
 
     public init(_ config: Config,
+                gridItems: [GridItem],
                 @ViewBuilder headerContent: @escaping HeaderContent,
                 @ViewBuilder rowContent: @escaping RowContent,
                 // itemModifier: @escaping ItemModifier,
                 results: Results)
     {
+        self.gridItems = gridItems
+        self.config = config
         self.headerContent = headerContent
         self.rowContent = rowContent
         // self.itemModifier = itemModifier
         self.results = results
-        _context = State(initialValue: TablerContext(config: config))
+        _context = State(initialValue: TablerContext(config))
     }
 
     // MARK: Locals
@@ -60,31 +65,30 @@ public struct TablerGrid<Element, Header, Row, Results>: View // , ItemMod
     // MARK: Views
 
     public var body: some View {
-        BaseGrid(context: $context,
+        BaseGrid(config: config,
+                 context: $context,
+                 gridItems: gridItems,
                  headerContent: headerContent) {
             ForEach(results.filter(config.filter ?? { _ in true })) { element in
                 rowContent(element)
-//                    .modifier(GridItemMod(config, element))
+                    .modifier(GridItemMod(config, element))
                 // .modifier(itemModifier(element))
             }
         }
-    }
-
-    private var config: Config {
-        guard let c = context.config as? Config else { return Config(gridItems: []) }
-        return c
     }
 }
 
 public extension TablerGrid {
     // omitting Header
     init(_ config: Config,
+         gridItems: [GridItem],
          @ViewBuilder rowContent: @escaping RowContent,
          // itemModifier: @escaping ItemModifier,
          results: Results)
         where Header == EmptyView
     {
         self.init(config,
+                  gridItems: gridItems,
                   headerContent: { _ in EmptyView() },
                   rowContent: rowContent,
                   // itemModifier: itemModifier,
