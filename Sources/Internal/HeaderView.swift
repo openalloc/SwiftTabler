@@ -34,17 +34,10 @@ struct HeaderView<Element, Header>: View
         _context = context
         self.content = content
     }
-    
+
     // MARK: Views
 
     var body: some View {
-        LazyVGrid(columns: config.gridItems,
-                  alignment: config.alignment) {
-            content($context)
-        }
-    }
-    
-    private var config: Config {
-        context.config
+        content($context)
     }
 }

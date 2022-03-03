@@ -27,7 +27,7 @@ public struct TablerList1<Element, Header, Row, Select, Results>: View
     Results: RandomAccessCollection,
     Results.Element == Element
 {
-    public typealias Config = TablerListConfig<Element>
+    public typealias Config = TablerConfig<Element>
     public typealias Context = TablerContext<Element>
     public typealias Hovered = Element.ID?
     public typealias HeaderContent = (Binding<Context>) -> Header
@@ -37,6 +37,7 @@ public struct TablerList1<Element, Header, Row, Select, Results>: View
 
     // MARK: Parameters
 
+    private let config: Config
     private let headerContent: HeaderContent
     private let rowContent: RowContent
     private let selectContent: SelectContent
@@ -50,12 +51,13 @@ public struct TablerList1<Element, Header, Row, Select, Results>: View
                 results: Results,
                 selected: Binding<Selected>)
     {
+        self.config = config
         self.headerContent = headerContent
         self.rowContent = rowContent
         self.selectContent = selectContent
         self.results = results
         _selected = selected
-        _context = State(initialValue: TablerContext(config: config))
+        _context = State(initialValue: TablerContext(config))
     }
 
     // MARK: Locals
@@ -70,22 +72,14 @@ public struct TablerList1<Element, Header, Row, Select, Results>: View
                   selected: $selected,
                   headerContent: headerContent) {
             ForEach(results.filter(config.filter ?? { _ in true })) { element in
-                BaseListRow(config: config,
-                            element: element,
-                            hovered: $hovered) {
-                    rowContent(element)
-                        .overlay(
-                            selectContent(element.id == selected)
-                        )
-                }
+                rowContent(element)
+                    .modifier(ListRowMod(config, element, $hovered))
+                    .overlay(
+                        selectContent(element.id == selected)
+                    )
             }
             .onMove(perform: config.onMove)
         }
-    }
-    
-    private var config: Config {
-        guard let c = context.config as? Config else { return Config(gridItems: []) }
-        return c
     }
 }
 
@@ -136,4 +130,6 @@ public extension TablerList1 {
                   results: results,
                   selected: selected)
     }
+
+    // TODO: omit rowModifier
 }

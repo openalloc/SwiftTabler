@@ -1,5 +1,5 @@
 //
-//  TablerStackConfig.swift
+//  TablerConfig.swift
 //
 // Copyright 2022 FlowAllocator LLC
 //
@@ -20,36 +20,12 @@ import SwiftUI
 
 public enum TablerStackConfigDefaults {
     // approximately match the layout of Stack
-#if os(macOS)
-    public static let rowSpacing: CGFloat = 8
-    public static let paddingInsets = EdgeInsets(top: 14, leading: 16, bottom: 15, trailing: 16)
-#elseif os(iOS)
-    public static let rowSpacing: CGFloat = 17
-    public static let paddingInsets = EdgeInsets(top: 48, leading: 32, bottom: 20, trailing: 32)
-#endif
+    #if os(macOS)
+        public static let rowSpacing: CGFloat = 8
+        public static let paddingInsets = EdgeInsets(top: 14, leading: 16, bottom: 15, trailing: 16)
+    #elseif os(iOS)
+        public static let rowSpacing: CGFloat = 17
+        public static let paddingInsets = EdgeInsets(top: 48, leading: 32, bottom: 20, trailing: 32)
+    #endif
 }
 
-public class TablerStackConfig<Element>: TablerConfig<Element>
-where Element: Identifiable
-{
-    public override init(gridItems: [GridItem],
-                         alignment: HorizontalAlignment = TablerConfigDefaults.alignment,
-                         filter: Filter? = nil,
-                         onRowColor: OnRowColor? = nil,
-                         rowSpacing: CGFloat = TablerStackConfigDefaults.rowSpacing,
-                         paddingInsets: EdgeInsets = TablerStackConfigDefaults.paddingInsets,
-                         sortIndicatorForward: AnyView = TablerConfigDefaults.sortIndicatorForward,
-                         sortIndicatorReverse: AnyView = TablerConfigDefaults.sortIndicatorReverse,
-                         sortIndicatorNeutral: AnyView = TablerConfigDefaults.sortIndicatorNeutral)
-    {
-        super.init(gridItems: gridItems,
-                   alignment: alignment,
-                   filter: filter,
-                   onRowColor: onRowColor,
-                   rowSpacing: rowSpacing,
-                   paddingInsets: paddingInsets,
-                   sortIndicatorForward: sortIndicatorForward,
-                   sortIndicatorReverse: sortIndicatorReverse,
-                   sortIndicatorNeutral: sortIndicatorNeutral)
-    }
-}

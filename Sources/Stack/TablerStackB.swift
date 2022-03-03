@@ -27,7 +27,7 @@ public struct TablerStackB<Element, Header, Row, Results>: View
     Results.Element == Element,
     Results.Index: Hashable
 {
-    public typealias Config = TablerStackConfig<Element>
+    public typealias Config = TablerConfig<Element>
     public typealias Context = TablerContext<Element>
     public typealias Hovered = Element.ID?
     public typealias HeaderContent = (Binding<Context>) -> Header
@@ -35,6 +35,7 @@ public struct TablerStackB<Element, Header, Row, Results>: View
 
     // MARK: Parameters
 
+    private let config: Config
     private let headerContent: HeaderContent
     private let rowContent: RowContent
     @Binding private var results: Results
@@ -44,10 +45,11 @@ public struct TablerStackB<Element, Header, Row, Results>: View
                 @ViewBuilder rowContent: @escaping RowContent,
                 results: Binding<Results>)
     {
+        self.config = config
         self.headerContent = headerContent
         self.rowContent = rowContent
         _results = results
-        _context = State(initialValue: TablerContext(config: config))
+        _context = State(initialValue: TablerContext(config))
     }
 
     // MARK: Locals
@@ -58,7 +60,8 @@ public struct TablerStackB<Element, Header, Row, Results>: View
     // MARK: Views
 
     public var body: some View {
-        BaseStack(context: $context,
+        BaseStack(config: config,
+                  context: $context,
                   headerContent: headerContent) {
             // TODO: is there a better way to filter bound data source?
             if let _filter = config.filter {
@@ -76,16 +79,8 @@ public struct TablerStackB<Element, Header, Row, Results>: View
     }
 
     private func row(_ element: Binding<Element>) -> some View {
-        BaseStackRow(config: config,
-                     element: element.wrappedValue,
-                     hovered: $hovered) {
-            rowContent(element)
-        }
-    }
-    
-    private var config: Config {
-        guard let c = context.config as? Config else { return Config(gridItems: []) }
-        return c
+        rowContent(element)
+            .modifier(StackRowMod(config, element.wrappedValue, $hovered))
     }
 }
 

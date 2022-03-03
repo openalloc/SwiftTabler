@@ -28,7 +28,7 @@ public struct TablerList1B<Element, Header, Row, Select, Results>: View
     Results.Element == Element,
     Results.Index: Hashable
 {
-    public typealias Config = TablerListConfig<Element>
+    public typealias Config = TablerConfig<Element>
     public typealias Context = TablerContext<Element>
     public typealias Hovered = Element.ID?
     public typealias HeaderContent = (Binding<Context>) -> Header
@@ -38,6 +38,7 @@ public struct TablerList1B<Element, Header, Row, Select, Results>: View
 
     // MARK: Parameters
 
+    private let config: Config
     private let headerContent: HeaderContent
     private let rowContent: RowContent
     private let selectContent: SelectContent
@@ -51,12 +52,13 @@ public struct TablerList1B<Element, Header, Row, Select, Results>: View
                 results: Binding<Results>,
                 selected: Binding<Selected>)
     {
+        self.config = config
         self.headerContent = headerContent
         self.rowContent = rowContent
         self.selectContent = selectContent
         _results = results
         _selected = selected
-        _context = State(initialValue: TablerContext(config: config))
+        _context = State(initialValue: TablerContext(config))
     }
 
     // MARK: Locals
@@ -88,19 +90,11 @@ public struct TablerList1B<Element, Header, Row, Select, Results>: View
     }
 
     private func row(_ element: Binding<Element>) -> some View {
-        BaseListRow(config: config,
-                    element: element.wrappedValue,
-                    hovered: $hovered) {
-            rowContent(element)
-                .overlay(
-                    selectContent(element.wrappedValue.id == selected)
-                )
-        }
-    }
-    
-    private var config: Config {
-        guard let c = context.config as? Config else { return Config(gridItems: []) }
-        return c
+        rowContent(element)
+            .modifier(ListRowMod(config, element.wrappedValue, $hovered))
+            .overlay(
+                selectContent(element.wrappedValue.id == selected)
+            )
     }
 }
 

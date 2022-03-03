@@ -16,69 +16,64 @@
 // limitations under the License.
 //
 
-import SwiftUI
 import CoreData
+import SwiftUI
 
 /// List-based table, with support for bound values through Core Data
-@available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
 public struct TablerListC<Element, Header, Row>: View
-where Element: Identifiable & NSFetchRequestResult & ObservableObject,
-      Header: View,
-      Row: View
+    where Element: Identifiable & NSFetchRequestResult & ObservableObject,
+    Header: View,
+    Row: View
 {
-    public typealias Config = TablerListConfig<Element>
+    public typealias Config = TablerConfig<Element>
     public typealias Context = TablerContext<Element>
     public typealias Hovered = Element.ID?
     public typealias HeaderContent = (Binding<Context>) -> Header
     public typealias ProjectedValue = ObservedObject<Element>.Wrapper
     public typealias RowContent = (ProjectedValue) -> Row
     public typealias Fetched = FetchedResults<Element>
-    
+
     // MARK: Parameters
-    
+
+    private let config: Config
     private let headerContent: HeaderContent
     private let rowContent: RowContent
     private var results: Fetched
-    
+
     public init(_ config: Config,
                 @ViewBuilder headerContent: @escaping HeaderContent,
                 @ViewBuilder rowContent: @escaping RowContent,
                 results: Fetched)
     {
+        self.config = config
         self.headerContent = headerContent
         self.rowContent = rowContent
         self.results = results
-        _context = State(initialValue: TablerContext(config: config))
+        _context = State(initialValue: TablerContext(config))
     }
-    
+
     // MARK: Locals
-    
+
     @State private var hovered: Hovered = nil
     @State private var context: Context
-    
+
     // MARK: Views
-    
+
     public var body: some View {
-        BaseList(context: $context,
+        BaseList(config: config,
+                 context: $context,
                  headerContent: headerContent) {
             ForEach(results) { rawElem in
-                BaseListRowC(config: config,
-                             element: rawElem,
-                             hovered: $hovered) { observedElem in
-                    rowContent(observedElem)
+                ObservableHolder(element: rawElem) { obsElem in
+                    rowContent(obsElem)
+                        .modifier(ListRowMod(config, rawElem, $hovered))
                 }
             }
             .onMove(perform: config.onMove)
         }
     }
-    
-    private var config: Config {
-        guard let c = context.config as? Config else { return Config(gridItems: []) }
-        return c
-    }
 }
 
-@available(iOS 15.0, macOS 12.0, tvOS 15.0, watchOS 8.0, *)
 public extension TablerListC {
     // omitting Header
     init(_ config: Config,

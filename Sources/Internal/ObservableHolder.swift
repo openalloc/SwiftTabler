@@ -1,5 +1,5 @@
 //
-//  TablerConfig.swift
+//  ObservableHolder.swift
 //
 // Copyright 2022 FlowAllocator LLC
 //
@@ -18,13 +18,17 @@
 
 import SwiftUI
 
-public enum TablerGridConfigDefaults {
-    // TODO: these values probably need to be tweaked to match the basic layout of `List`
-    #if os(macOS)
-        public static let rowSpacing: CGFloat = 8
-        public static let paddingInsets = EdgeInsets(top: 14, leading: 16, bottom: 15, trailing: 16)
-    #elseif os(iOS)
-        public static let rowSpacing: CGFloat = 17
-        public static let paddingInsets = EdgeInsets(top: 48, leading: 32, bottom: 20, trailing: 32)
-    #endif
+struct ObservableHolder<Element, Row>: View
+    where Element: Identifiable & ObservableObject,
+    Row: View
+{
+    public typealias ProjectedValue = ObservedObject<Element>.Wrapper
+    public typealias RowContent = (ProjectedValue) -> Row
+
+    @ObservedObject var element: Element
+    let rowContent: RowContent
+
+    var body: some View {
+        rowContent($element)
+    }
 }

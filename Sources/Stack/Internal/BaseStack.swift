@@ -24,23 +24,27 @@ struct BaseStack<Element, Header, Rows>: View
     Header: View,
     Rows: View
 {
-    typealias Config = TablerStackConfig<Element>
+    typealias Config = TablerConfig<Element>
     typealias Context = TablerContext<Element>
     typealias HeaderContent = (Binding<Context>) -> Header
     typealias RowContent = () -> Rows
 
+    private let config: Config
     @Binding private var context: Context
     private let headerContent: HeaderContent
     private let rowsContent: RowContent
 
-    init(context: Binding<Context>,
+    init(config: Config,
+         context: Binding<Context>,
          @ViewBuilder headerContent: @escaping HeaderContent,
-         @ViewBuilder rowsContent: @escaping RowContent) {
+         @ViewBuilder rowsContent: @escaping RowContent)
+    {
+        self.config = config
         _context = context
         self.headerContent = headerContent
         self.rowsContent = rowsContent
     }
-    
+
     var body: some View {
         BaseTable(context: $context,
                   headerContent: headerContent) { buildHeader in
@@ -56,10 +60,5 @@ struct BaseStack<Element, Header, Rows>: View
             }
             .padding(config.paddingInsets)
         }
-    }
-     
-    private var config: Config {
-        guard let gridConfig = context.config as? Config else { return Config(gridItems: []) }
-        return gridConfig
     }
 }

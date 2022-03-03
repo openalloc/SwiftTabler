@@ -22,12 +22,10 @@ public struct TablerContext<Element>
     where Element: Identifiable
 {
     public let config: TablerConfig<Element>
-    public var sort: TablerSort<Element>?
+    public var sort: TablerSort<Element>? = nil
 
-    public init(config: TablerConfig<Element>) {
+    public init(_ config: TablerConfig<Element>) {
         self.config = config
-        self.sort = nil
+        sort = nil
     }
 }
-
-

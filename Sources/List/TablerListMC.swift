@@ -1,5 +1,5 @@
 //
-//  TablerListMB.swift
+//  TablerListMC.swift
 //
 // Copyright 2022 FlowAllocator LLC
 //
@@ -16,25 +16,25 @@
 // limitations under the License.
 //
 
+import CoreData
 import SwiftUI
 
-/// List-based table, with support for multi-select and bound values
-public struct TablerListMB<Element, Header, Row, Select, Results>: View
-    where Element: Identifiable,
+/// List-based table, with support for multi-selection and bound values through Core Data
+public struct TablerListMC<Element, Header, Row, Select>: View
+    where Element: Identifiable & NSFetchRequestResult & ObservableObject,
     Header: View,
     Row: View,
-    Select: View,
-    Results: RandomAccessCollection & MutableCollection,
-    Results.Element == Element,
-    Results.Index: Hashable
+    Select: View
 {
     public typealias Config = TablerConfig<Element>
     public typealias Context = TablerContext<Element>
     public typealias Hovered = Element.ID?
     public typealias HeaderContent = (Binding<Context>) -> Header
-    public typealias RowContent = (Binding<Element>) -> Row
+    public typealias ProjectedValue = ObservedObject<Element>.Wrapper
+    public typealias RowContent = (ProjectedValue) -> Row
     public typealias SelectContent = (Bool) -> Select
     public typealias Selected = Set<Element.ID>
+    public typealias Fetched = FetchedResults<Element>
 
     // MARK: Parameters
 
@@ -42,21 +42,21 @@ public struct TablerListMB<Element, Header, Row, Select, Results>: View
     private let headerContent: HeaderContent
     private let rowContent: RowContent
     private let selectContent: SelectContent
-    @Binding private var results: Results
+    private var results: Fetched
     @Binding private var selected: Selected
 
     public init(_ config: Config,
                 @ViewBuilder headerContent: @escaping HeaderContent,
                 @ViewBuilder rowContent: @escaping RowContent,
                 @ViewBuilder selectContent: @escaping SelectContent,
-                results: Binding<Results>,
+                results: Fetched,
                 selected: Binding<Selected>)
     {
         self.config = config
         self.headerContent = headerContent
         self.rowContent = rowContent
         self.selectContent = selectContent
-        _results = results
+        self.results = results
         _selected = selected
         _context = State(initialValue: TablerContext(config))
     }
@@ -71,39 +71,24 @@ public struct TablerListMB<Element, Header, Row, Select, Results>: View
     public var body: some View {
         BaseListM(context: $context,
                   selected: $selected,
-                  headerContent: headerContent) {
-            // TODO: is there a better way to filter bound data source?
-            if let _filter = config.filter {
-                ForEach($results) { $element in
-                    if _filter(element) {
-                        row($element)
-                    }
+                 headerContent: headerContent) {
+            ForEach(results) { rawElem in
+                ObservableHolder(element: rawElem) { obsElem in
+                    rowContent(obsElem)
+                        .modifier(ListRowMod(config, rawElem, $hovered))
                 }
-                .onMove(perform: config.onMove)
-            } else {
-                ForEach($results) { $element in
-                    row($element)
-                }
-                .onMove(perform: config.onMove)
             }
+            .onMove(perform: config.onMove)
         }
-    }
-
-    private func row(_ element: Binding<Element>) -> some View {
-        rowContent(element)
-            .modifier(ListRowMod(config, element.wrappedValue, $hovered))
-            .overlay(
-                selectContent(selected.contains(element.wrappedValue.id))
-            )
     }
 }
 
-public extension TablerListMB {
+public extension TablerListMC {
     // omitting Header
     init(_ config: Config,
          @ViewBuilder rowContent: @escaping RowContent,
          @ViewBuilder selectContent: @escaping SelectContent,
-         results: Binding<Results>,
+         results: Fetched,
          selected: Binding<Selected>)
         where Header == EmptyView
     {
@@ -114,12 +99,12 @@ public extension TablerListMB {
                   results: results,
                   selected: selected)
     }
-
+    
     // omitting Select
     init(_ config: Config,
          @ViewBuilder headerContent: @escaping HeaderContent,
          @ViewBuilder rowContent: @escaping RowContent,
-         results: Binding<Results>,
+         results: Fetched,
          selected: Binding<Selected>)
         where Select == EmptyView
     {
@@ -130,13 +115,13 @@ public extension TablerListMB {
                   results: results,
                   selected: selected)
     }
-
+    
     // omitting Header AND Select
     init(_ config: Config,
          @ViewBuilder rowContent: @escaping RowContent,
-         results: Binding<Results>,
+         results: Fetched,
          selected: Binding<Selected>)
-        where Header == EmptyView, Select == EmptyView
+    where Header == EmptyView, Select == EmptyView
     {
         self.init(config,
                   headerContent: { _ in EmptyView() },

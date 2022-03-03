@@ -74,20 +74,22 @@ struct ContentView: View {
         GridItem(.flexible(minimum: 35, maximum: 50), alignment: .leading),
     ]
 
-    @ViewBuilder
     private func header(_ ctx: TablerSortContext<Fruit>) -> some View {
-        Text("ID")
-        Text("Name")
-        Text("Weight")
-        Text("Color")
+        LazyVGrid(columns: gridItems) {
+            Text("ID")
+            Text("Name")
+            Text("Weight")
+            Text("Color")
+        }
     }
     
-    @ViewBuilder
     private func row(_ element: Fruit) -> some View {
-        Text(element.id)
-        Text(element.name).foregroundColor(element.color)
-        Text(String(format: "%.0f g", element.weight))
-        Image(systemName: "rectangle.fill").foregroundColor(element.color)
+        LazyVGrid(columns: gridItems) {
+            Text(element.id)
+            Text(element.name).foregroundColor(element.color)
+            Text(String(format: "%.0f g", element.weight))
+            Image(systemName: "rectangle.fill").foregroundColor(element.color)
+        }
     }
 
     var body: some View {
@@ -98,8 +100,8 @@ struct ContentView: View {
             .padding()
     }
     
-    private var config: TablerListConfig<Fruit> {
-        TablerListConfig<Fruit>(gridItems: gridItems)
+    private var config: TablerConfig<Fruit> {
+        TablerConfig<Fruit>()
     }
 }
 ```
@@ -108,26 +110,29 @@ struct ContentView: View {
 
 You can choose from any of eleven (11) variants, which break down along the following lines:
 
-* List-based, ScrollView/LazyVStack-based, and ScrollView/LazyVGrid-based
-* Selection types offered: none, single-select, and multi-select, depending on base
-* Unbound elements in row view, where you're presenting table rows read-only\*
-* Bound elements in row view, where you're presenting tables rows that can be updated directly (see Bound section below)
+* Three foundations: List-based, ScrollView/LazyVStack-based, and ScrollView/LazyVGrid-based
+* Selection types offered: none, single-select, and multi-select; availability depending on base
+* RAC - usable with `RandomAccessCollection` (e.g., array of struct), with or without binding
+* CD - usable with Core Data, with or without binding
 
-Base   | Selection of rows | Element wrapping  | View name     | Notes
----    | ---               | ---               | ---           | ---
-List   | No Select         | (none)            | TablerList    |
-List   | No Select         | Binding\<Element> | TablerListB   |
-List   | Single-select     | (none)            | TablerList1   |               
-List   | Single-select     | Binding\<Element> | TablerList1B  | 
-List   | Multi-select      | (none)            | TablerListM   |
-List   | Multi-select      | Binding\<Element> | TablerListMB  |
-Stack  | No Select         | (none)            | TablerStack   |
-Stack  | No Select         | Binding\<Element> | TablerStackB  |
-Stack  | Single-select     | (none)            | TablerStack1  |           
-Stack  | Single-select     | Binding\<Element> | TablerStack1B | 
-Grid   | No Select         | (none)            | TablerGrid    | Experimental. Needs bound version, select, etc.
-
-\* 'unbound' variants can be used with Core Data (where values are bound by alternative means)
+Base   | Row Selection | RAC | CD  | View name     | Element wrapping  | Notes
+---    | ---           | --- | --- | ---           | ---               | ---
+List   | No Select     |  ✓  |  ✓  | TablerList    | (none)            |
+List   | No Select     |  ✓  |     | TablerListB   | Binding\<Element> |
+List   | No Select     |     |  ✓  | TablerListC   | ObservedObject    |       
+List   | Single-select |  ✓  |  ✓  | TablerList1   | (none)            | 
+List   | Single-select |  ✓  |     | TablerList1B  | Binding\<Element> | 
+List   | Single-Select |     |  ✓  | TablerList1C  | ObservedObject    |       
+List   | Multi-select  |  ✓  |  ✓  | TablerListM   | (none)            |
+List   | Multi-select  |  ✓  |     | TablerListMB  | Binding\<Element> |
+List   | Multi-select  |     |  ✓  | TablerListMC  | ObservedObject    | 
+Stack  | No Select     |  ✓  |  ✓  | TablerStack   | (none)            |
+Stack  | No Select     |  ✓  |     | TablerStackB  | Binding\<Element> |
+Stack  | No Select     |     |  ✓  | TablerStackC  | ObservedObject    | 
+Stack  | Single-select |  ✓  |  ✓  | TablerStack1  | (none)            | 
+Stack  | Single-select |  ✓  |     | TablerStack1B | Binding\<Element> | 
+Stack  | Single-select |     |  ✓  | TablerStack1C | ObservedObject    | 
+Grid   | No Select     |  ✓  |  ✓  | TablerGrid    | (none)            | Experimental. Needs bound version, select, etc.
 
 ## Column Sorting
 
@@ -139,15 +144,16 @@ From the demo app, an example of using the sort capability, where an indicator d
 private typealias Context = TablerContext<Fruit>
 private typealias Sort = TablerSort<Fruit>
 
-@ViewBuilder
 private func header(_ ctx: Binding<Context>) -> some View {
-    Sort.columnTitle("ID", ctx, \.id)
-        .onTapGesture { tablerSort(ctx, &fruits, \.id) { $0.id < $1.id } }
-    Sort.columnTitle("Name", ctx, \.name)
-        .onTapGesture { tablerSort(ctx, &fruits, \.name) { $0.name < $1.name } }
-    Sort.columnTitle("Weight", ctx, \.weight)
-        .onTapGesture { tablerSort(ctx, &fruits, \.weight) { $0.weight < $1.weight } }
-    Text("Color")
+    LazyVGrid(columns: gridItems) {
+        Sort.columnTitle("ID", ctx, \.id)
+            .onTapGesture { tablerSort(ctx, &fruits, \.id) { $0.id < $1.id } }
+        Sort.columnTitle("Name", ctx, \.name)
+            .onTapGesture { tablerSort(ctx, &fruits, \.name) { $0.name < $1.name } }
+        Sort.columnTitle("Weight", ctx, \.weight)
+            .onTapGesture { tablerSort(ctx, &fruits, \.weight) { $0.weight < $1.weight } }
+        Text("Color")
+    }
 }
 ```
 
@@ -164,14 +170,15 @@ macOS | iOS
 When used with 'bound' variants (e.g., `TablerListB`), the data can be modified directly, mutating your data source. From the demo:
 
 ```swift
-@ViewBuilder
 private func brow(_ element: Binding<Fruit>) -> some View {
-    Text(element.wrappedValue.id)
-    TextField("Name", text: element.name)
-        .textFieldStyle(.roundedBorder)
-    Text(String(format: "%.0f g", element.wrappedValue.weight))
-    ColorPicker("Color", selection: element.color)
-        .labelsHidden()
+    LazyVGrid(columns: gridItems) {
+        Text(element.wrappedValue.id)
+        TextField("Name", text: element.name)
+            .textFieldStyle(.roundedBorder)
+        Text(String(format: "%.0f g", element.wrappedValue.weight))
+        ColorPicker("Color", selection: element.color)
+            .labelsHidden()
+    }
 }
 ```
 

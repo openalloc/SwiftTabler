@@ -1,5 +1,5 @@
 //
-//  TablerConfig.swift
+//  GridItemMod.swift
 //
 // Copyright 2022 FlowAllocator LLC
 //
@@ -18,13 +18,30 @@
 
 import SwiftUI
 
-public enum TablerGridConfigDefaults {
-    // TODO: these values probably need to be tweaked to match the basic layout of `List`
-    #if os(macOS)
-        public static let rowSpacing: CGFloat = 8
-        public static let paddingInsets = EdgeInsets(top: 14, leading: 16, bottom: 15, trailing: 16)
-    #elseif os(iOS)
-        public static let rowSpacing: CGFloat = 17
-        public static let paddingInsets = EdgeInsets(top: 48, leading: 32, bottom: 20, trailing: 32)
-    #endif
+struct GridItemMod<Element>: ViewModifier
+    where Element: Identifiable
+{
+    typealias Config = TablerConfig<Element>
+
+    let config: Config
+    let element: Element
+
+    init(_ config: Config,
+         _ element: Element)
+    {
+        self.config = config
+        self.element = element
+    }
+
+    func body(content: Content) -> some View {
+        content
+            .foregroundColor(colorPair?.0 ?? .primary)
+            .background(colorPair?.1 ?? Color.clear)
+    }
+
+    // MARK: Helpers
+
+    private var colorPair: (Color, Color)? {
+        config.onRowColor?(element)
+    }
 }

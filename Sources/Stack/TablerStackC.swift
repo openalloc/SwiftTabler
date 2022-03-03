@@ -1,5 +1,5 @@
 //
-//  TablerListB.swift
+//  TablerStackC.swift
 //
 // Copyright 2022 FlowAllocator LLC
 //
@@ -16,39 +16,39 @@
 // limitations under the License.
 //
 
+import CoreData
 import SwiftUI
 
-/// List-based table, with support for bound values
-public struct TablerListB<Element, Header, Row, Results>: View
-    where Element: Identifiable,
+/// Stack-based table, with support for bound values
+public struct TablerStackC<Element, Header, Row>: View
+    where Element: Identifiable & NSFetchRequestResult & ObservableObject,
     Header: View,
-    Row: View,
-    Results: RandomAccessCollection & MutableCollection,
-    Results.Element == Element,
-    Results.Index: Hashable
+    Row: View
 {
     public typealias Config = TablerConfig<Element>
     public typealias Context = TablerContext<Element>
     public typealias Hovered = Element.ID?
     public typealias HeaderContent = (Binding<Context>) -> Header
-    public typealias RowContent = (Binding<Element>) -> Row
+    public typealias ProjectedValue = ObservedObject<Element>.Wrapper
+    public typealias RowContent = (ProjectedValue) -> Row
+    public typealias Fetched = FetchedResults<Element>
 
     // MARK: Parameters
 
     private let config: Config
     private let headerContent: HeaderContent
     private let rowContent: RowContent
-    @Binding private var results: Results
+    private var results: Fetched
 
     public init(_ config: Config,
                 @ViewBuilder headerContent: @escaping HeaderContent,
                 @ViewBuilder rowContent: @escaping RowContent,
-                results: Binding<Results>)
+                results: Fetched)
     {
         self.config = config
         self.headerContent = headerContent
         self.rowContent = rowContent
-        _results = results
+        self.results = results
         _context = State(initialValue: TablerContext(config))
     }
 
@@ -60,37 +60,24 @@ public struct TablerListB<Element, Header, Row, Results>: View
     // MARK: Views
 
     public var body: some View {
-        BaseList(config: config,
-                 context: $context,
-                 headerContent: headerContent) {
-            // TODO: is there a better way to filter bound data source?
-            if let _filter = config.filter {
-                ForEach($results) { $element in
-                    if _filter(element) {
-                        row($element)
-                    }
+        BaseStack(config: config,
+                  context: $context,
+                  headerContent: headerContent) {
+            ForEach(results) { rawElem in
+                ObservableHolder(element: rawElem) { obsElem in
+                    rowContent(obsElem)
+                        .modifier(StackRowMod(config, rawElem, $hovered))
                 }
-                .onMove(perform: config.onMove)
-            } else {
-                ForEach($results) { $element in
-                    row($element)
-                }
-                .onMove(perform: config.onMove)
             }
         }
     }
-
-    private func row(_ element: Binding<Element>) -> some View {
-        rowContent(element)
-            .modifier(ListRowMod(config, element.wrappedValue, $hovered))
-    }
 }
 
-public extension TablerListB {
+public extension TablerStackC {
     // omitting Header
     init(_ config: Config,
          @ViewBuilder rowContent: @escaping RowContent,
-         results: Binding<Results>)
+         results: Fetched)
         where Header == EmptyView
     {
         self.init(config,
