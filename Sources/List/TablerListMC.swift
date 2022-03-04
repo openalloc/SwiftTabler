@@ -177,13 +177,13 @@ public extension TablerListMC {
                   selected: selected)
     }
     
-    // omitting Select AND Background
+    // omitting Background AND Select
     init(_ config: Config,
          @ViewBuilder header: @escaping HeaderContent,
          @ViewBuilder row: @escaping RowContent,
          results: Fetched,
          selected: Binding<Selected>)
-        where Select == EmptyView, RowBack == EmptyView
+        where RowBack == EmptyView, Select == EmptyView
     {
         self.init(config,
                   header: header,
@@ -194,12 +194,12 @@ public extension TablerListMC {
                   selected: selected)
     }
 
-    // omitting Header, Select AND Background
+    // omitting Header, Background, AND Select
     init(_ config: Config,
          @ViewBuilder row: @escaping RowContent,
          results: Fetched,
          selected: Binding<Selected>)
-        where Header == EmptyView, Select == EmptyView, RowBack == EmptyView
+        where Header == EmptyView, RowBack == EmptyView, Select == EmptyView
     {
         self.init(config,
                   header: { _ in EmptyView() },
