@@ -46,6 +46,7 @@ where Element: Identifiable
                 rowPadding: EdgeInsets = TablerStackConfigDefaults.rowPadding,
                 paddingInsets: EdgeInsets = TablerStackConfigDefaults.paddingInsets,
                 filter: Filter? = nil,
+                hoverColor: Color = TablerConfigDefaults.hoverColor,
                 sortIndicatorForward: AnyView = TablerConfigDefaults.sortIndicatorForward,
                 sortIndicatorReverse: AnyView = TablerConfigDefaults.sortIndicatorReverse,
                 sortIndicatorNeutral: AnyView = TablerConfigDefaults.sortIndicatorNeutral)
@@ -56,6 +57,7 @@ where Element: Identifiable
         self.paddingInsets = paddingInsets
         
         super.init(filter: filter,
+                   hoverColor: hoverColor,
                    sortIndicatorForward: sortIndicatorForward,
                    sortIndicatorReverse: sortIndicatorReverse,
                    sortIndicatorNeutral: sortIndicatorNeutral)

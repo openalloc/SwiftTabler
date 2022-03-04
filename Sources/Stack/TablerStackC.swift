@@ -110,7 +110,6 @@ public extension TablerStackC {
     // omitting Header AND Background
     init(_ config: Config,
          @ViewBuilder row: @escaping RowContent,
-         @ViewBuilder rowBackground: @escaping RowBackground,
          results: Fetched)
         where Header == EmptyView, RowBack == EmptyView
     {

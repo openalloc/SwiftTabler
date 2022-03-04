@@ -19,15 +19,15 @@
 import SwiftUI
 
 struct ListRowMod<Element>: ViewModifier
-    where Element: Identifiable
+where Element: Identifiable
 {
     typealias Config = TablerListConfig<Element>
     typealias Hovered = Element.ID?
-
+    
     let config: Config
     let element: Element
     @Binding var hovered: Hovered
-
+    
     init(_ config: Config,
          _ element: Element,
          _ hovered: Binding<Hovered>)
@@ -36,27 +36,19 @@ struct ListRowMod<Element>: ViewModifier
         self.element = element
         _hovered = hovered
     }
-
+    
     func body(content: Content) -> some View {
         content
             .moveDisabled(!config.canMove(element))
-//            .foregroundColor(colorPair?.0 ?? .primary)
-
-        #if os(macOS) || targetEnvironment(macCatalyst)
-// support hovering, but not for colored rows (yet)
-// no background for colored rows (yet)
-.onHover { if $0 { hovered = element.id } }
-//            .background((colorPair == nil && hovered == element.id)
-.background(hovered == element.id
-    ? Color.accentColor.opacity(0.2)
-    : Color.clear)
-        #endif
-//            .listRowBackground(colorPair?.1 ?? Color.clear)
+        
+#if os(macOS) || targetEnvironment(macCatalyst)
+        // support hovering, but not for colored rows (yet)
+        // no background for colored rows (yet)
+            .onHover { if $0 { hovered = element.id } }
+        //            .background((colorPair == nil && hovered == element.id)
+            .background(hovered == element.id
+                        ? config.hoverColor
+                        : Color.clear)
+#endif
     }
-
-    // MARK: Helpers
-
-//    private var colorPair: (Color, Color)? {
-//        config.onRowColor?(element)
-//    }
 }

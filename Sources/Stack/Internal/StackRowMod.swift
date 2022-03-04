@@ -41,27 +41,17 @@ struct StackRowMod<Element>: ViewModifier
         content
             .padding(config.rowPadding)
 
-        // .foregroundColor(colorPair?.0 ?? .primary)
-
         #if os(macOS) || targetEnvironment(macCatalyst)
         // support hovering, but not for colored rows (yet)
         // no background for colored rows (yet)
         .onHover { if $0 { hovered = element.id } }
 
         // If hovering, set the background here.
-        .background( // colorPair?.1 ?? (
+        .background(
             hovered == element.id
-                ? Color.accentColor.opacity(0.2)
+                ? config.hoverColor
                 : Color.clear
         )
-//        #elseif os(iOS)
-//            .background(colorPair?.1 ?? Color.clear)
         #endif
     }
-
-    // MARK: Helpers
-
-//    private var colorPair: (Color, Color)? {
-//        config.onRowColor?(element)
-//    }
 }

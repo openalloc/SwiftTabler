@@ -121,7 +121,6 @@ public extension TablerStackB {
     // omitting Header AND Background
     init(_ config: Config,
          @ViewBuilder row: @escaping RowContent,
-         @ViewBuilder rowBackground: @escaping RowBackground,
          results: Binding<Results>)
         where Header == EmptyView, RowBack == EmptyView
     {
