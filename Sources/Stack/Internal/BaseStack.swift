@@ -38,7 +38,7 @@ struct BaseStack<Element, Header, Rows>: View
          @ViewBuilder rowsContent: @escaping RowContent)
     {
         _context = context
-        self.headerContent = header
+        headerContent = header
         self.rowsContent = rowsContent
     }
 
@@ -58,7 +58,7 @@ struct BaseStack<Element, Header, Rows>: View
             .padding(config.paddingInsets)
         }
     }
-    
+
     private var config: Config {
         context.config as? Config ?? Config()
     }

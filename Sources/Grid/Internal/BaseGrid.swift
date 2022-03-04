@@ -41,8 +41,8 @@ struct BaseGrid<Element, Header, Rows>: View
     {
         _context = context
         self.gridItems = gridItems
-        self.headerContent = header
-        self.rowsContent = rows
+        headerContent = header
+        rowsContent = rows
     }
 
     var body: some View {
@@ -63,7 +63,7 @@ struct BaseGrid<Element, Header, Rows>: View
             .padding(config.paddingInsets)
         }
     }
-    
+
     private var config: Config {
         context.config as? Config ?? Config()
     }

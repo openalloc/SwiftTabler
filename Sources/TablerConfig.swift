@@ -46,7 +46,7 @@ open class TablerConfig<Element>
     /// NOTE filtering not supported in Core Data-based tables, as it's assumed you'll use a predicate in your FetchRequest.
     public let filter: Filter?
 //    public let onRowColor: OnRowColor?
-   
+
     public let sortIndicatorForward: AnyView
     public let sortIndicatorReverse: AnyView
     public let sortIndicatorNeutral: AnyView

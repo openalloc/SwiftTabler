@@ -19,7 +19,7 @@
 import SwiftUI
 
 /// List-based table
-public struct TablerList<Element, Header, Row, RowBack, Results>: View
+public struct TablerList<Element, Header, RowBack, Row, Results>: View
     where Element: Identifiable,
     Header: View,
     Row: View,
@@ -49,8 +49,8 @@ public struct TablerList<Element, Header, Row, RowBack, Results>: View
                 results: Results)
     {
         self.config = config
-        self.headerContent = header
-        self.rowContent = row
+        headerContent = header
+        rowContent = row
         self.rowBackground = rowBackground
         self.results = results
         _context = State(initialValue: TablerContext(config))
@@ -90,7 +90,7 @@ public extension TablerList {
                   rowBackground: rowBackground,
                   results: results)
     }
-    
+
     // omitting Background
     init(_ config: Config,
          @ViewBuilder header: @escaping HeaderContent,
@@ -104,7 +104,7 @@ public extension TablerList {
                   rowBackground: { _ in EmptyView() },
                   results: results)
     }
-    
+
     // omitting Header AND Background
     init(_ config: Config,
          @ViewBuilder row: @escaping RowContent,

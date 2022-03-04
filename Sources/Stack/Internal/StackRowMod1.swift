@@ -48,11 +48,11 @@ struct StackRowMod1<Element>: ViewModifier
 //            .foregroundColor(colorPair?.0 ?? .primary)
 
         #if os(macOS) || targetEnvironment(macCatalyst)
-            // NOTE keeping selection part of mac, as on iOS you press to get the context menu
-            .contentShape(Rectangle())
-            .onTapGesture {
-                selectAction(element)
-            }
+// NOTE keeping selection part of mac, as on iOS you press to get the context menu
+.contentShape(Rectangle())
+.onTapGesture {
+    selectAction(element)
+}
         #endif
 
         #if os(macOS) || targetEnvironment(macCatalyst)
@@ -61,9 +61,9 @@ struct StackRowMod1<Element>: ViewModifier
         .onHover { if $0 { hovered = element.id } }
 
         // If hovering, set the background here.
-        .background(//colorPair?.1 ?? (
-//            element.id == selected ? Color.accentColor : (
-                hovered == element.id ? Color.accentColor.opacity(0.2) : Color.clear
+        .background( // colorPair?.1 ?? (
+            //            element.id == selected ? Color.accentColor : (
+            hovered == element.id ? Color.accentColor.opacity(0.2) : Color.clear
 //            )
         )
 //        #elseif os(iOS)

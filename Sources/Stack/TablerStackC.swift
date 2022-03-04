@@ -20,7 +20,7 @@ import CoreData
 import SwiftUI
 
 /// Stack-based table, with support for bound values
-public struct TablerStackC<Element, Header, Row>: View
+public struct TablerStackC<Element, Header, Row, RowBack>: View
     where Element: Identifiable & NSFetchRequestResult & ObservableObject,
     Header: View,
     Row: View
@@ -31,6 +31,7 @@ public struct TablerStackC<Element, Header, Row>: View
     public typealias HeaderContent = (Binding<Context>) -> Header
     public typealias ProjectedValue = ObservedObject<Element>.Wrapper
     public typealias RowContent = (ProjectedValue) -> Row
+    public typealias RowBackground = (Element) -> RowBack
     public typealias Fetched = FetchedResults<Element>
 
     // MARK: Parameters
@@ -38,16 +39,19 @@ public struct TablerStackC<Element, Header, Row>: View
     private let config: Config
     private let headerContent: HeaderContent
     private let rowContent: RowContent
+    private let rowBackground: RowBackground
     private var results: Fetched
 
     public init(_ config: Config,
                 @ViewBuilder header: @escaping HeaderContent,
                 @ViewBuilder row: @escaping RowContent,
+                rowBackground: @escaping RowBackground,
                 results: Fetched)
     {
         self.config = config
-        self.headerContent = header
-        self.rowContent = row
+        headerContent = header
+        rowContent = row
+        self.rowBackground = rowBackground
         self.results = results
         _context = State(initialValue: TablerContext(config))
     }
@@ -76,12 +80,14 @@ public extension TablerStackC {
     // omitting Header
     init(_ config: Config,
          @ViewBuilder row: @escaping RowContent,
+         rowBackground: @escaping RowBackground,
          results: Fetched)
         where Header == EmptyView
     {
         self.init(config,
                   header: { _ in EmptyView() },
                   row: row,
+                  rowBackground: rowBackground,
                   results: results)
     }
 }

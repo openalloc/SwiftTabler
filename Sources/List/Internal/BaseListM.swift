@@ -41,7 +41,7 @@ struct BaseListM<Element, Header, Rows>: View
     {
         _context = context
         _selected = selected
-        self.headerContent = header
+        headerContent = header
         self.rowsContent = rowsContent
     }
 

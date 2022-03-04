@@ -23,11 +23,11 @@ public enum TablerStackConfigDefaults {
     #if os(macOS)
 //        public static let rowSpacing: CGFloat = 8
 //        public static let paddingInsets = EdgeInsets(top: 14, leading: 16, bottom: 15, trailing: 16)
-    public static let rowSpacing: CGFloat = 0
-    public static let rowPadding = EdgeInsets(top: 4, leading: 0, bottom: 4, trailing: 0)
-    
-    // the insets for the OVERALL TABLE, to roughly match that of list
-    public static let paddingInsets = EdgeInsets(top: 14, leading: 16, bottom: 15, trailing: 16)
+        public static let rowSpacing: CGFloat = 0
+        public static let rowPadding = EdgeInsets(top: 4, leading: 0, bottom: 4, trailing: 0)
+
+        // the insets for the OVERALL TABLE, to roughly match that of list
+        public static let paddingInsets = EdgeInsets(top: 14, leading: 16, bottom: 15, trailing: 16)
     #elseif os(iOS)
         public static let rowSpacing: CGFloat = 17
         public static let paddingInsets = EdgeInsets(top: 48, leading: 32, bottom: 20, trailing: 32)
@@ -35,7 +35,7 @@ public enum TablerStackConfigDefaults {
 }
 
 public class TablerStackConfig<Element>: TablerConfig<Element>
-where Element: Identifiable
+    where Element: Identifiable
 {
     public let rowSpacing: CGFloat
     public let rowPadding: EdgeInsets
@@ -45,7 +45,7 @@ where Element: Identifiable
                 rowPadding: EdgeInsets = TablerStackConfigDefaults.rowPadding,
                 paddingInsets: EdgeInsets = TablerStackConfigDefaults.paddingInsets,
                 filter: Filter? = nil,
-                //onRowColor: OnRowColor? = nil,
+                // onRowColor: OnRowColor? = nil,
                 sortIndicatorForward: AnyView = TablerConfigDefaults.sortIndicatorForward,
                 sortIndicatorReverse: AnyView = TablerConfigDefaults.sortIndicatorReverse,
                 sortIndicatorNeutral: AnyView = TablerConfigDefaults.sortIndicatorNeutral)
@@ -55,7 +55,7 @@ where Element: Identifiable
         self.paddingInsets = paddingInsets
 
         super.init(filter: filter,
-                   //onRowColor: onRowColor,
+                   // onRowColor: onRowColor,
                    sortIndicatorForward: sortIndicatorForward,
                    sortIndicatorReverse: sortIndicatorReverse,
                    sortIndicatorNeutral: sortIndicatorNeutral)

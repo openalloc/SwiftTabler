@@ -19,10 +19,11 @@
 import SwiftUI
 
 /// Grid-based table
-public struct TablerGrid<Element, Header, Row, Results>: View // , ItemMod
+public struct TablerGrid<Element, Header, Row, RowBack, Results>: View // , ItemMod
     where Element: Identifiable,
     Header: View,
     Row: View,
+    RowBack: View,
     // ItemMod: ViewModifier,
     Results: RandomAccessCollection,
     Results.Element == Element
@@ -31,6 +32,7 @@ public struct TablerGrid<Element, Header, Row, Results>: View // , ItemMod
     public typealias Context = TablerContext<Element>
     public typealias HeaderContent = (Binding<Context>) -> Header
     public typealias RowContent = (Element) -> Row
+    public typealias RowBackground = (Element) -> RowBack
     // public typealias ItemModifier = (Element) -> ItemMod
 
     // MARK: Parameters
@@ -39,6 +41,7 @@ public struct TablerGrid<Element, Header, Row, Results>: View // , ItemMod
     private let config: Config
     private let headerContent: HeaderContent
     private let rowContent: RowContent
+    private let rowBackground: RowBackground
     // private let itemModifier: ItemModifier
     private var results: Results
 
@@ -46,13 +49,15 @@ public struct TablerGrid<Element, Header, Row, Results>: View // , ItemMod
                 gridItems: [GridItem],
                 @ViewBuilder header: @escaping HeaderContent,
                 @ViewBuilder row: @escaping RowContent,
+                rowBackground: @escaping RowBackground,
                 // itemModifier: @escaping ItemModifier,
                 results: Results)
     {
         self.gridItems = gridItems
         self.config = config
-        self.headerContent = header
-        self.rowContent = row
+        headerContent = header
+        rowContent = row
+        self.rowBackground = rowBackground
         // self.itemModifier = itemModifier
         self.results = results
         _context = State(initialValue: TablerContext(config))
@@ -82,6 +87,7 @@ public extension TablerGrid {
     init(_ config: Config,
          gridItems: [GridItem],
          @ViewBuilder row: @escaping RowContent,
+         rowBackground: @escaping RowBackground,
          // itemModifier: @escaping ItemModifier,
          results: Results)
         where Header == EmptyView
@@ -90,6 +96,7 @@ public extension TablerGrid {
                   gridItems: gridItems,
                   header: { _ in EmptyView() },
                   row: row,
+                  rowBackground: rowBackground,
                   // itemModifier: itemModifier,
                   results: results)
     }

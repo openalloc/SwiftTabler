@@ -43,13 +43,13 @@ struct ListRowMod<Element>: ViewModifier
 //            .foregroundColor(colorPair?.0 ?? .primary)
 
         #if os(macOS) || targetEnvironment(macCatalyst)
-            // support hovering, but not for colored rows (yet)
-            // no background for colored rows (yet)
-            .onHover { if $0 { hovered = element.id } }
+// support hovering, but not for colored rows (yet)
+// no background for colored rows (yet)
+.onHover { if $0 { hovered = element.id } }
 //            .background((colorPair == nil && hovered == element.id)
-            .background(hovered == element.id
-                ? Color.accentColor.opacity(0.2)
-                : Color.clear)
+.background(hovered == element.id
+    ? Color.accentColor.opacity(0.2)
+    : Color.clear)
         #endif
 //            .listRowBackground(colorPair?.1 ?? Color.clear)
     }

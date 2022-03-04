@@ -19,10 +19,11 @@
 import SwiftUI
 
 /// Stack-based table, with support for single-select and bound values
-public struct TablerStack1B<Element, Header, Row, Select, Results>: View
+public struct TablerStack1B<Element, Header, Row, RowBack, Select, Results>: View
     where Element: Identifiable,
     Header: View,
     Row: View,
+    RowBack: View,
     Select: View,
     Results: RandomAccessCollection & MutableCollection,
     Results.Element == Element,
@@ -33,6 +34,7 @@ public struct TablerStack1B<Element, Header, Row, Select, Results>: View
     public typealias Hovered = Element.ID?
     public typealias HeaderContent = (Binding<Context>) -> Header
     public typealias RowContent = (Binding<Element>) -> Row
+    public typealias RowBackground = (Element) -> RowBack
     public typealias SelectContent = (Bool) -> Select
     public typealias Selected = Element.ID?
 
@@ -41,6 +43,7 @@ public struct TablerStack1B<Element, Header, Row, Select, Results>: View
     private let config: Config
     private let headerContent: HeaderContent
     private let rowContent: RowContent
+    private let rowBackground: RowBackground
     private let selectContent: SelectContent
     @Binding private var results: Results
     @Binding private var selected: Selected
@@ -48,14 +51,16 @@ public struct TablerStack1B<Element, Header, Row, Select, Results>: View
     public init(_ config: Config,
                 @ViewBuilder header: @escaping HeaderContent,
                 @ViewBuilder row: @escaping RowContent,
+                rowBackground: @escaping RowBackground,
                 @ViewBuilder selectOverlay: @escaping SelectContent,
                 results: Binding<Results>,
                 selected: Binding<Selected>)
     {
         self.config = config
-        self.headerContent = header
-        self.rowContent = row
-        self.selectContent = selectOverlay
+        headerContent = header
+        rowContent = row
+        self.rowBackground = rowBackground
+        selectContent = selectOverlay
         _results = results
         _selected = selected
         _context = State(initialValue: TablerContext(config))
@@ -99,6 +104,7 @@ public extension TablerStack1B {
     // omitting Header
     init(_ config: Config,
          @ViewBuilder row: @escaping RowContent,
+         rowBackground: @escaping RowBackground,
          @ViewBuilder selectOverlay: @escaping SelectContent,
          results: Binding<Results>,
          selected: Binding<Selected>)
@@ -107,6 +113,7 @@ public extension TablerStack1B {
         self.init(config,
                   header: { _ in EmptyView() },
                   row: row,
+                  rowBackground: rowBackground,
                   selectOverlay: selectOverlay,
                   results: results,
                   selected: selected)
@@ -116,6 +123,7 @@ public extension TablerStack1B {
     init(_ config: Config,
          @ViewBuilder header: @escaping HeaderContent,
          @ViewBuilder row: @escaping RowContent,
+         rowBackground: @escaping RowBackground,
          results: Binding<Results>,
          selected: Binding<Selected>)
         where Select == EmptyView
@@ -123,6 +131,7 @@ public extension TablerStack1B {
         self.init(config,
                   header: header,
                   row: row,
+                  rowBackground: rowBackground,
                   selectOverlay: { _ in EmptyView() },
                   results: results,
                   selected: selected)
@@ -131,6 +140,7 @@ public extension TablerStack1B {
     // omitting Header AND Select
     init(_ config: Config,
          @ViewBuilder row: @escaping RowContent,
+         rowBackground: @escaping RowBackground,
          results: Binding<Results>,
          selected: Binding<Selected>)
         where Header == EmptyView, Select == EmptyView
@@ -138,6 +148,7 @@ public extension TablerStack1B {
         self.init(config,
                   header: { _ in EmptyView() },
                   row: row,
+                  rowBackground: rowBackground,
                   selectOverlay: { _ in EmptyView() },
                   results: results,
                   selected: selected)
