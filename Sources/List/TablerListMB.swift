@@ -140,6 +140,24 @@ public extension TablerListMB {
                   selected: selected)
     }
 
+    // omitting Background
+    init(_ config: Config,
+         @ViewBuilder header: @escaping HeaderContent,
+         @ViewBuilder row: @escaping RowContent,
+         @ViewBuilder selectOverlay: @escaping SelectContent,
+         results: Binding<Results>,
+         selected: Binding<Selected>)
+        where RowBack == EmptyView
+    {
+        self.init(config,
+                  header: header,
+                  row: row,
+                  rowBackground: { _ in EmptyView() },
+                  selectOverlay: selectOverlay,
+                  results: results,
+                  selected: selected)
+    }
+
     // omitting Header AND Select
     init(_ config: Config,
          @ViewBuilder row: @escaping RowContent,
@@ -152,6 +170,56 @@ public extension TablerListMB {
                   header: { _ in EmptyView() },
                   row: row,
                   rowBackground: rowBackground,
+                  selectOverlay: { _ in EmptyView() },
+                  results: results,
+                  selected: selected)
+    }
+    
+    // omitting Header AND Background
+    init(_ config: Config,
+         @ViewBuilder row: @escaping RowContent,
+         @ViewBuilder selectOverlay: @escaping SelectContent,
+         results: Binding<Results>,
+         selected: Binding<Selected>)
+        where Header == EmptyView, RowBack == EmptyView
+    {
+        self.init(config,
+                  header: { _ in EmptyView() },
+                  row: row,
+                  rowBackground: { _ in EmptyView() },
+                  selectOverlay: selectOverlay,
+                  results: results,
+                  selected: selected)
+    }
+    
+    // omitting Select AND Background
+    init(_ config: Config,
+         @ViewBuilder header: @escaping HeaderContent,
+         @ViewBuilder row: @escaping RowContent,
+         results: Binding<Results>,
+         selected: Binding<Selected>)
+        where Select == EmptyView, RowBack == EmptyView
+    {
+        self.init(config,
+                  header: header,
+                  row: row,
+                  rowBackground: { _ in EmptyView() },
+                  selectOverlay: { _ in EmptyView() },
+                  results: results,
+                  selected: selected)
+    }
+
+    // omitting Header, Select AND Background
+    init(_ config: Config,
+         @ViewBuilder row: @escaping RowContent,
+         results: Binding<Results>,
+         selected: Binding<Selected>)
+        where Header == EmptyView, Select == EmptyView, RowBack == EmptyView
+    {
+        self.init(config,
+                  header: { _ in EmptyView() },
+                  row: row,
+                  rowBackground: { _ in EmptyView() },
                   selectOverlay: { _ in EmptyView() },
                   results: results,
                   selected: selected)

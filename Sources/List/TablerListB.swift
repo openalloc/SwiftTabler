@@ -104,4 +104,31 @@ public extension TablerListB {
                   rowBackground: rowBackground,
                   results: results)
     }
+
+    // omitting Background
+    init(_ config: Config,
+         @ViewBuilder header: @escaping HeaderContent,
+         @ViewBuilder row: @escaping RowContent,
+         results: Binding<Results>)
+        where RowBack == EmptyView
+    {
+        self.init(config,
+                  header: header,
+                  row: row,
+                  rowBackground: { _ in EmptyView() },
+                  results: results)
+    }
+
+    // omitting Header AND Background
+    init(_ config: Config,
+         @ViewBuilder row: @escaping RowContent,
+         results: Binding<Results>)
+        where Header == EmptyView, RowBack == EmptyView
+    {
+        self.init(config,
+                  header: { _ in EmptyView() },
+                  row: row,
+                  rowBackground: { _ in EmptyView() },
+                  results: results)
+    }
 }
