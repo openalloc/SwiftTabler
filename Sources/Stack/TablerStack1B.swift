@@ -94,6 +94,7 @@ public struct TablerStack1B<Element, Header, Row, RowBack, Select, Results>: Vie
     private func row(_ element: Binding<Element>) -> some View {
         rowContent(element)
             .modifier(StackRowMod1(config, element.wrappedValue, $hovered, $selected))
+            .background(rowBackground(element.wrappedValue))
             .overlay(
                 selectContent(element.wrappedValue.id == selected)
             )

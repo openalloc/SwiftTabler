@@ -80,6 +80,7 @@ public struct TablerStack1C<Element, Header, Row, RowBack, Select>: View
                 ObservableHolder(element: rawElem) { obsElem in
                     rowContent(obsElem)
                         .modifier(StackRowMod1(config, rawElem, $hovered, $selected))
+                        .background(rowBackground(rawElem))
                 }
             }
         }

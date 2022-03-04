@@ -46,7 +46,7 @@ struct BaseStack<Element, Header, Rows>: View
         BaseTable(context: $context,
                   header: headerContent) { buildHeader in
 
-            VStack(spacing: config.rowSpacing) {
+            VStack(spacing: config.headerSpacing) {
                 buildHeader()
 
                 ScrollView {

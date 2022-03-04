@@ -81,6 +81,7 @@ public struct TablerListMC<Element, Header, Row, RowBack, Select>: View
                 ObservableHolder(element: rawElem) { obsElem in
                     rowContent(obsElem)
                         .modifier(ListRowMod(config, rawElem, $hovered))
+                        .listRowBackground(rowBackground(rawElem))
                 }
             }
             .onMove(perform: config.onMove)

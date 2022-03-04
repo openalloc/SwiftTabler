@@ -79,6 +79,7 @@ public struct TablerList1<Element, Header, Row, RowBack, Select, Results>: View
             ForEach(results.filter(config.filter ?? { _ in true })) { element in
                 rowContent(element)
                     .modifier(ListRowMod(config, element, $hovered))
+                    .listRowBackground(rowBackground(element))
                     .overlay(
                         selectContent(element.id == selected)
                     )

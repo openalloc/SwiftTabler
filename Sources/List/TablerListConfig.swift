@@ -19,7 +19,6 @@ public class TablerListConfig<Element>: TablerConfig<Element>
     public init(canMove: @escaping CanMove<Element> = { _ in true },
                 onMove: OnMove<Element>? = nil,
                 filter: Filter? = nil,
-                // onRowColor: OnRowColor? = nil,
                 sortIndicatorForward: AnyView = TablerConfigDefaults.sortIndicatorForward,
                 sortIndicatorReverse: AnyView = TablerConfigDefaults.sortIndicatorReverse,
                 sortIndicatorNeutral: AnyView = TablerConfigDefaults.sortIndicatorNeutral)
@@ -28,7 +27,6 @@ public class TablerListConfig<Element>: TablerConfig<Element>
         self.onMove = onMove
 
         super.init(filter: filter,
-                   // onRowColor: onRowColor,
                    sortIndicatorForward: sortIndicatorForward,
                    sortIndicatorReverse: sortIndicatorReverse,
                    sortIndicatorNeutral: sortIndicatorNeutral)

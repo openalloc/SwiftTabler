@@ -23,7 +23,8 @@ import SwiftUI
 public struct TablerStackC<Element, Header, Row, RowBack>: View
     where Element: Identifiable & NSFetchRequestResult & ObservableObject,
     Header: View,
-    Row: View
+    Row: View,
+    RowBack: View
 {
     public typealias Config = TablerStackConfig<Element>
     public typealias Context = TablerContext<Element>
@@ -70,6 +71,7 @@ public struct TablerStackC<Element, Header, Row, RowBack>: View
                 ObservableHolder(element: rawElem) { obsElem in
                     rowContent(obsElem)
                         .modifier(StackRowMod(config, rawElem, $hovered))
+                        .background(rowBackground(rawElem))
                 }
             }
         }

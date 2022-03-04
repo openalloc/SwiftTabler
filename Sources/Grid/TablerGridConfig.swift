@@ -44,7 +44,6 @@ public class TablerGridConfig<Element>: TablerConfig<Element>
                 rowSpacing: CGFloat = TablerGridConfigDefaults.rowSpacing,
                 paddingInsets: EdgeInsets = TablerGridConfigDefaults.paddingInsets,
                 filter: Filter? = nil,
-                // onRowColor: OnRowColor? = nil,
                 sortIndicatorForward: AnyView = TablerConfigDefaults.sortIndicatorForward,
                 sortIndicatorReverse: AnyView = TablerConfigDefaults.sortIndicatorReverse,
                 sortIndicatorNeutral: AnyView = TablerConfigDefaults.sortIndicatorNeutral)
@@ -55,7 +54,6 @@ public class TablerGridConfig<Element>: TablerConfig<Element>
         self.alignment = alignment
 
         super.init(filter: filter,
-                   // onRowColor: onRowColor,
                    sortIndicatorForward: sortIndicatorForward,
                    sortIndicatorReverse: sortIndicatorReverse,
                    sortIndicatorNeutral: sortIndicatorNeutral)

@@ -23,7 +23,8 @@ import SwiftUI
 public struct TablerListC<Element, Header, Row, RowBack>: View
     where Element: Identifiable & NSFetchRequestResult & ObservableObject,
     Header: View,
-    Row: View
+    Row: View,
+    RowBack: View
 {
     public typealias Config = TablerListConfig<Element>
     public typealias Context = TablerContext<Element>
@@ -70,6 +71,7 @@ public struct TablerListC<Element, Header, Row, RowBack>: View
                 ObservableHolder(element: rawElem) { obsElem in
                     rowContent(obsElem)
                         .modifier(ListRowMod(config, rawElem, $hovered))
+                        .listRowBackground(rowBackground(rawElem))
                 }
             }
             .onMove(perform: config.onMove)

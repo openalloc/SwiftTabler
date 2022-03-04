@@ -97,6 +97,7 @@ public struct TablerListMB<Element, Header, Row, RowBack, Select, Results>: View
     private func row(_ element: Binding<Element>) -> some View {
         rowContent(element)
             .modifier(ListRowMod(config, element.wrappedValue, $hovered))
+            .listRowBackground(rowBackground(element.wrappedValue))
             .overlay(
                 selectContent(selected.contains(element.wrappedValue.id))
             )

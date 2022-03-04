@@ -87,6 +87,7 @@ public struct TablerListB<Element, Header, Row, RowBack, Results>: View
     private func row(_ element: Binding<Element>) -> some View {
         rowContent(element)
             .modifier(ListRowMod(config, element.wrappedValue, $hovered))
+            .listRowBackground(rowBackground(element.wrappedValue))
     }
 }
 
