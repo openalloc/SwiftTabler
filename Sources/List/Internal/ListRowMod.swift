@@ -42,13 +42,8 @@ where Element: Identifiable
             .moveDisabled(!config.canMove(element))
         
 #if os(macOS) || targetEnvironment(macCatalyst)
-        // support hovering, but not for colored rows (yet)
-        // no background for colored rows (yet)
             .onHover { if $0 { hovered = element.id } }
-        //            .background((colorPair == nil && hovered == element.id)
-            .background(hovered == element.id
-                        ? config.hoverColor
-                        : Color.clear)
+            .background(hovered == element.id ? config.hoverColor : Color.clear)
 #endif
     }
 }

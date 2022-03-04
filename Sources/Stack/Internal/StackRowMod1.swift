@@ -48,22 +48,10 @@ where Element: Identifiable
 #if os(macOS) || targetEnvironment(macCatalyst)
         // NOTE keeping selection part of mac, as on iOS you press to get the context menu
             .contentShape(Rectangle())
-            .onTapGesture {
-                selectAction(element)
-            }
-#endif
-        
-#if os(macOS) || targetEnvironment(macCatalyst)
-        // support hovering, but not for colored rows (yet)
-        // no background for colored rows (yet)
+            .onTapGesture { selectAction(element) }
+
             .onHover { if $0 { hovered = element.id } }
-        
-        // If hovering, set the background here.
-            .background( // colorPair?.1 ?? (
-                //            element.id == selected ? Color.accentColor : (
-                hovered == element.id ? config.hoverColor : Color.clear
-                //            )
-            )
+            .background(hovered == element.id ? config.hoverColor : Color.clear)
 #endif
     }
     
