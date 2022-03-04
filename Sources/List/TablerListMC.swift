@@ -51,7 +51,7 @@ public struct TablerListMC<Element, Header, Row, RowBack, Select>: View
     public init(_ config: Config,
                 @ViewBuilder header: @escaping HeaderContent,
                 @ViewBuilder row: @escaping RowContent,
-                rowBackground: @escaping RowBackground,
+                @ViewBuilder rowBackground: @escaping RowBackground,
                 @ViewBuilder selectOverlay: @escaping SelectContent,
                 results: Fetched,
                 selected: Binding<Selected>)
@@ -92,7 +92,7 @@ public extension TablerListMC {
     // omitting Header
     init(_ config: Config,
          @ViewBuilder row: @escaping RowContent,
-         rowBackground: @escaping RowBackground,
+         @ViewBuilder rowBackground: @escaping RowBackground,
          @ViewBuilder selectOverlay: @escaping SelectContent,
          results: Fetched,
          selected: Binding<Selected>)
@@ -111,7 +111,7 @@ public extension TablerListMC {
     init(_ config: Config,
          @ViewBuilder header: @escaping HeaderContent,
          @ViewBuilder row: @escaping RowContent,
-         rowBackground: @escaping RowBackground,
+         @ViewBuilder rowBackground: @escaping RowBackground,
          results: Fetched,
          selected: Binding<Selected>)
         where Select == EmptyView
@@ -146,7 +146,7 @@ public extension TablerListMC {
     // omitting Header AND Select
     init(_ config: Config,
          @ViewBuilder row: @escaping RowContent,
-         rowBackground: @escaping RowBackground,
+         @ViewBuilder rowBackground: @escaping RowBackground,
          results: Fetched,
          selected: Binding<Selected>)
         where Header == EmptyView, Select == EmptyView

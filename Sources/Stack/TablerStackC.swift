@@ -45,7 +45,7 @@ public struct TablerStackC<Element, Header, Row, RowBack>: View
     public init(_ config: Config,
                 @ViewBuilder header: @escaping HeaderContent,
                 @ViewBuilder row: @escaping RowContent,
-                rowBackground: @escaping RowBackground,
+                @ViewBuilder rowBackground: @escaping RowBackground,
                 results: Fetched)
     {
         self.config = config
@@ -80,7 +80,7 @@ public extension TablerStackC {
     // omitting Header
     init(_ config: Config,
          @ViewBuilder row: @escaping RowContent,
-         rowBackground: @escaping RowBackground,
+         @ViewBuilder rowBackground: @escaping RowBackground,
          results: Fetched)
         where Header == EmptyView
     {
@@ -108,7 +108,7 @@ public extension TablerStackC {
     // omitting Header AND Background
     init(_ config: Config,
          @ViewBuilder row: @escaping RowContent,
-         rowBackground: @escaping RowBackground,
+         @ViewBuilder rowBackground: @escaping RowBackground,
          results: Fetched)
         where Header == EmptyView, RowBack == EmptyView
     {

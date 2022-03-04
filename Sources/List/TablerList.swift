@@ -45,7 +45,7 @@ public struct TablerList<Element, Header, RowBack, Row, Results>: View
     public init(_ config: Config,
                 @ViewBuilder header: @escaping HeaderContent,
                 @ViewBuilder row: @escaping RowContent,
-                rowBackground: @escaping RowBackground,
+                @ViewBuilder rowBackground: @escaping RowBackground,
                 results: Results)
     {
         self.config = config
@@ -80,7 +80,7 @@ public extension TablerList {
     // omitting Header
     init(_ config: Config,
          @ViewBuilder row: @escaping RowContent,
-         rowBackground: @escaping RowBackground,
+         @ViewBuilder rowBackground: @escaping RowBackground,
          results: Results)
         where Header == EmptyView
     {

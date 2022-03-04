@@ -49,7 +49,7 @@ public struct TablerGrid<Element, Header, Row, RowBack, Results>: View // , Item
                 //gridItems: [GridItem],
                 @ViewBuilder header: @escaping HeaderContent,
                 @ViewBuilder row: @escaping RowContent,
-                rowBackground: @escaping RowBackground,
+                @ViewBuilder rowBackground: @escaping RowBackground,
                 // itemModifier: @escaping ItemModifier,
                 results: Results)
     {
@@ -86,7 +86,7 @@ public extension TablerGrid {
     // omitting Header
     init(_ config: Config,
          @ViewBuilder row: @escaping RowContent,
-         rowBackground: @escaping RowBackground,
+         @ViewBuilder rowBackground: @escaping RowBackground,
          results: Results)
         where Header == EmptyView
     {

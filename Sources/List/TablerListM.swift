@@ -50,7 +50,7 @@ public struct TablerListM<Element, Header, Row, RowBack, Select, Results>: View
     public init(_ config: Config,
                 @ViewBuilder header: @escaping HeaderContent,
                 @ViewBuilder row: @escaping RowContent,
-                rowBackground: @escaping RowBackground,
+                @ViewBuilder rowBackground: @escaping RowBackground,
                 @ViewBuilder selectOverlay: @escaping SelectContent,
                 results: Results,
                 selected: Binding<Selected>)
@@ -92,7 +92,7 @@ public extension TablerListM {
     // omitting Header
     init(_ config: Config,
          @ViewBuilder row: @escaping RowContent,
-         rowBackground: @escaping RowBackground,
+         @ViewBuilder rowBackground: @escaping RowBackground,
          @ViewBuilder selectOverlay: @escaping SelectContent,
          results: Results,
          selected: Binding<Selected>)
@@ -111,7 +111,7 @@ public extension TablerListM {
     init(_ config: Config,
          @ViewBuilder header: @escaping HeaderContent,
          @ViewBuilder row: @escaping RowContent,
-         rowBackground: @escaping RowBackground,
+         @ViewBuilder rowBackground: @escaping RowBackground,
          results: Results,
          selected: Binding<Selected>)
         where Select == EmptyView
@@ -146,7 +146,7 @@ public extension TablerListM {
     // omitting Header AND Select
     init(_ config: Config,
          @ViewBuilder row: @escaping RowContent,
-         rowBackground: @escaping RowBackground,
+         @ViewBuilder rowBackground: @escaping RowBackground,
          results: Results,
          selected: Binding<Selected>)
         where Header == EmptyView, Select == EmptyView

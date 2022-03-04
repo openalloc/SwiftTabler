@@ -45,7 +45,7 @@ public struct TablerStack<Element, Header, Row, RowBack, Results>: View
     public init(_ config: Config,
                 @ViewBuilder header: @escaping HeaderContent,
                 @ViewBuilder row: @escaping RowContent,
-                rowBackground: @escaping RowBackground,
+                @ViewBuilder rowBackground: @escaping RowBackground,
                 results: Results)
     {
         self.config = config
@@ -79,7 +79,7 @@ public extension TablerStack {
     // omitting Header
     init(_ config: Config,
          @ViewBuilder row: @escaping RowContent,
-         rowBackground: @escaping RowBackground,
+         @ViewBuilder rowBackground: @escaping RowBackground,
          results: Results)
         where Header == EmptyView
     {
@@ -107,7 +107,7 @@ public extension TablerStack {
     // omitting Header AND Background
     init(_ config: Config,
          @ViewBuilder row: @escaping RowContent,
-         rowBackground: @escaping RowBackground,
+         @ViewBuilder rowBackground: @escaping RowBackground,
          results: Results)
         where Header == EmptyView, RowBack == EmptyView
     {
