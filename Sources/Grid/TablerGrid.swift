@@ -37,7 +37,7 @@ public struct TablerGrid<Element, Header, Row, RowBack, Results>: View // , Item
 
     // MARK: Parameters
 
-    private let gridItems: [GridItem]
+    //private let gridItems: [GridItem]
     private let config: Config
     private let headerContent: HeaderContent
     private let rowContent: RowContent
@@ -46,14 +46,14 @@ public struct TablerGrid<Element, Header, Row, RowBack, Results>: View // , Item
     private var results: Results
 
     public init(_ config: Config,
-                gridItems: [GridItem],
+                //gridItems: [GridItem],
                 @ViewBuilder header: @escaping HeaderContent,
                 @ViewBuilder row: @escaping RowContent,
                 rowBackground: @escaping RowBackground,
                 // itemModifier: @escaping ItemModifier,
                 results: Results)
     {
-        self.gridItems = gridItems
+        //self.gridItems = gridItems
         self.config = config
         headerContent = header
         rowContent = row
@@ -71,7 +71,7 @@ public struct TablerGrid<Element, Header, Row, RowBack, Results>: View // , Item
 
     public var body: some View {
         BaseGrid(context: $context,
-                 gridItems: gridItems,
+                 //gridItems: gridItems,
                  header: headerContent) {
             ForEach(results.filter(config.filter ?? { _ in true })) { element in
                 rowContent(element)
@@ -85,19 +85,43 @@ public struct TablerGrid<Element, Header, Row, RowBack, Results>: View // , Item
 public extension TablerGrid {
     // omitting Header
     init(_ config: Config,
-         gridItems: [GridItem],
          @ViewBuilder row: @escaping RowContent,
          rowBackground: @escaping RowBackground,
-         // itemModifier: @escaping ItemModifier,
          results: Results)
         where Header == EmptyView
     {
         self.init(config,
-                  gridItems: gridItems,
                   header: { _ in EmptyView() },
                   row: row,
                   rowBackground: rowBackground,
-                  // itemModifier: itemModifier,
                   results: results)
     }
+
+    // omitting Background
+    init(_ config: Config,
+         @ViewBuilder header: @escaping HeaderContent,
+         @ViewBuilder row: @escaping RowContent,
+         results: Results)
+        where RowBack == EmptyView
+    {
+        self.init(config,
+                  header: header,
+                  row: row,
+                  rowBackground: { _ in EmptyView() },
+                  results: results)
+    }
+
+    // omitting Header AND Background
+    init(_ config: Config,
+         @ViewBuilder row: @escaping RowContent,
+         results: Results)
+        where Header == EmptyView, RowBack == EmptyView
+    {
+        self.init(config,
+                  header: { _ in EmptyView() },
+                  row: row,
+                  rowBackground: { _ in EmptyView() },
+                  results: results)
+    }
+
 }

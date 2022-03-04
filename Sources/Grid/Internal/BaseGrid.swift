@@ -30,17 +30,17 @@ struct BaseGrid<Element, Header, Rows>: View
     typealias RowContent = () -> Rows
 
     @Binding private var context: Context
-    private let gridItems: [GridItem]
+    //private let gridItems: [GridItem]
     private let headerContent: HeaderContent
     private let rowsContent: RowContent
 
     init(context: Binding<Context>,
-         gridItems: [GridItem],
+         //gridItems: [GridItem],
          header: @escaping HeaderContent,
          rows: @escaping RowContent)
     {
         _context = context
-        self.gridItems = gridItems
+        //self.gridItems = gridItems
         headerContent = header
         rowsContent = rows
     }
@@ -53,7 +53,7 @@ struct BaseGrid<Element, Header, Rows>: View
                 buildHeader()
 
                 ScrollView {
-                    LazyVGrid(columns: gridItems,
+                    LazyVGrid(columns: config.gridItems,
                               alignment: config.alignment,
                               spacing: config.rowSpacing) {
                         rowsContent()

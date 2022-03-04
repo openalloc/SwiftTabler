@@ -34,11 +34,13 @@ public enum TablerGridConfigDefaults {
 public class TablerGridConfig<Element>: TablerConfig<Element>
     where Element: Identifiable
 {
+    public let gridItems: [GridItem]
     public let alignment: HorizontalAlignment
     public let rowSpacing: CGFloat
     public let paddingInsets: EdgeInsets
 
-    public init(alignment: HorizontalAlignment = TablerGridConfigDefaults.alignment,
+    public init(gridItems: [GridItem] = [],
+                alignment: HorizontalAlignment = TablerGridConfigDefaults.alignment,
                 rowSpacing: CGFloat = TablerGridConfigDefaults.rowSpacing,
                 paddingInsets: EdgeInsets = TablerGridConfigDefaults.paddingInsets,
                 filter: Filter? = nil,
@@ -47,6 +49,7 @@ public class TablerGridConfig<Element>: TablerConfig<Element>
                 sortIndicatorReverse: AnyView = TablerConfigDefaults.sortIndicatorReverse,
                 sortIndicatorNeutral: AnyView = TablerConfigDefaults.sortIndicatorNeutral)
     {
+        self.gridItems = gridItems
         self.rowSpacing = rowSpacing
         self.paddingInsets = paddingInsets
         self.alignment = alignment
