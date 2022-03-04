@@ -100,8 +100,8 @@ struct ContentView: View {
             .padding()
     }
     
-    private var config: TablerConfig<Fruit> {
-        TablerConfig<Fruit>()
+    private var config: TablerListConfig<Fruit> {
+        TablerListConfig<Fruit>()
     }
 }
 ```
