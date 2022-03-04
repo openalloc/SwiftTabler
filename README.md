@@ -74,7 +74,9 @@ struct ContentView: View {
         GridItem(.flexible(minimum: 35, maximum: 50), alignment: .leading),
     ]
 
-    private func header(_ ctx: Binding<TablerContext<Fruit>>) -> some View {
+    private typealias Context = TablerContext<Fruit>
+
+    private func header(_ ctx: Binding<Context>) -> some View {
         LazyVGrid(columns: gridItems) {
             Text("ID")
             Text("Name")
@@ -93,15 +95,9 @@ struct ContentView: View {
     }
 
     var body: some View {
-        TablerList(config,
-                   header: header,
+        TablerList(header: header,
                    row: row,
                    results: fruits)
-            .padding()
-    }
-    
-    private var config: TablerListConfig<Fruit> {
-        TablerListConfig<Fruit>()
     }
 }
 ```
@@ -115,24 +111,24 @@ You can choose from any of sixteen (16) variants, which break down along the fol
 * RAC - usable with `RandomAccessCollection` (e.g., array of struct), with or without binding
 * CD - usable with Core Data, with or without binding
 
-Base   | Row Selection | RAC | CD  | View name     | Element wrapping  | Notes
----    | ---           | --- | --- | ---           | ---               | ---
-List   | No Select     |  ✓  |  ✓  | TablerList    | (none)            |
-List   | No Select     |  ✓  |     | TablerListB   | Binding\<Element> |
-List   | No Select     |     |  ✓  | TablerListC   | ObservedObject    |       
-List   | Single-select |  ✓  |  ✓  | TablerList1   | (none)            | 
-List   | Single-select |  ✓  |     | TablerList1B  | Binding\<Element> | 
-List   | Single-Select |     |  ✓  | TablerList1C  | ObservedObject    |       
-List   | Multi-select  |  ✓  |  ✓  | TablerListM   | (none)            |
-List   | Multi-select  |  ✓  |     | TablerListMB  | Binding\<Element> |
-List   | Multi-select  |     |  ✓  | TablerListMC  | ObservedObject    | 
-Stack  | No Select     |  ✓  |  ✓  | TablerStack   | (none)            |
-Stack  | No Select     |  ✓  |     | TablerStackB  | Binding\<Element> |
-Stack  | No Select     |     |  ✓  | TablerStackC  | ObservedObject    | 
-Stack  | Single-select |  ✓  |  ✓  | TablerStack1  | (none)            | 
-Stack  | Single-select |  ✓  |     | TablerStack1B | Binding\<Element> | 
-Stack  | Single-select |     |  ✓  | TablerStack1C | ObservedObject    | 
-Grid   | No Select     |  ✓  |  ✓  | TablerGrid    | (none)            | Experimental. Needs bound version, select, etc.
+Base   | Row Selection | RAC | CD  | View name     | Element wrapping  
+---    | ---           | --- | --- | ---           | ---               
+List   | No Select     |  ✓  |  ✓  | TablerList    | (none)            
+List   | No Select     |  ✓  |     | TablerListB   | Binding\<Element> 
+List   | No Select     |     |  ✓  | TablerListC   | ObservedObject    
+List   | Single-select |  ✓  |  ✓  | TablerList1   | (none)            
+List   | Single-select |  ✓  |     | TablerList1B  | Binding\<Element> 
+List   | Single-Select |     |  ✓  | TablerList1C  | ObservedObject    
+List   | Multi-select  |  ✓  |  ✓  | TablerListM   | (none)            
+List   | Multi-select  |  ✓  |     | TablerListMB  | Binding\<Element> 
+List   | Multi-select  |     |  ✓  | TablerListMC  | ObservedObject    
+Stack  | No Select     |  ✓  |  ✓  | TablerStack   | (none)            
+Stack  | No Select     |  ✓  |     | TablerStackB  | Binding\<Element> 
+Stack  | No Select     |     |  ✓  | TablerStackC  | ObservedObject    
+Stack  | Single-select |  ✓  |  ✓  | TablerStack1  | (none)            
+Stack  | Single-select |  ✓  |     | TablerStack1B | Binding\<Element> 
+Stack  | Single-select |     |  ✓  | TablerStack1C | ObservedObject    
+Grid   | No Select     |  ✓  |  ✓  | TablerGrid    | (none)            
 
 ## Column Sorting
 
@@ -182,19 +178,51 @@ private func brow(_ element: Binding<Fruit>) -> some View {
 }
 ```
 
-## Colored Rows
+## Row Background
 
 macOS | iOS
 :---:|:---:
 ![](https://github.com/openalloc/SwiftTabler/blob/main/Images/macOSc.png)  |  ![](https://github.com/openalloc/SwiftTabler/blob/main/Images/iOSc.png)
 
-The demo app (link below) shows how colored rows are implemented. 
+```swift
+    var body: some View {
+        TablerList(header: header,
+                   row: row,
+                   rowBackground: rowBackgroundAction,
+                   results: fruits)
+    }
 
-Because the normal selection is obscured with colored rows, the ability to use a 'selection overlay' is provided. An example is available in the demo.
+    private func rowBackgroundAction(_ fruit: Fruit) -> some View {
+        LinearGradient(gradient: .init(colors: [fruit.color, fruit.color.opacity(0.2)]), startPoint: .top, endPoint: .bottom)
+    }
+```
 
-## Disable Header
+Where you're using selection with colored rows, you may want to use a 'selection overlay', as the normal selection is obscured with colored rows. See _TablerDemo_ for examples.
 
-The demo app shows how to toggle the display of the header, where a header may not be desired.
+Also, when using a row background on macOS, you might wish to disable the hover effect.
+
+```swift
+    typealias Config = TablerListConfig<Fruit>
+    
+    var body: some View {
+        TablerList(Config(hoverColor: .clear),
+                   header: header,
+                   row: row,
+                   rowBackground: rowBackgroundAction,
+                   results: fruits)
+    }
+```
+
+## Headless Tables
+
+Where you don't want a header, simply omit it from the declaration of the table:
+
+```swift
+    var body: some View {
+        TablerList(row: row,
+                   results: fruits)
+   }
+```
 
 ## Moving Rows
 

@@ -47,7 +47,7 @@ public struct TablerList1<Element, Header, Row, RowBack, Select, Results>: View
     private var results: Results
     @Binding private var selected: Selected
 
-    public init(_ config: Config,
+    public init(_ config: Config = .init(),
                 @ViewBuilder header: @escaping HeaderContent,
                 @ViewBuilder row: @escaping RowContent,
                 @ViewBuilder rowBackground: @escaping RowBackground,

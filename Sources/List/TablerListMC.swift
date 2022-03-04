@@ -48,7 +48,7 @@ public struct TablerListMC<Element, Header, Row, RowBack, Select>: View
     private var results: Fetched
     @Binding private var selected: Selected
 
-    public init(_ config: Config,
+    public init(_ config: Config = .init(),
                 @ViewBuilder header: @escaping HeaderContent,
                 @ViewBuilder row: @escaping RowContent,
                 @ViewBuilder rowBackground: @escaping RowBackground,

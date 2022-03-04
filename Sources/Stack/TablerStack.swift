@@ -42,7 +42,7 @@ public struct TablerStack<Element, Header, Row, RowBack, Results>: View
     private let rowBackground: RowBackground
     private var results: Results
 
-    public init(_ config: Config,
+    public init(_ config: Config = .init(),
                 @ViewBuilder header: @escaping HeaderContent,
                 @ViewBuilder row: @escaping RowContent,
                 @ViewBuilder rowBackground: @escaping RowBackground,
