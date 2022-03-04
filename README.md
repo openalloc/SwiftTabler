@@ -185,16 +185,18 @@ macOS | iOS
 ![](https://github.com/openalloc/SwiftTabler/blob/main/Images/macOSc.png)  |  ![](https://github.com/openalloc/SwiftTabler/blob/main/Images/iOSc.png)
 
 ```swift
-    var body: some View {
-        TablerList(header: header,
-                   row: row,
-                   rowBackground: rowBackgroundAction,
-                   results: fruits)
-    }
+var body: some View {
+    TablerList(header: header,
+               row: row,
+               rowBackground: rowBackgroundAction,
+               results: fruits)
+}
 
-    private func rowBackgroundAction(_ fruit: Fruit) -> some View {
-        LinearGradient(gradient: .init(colors: [fruit.color, fruit.color.opacity(0.2)]), startPoint: .top, endPoint: .bottom)
-    }
+private func rowBackgroundAction(_ fruit: Fruit) -> some View {
+    LinearGradient(gradient: .init(colors: [fruit.color, fruit.color.opacity(0.2)]),
+                   startPoint: .top, 
+                   endPoint: .bottom)
+}
 ```
 
 Where you're using selection with colored rows, you may want to use a 'selection overlay', as the normal selection is obscured with colored rows. See _TablerDemo_ for examples.
@@ -202,15 +204,15 @@ Where you're using selection with colored rows, you may want to use a 'selection
 Also, when using a row background on macOS, you might wish to disable the hover effect.
 
 ```swift
-    typealias Config = TablerListConfig<Fruit>
-    
-    var body: some View {
-        TablerList(Config(hoverColor: .clear),
-                   header: header,
-                   row: row,
-                   rowBackground: rowBackgroundAction,
-                   results: fruits)
-    }
+typealias Config = TablerListConfig<Fruit>
+
+var body: some View {
+    TablerList(Config(hoverColor: .clear),
+               header: header,
+               row: row,
+               rowBackground: rowBackgroundAction,
+               results: fruits)
+}
 ```
 
 ## Headless Tables
@@ -218,10 +220,10 @@ Also, when using a row background on macOS, you might wish to disable the hover 
 Where you don't want a header, simply omit it from the declaration of the table:
 
 ```swift
-    var body: some View {
-        TablerList(row: row,
-                   results: fruits)
-   }
+var body: some View {
+    TablerList(row: row,
+               results: fruits)
+}
 ```
 
 ## Moving Rows
