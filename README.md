@@ -76,7 +76,7 @@ struct ContentView: View {
 
     private typealias Context = TablerContext<Fruit>
 
-    private func header(_ ctx: Binding<Context>) -> some View {
+    private func header(ctx: Binding<Context>) -> some View {
         LazyVGrid(columns: gridItems) {
             Text("ID")
             Text("Name")
@@ -85,7 +85,7 @@ struct ContentView: View {
         }
     }
     
-    private func row(_ element: Fruit) -> some View {
+    private func row(element: Fruit) -> some View {
         LazyVGrid(columns: gridItems) {
             Text(element.id)
             Text(element.name).foregroundColor(element.color)
@@ -140,7 +140,7 @@ From the demo app, an example of using the sort capability, where an indicator d
 private typealias Context = TablerContext<Fruit>
 private typealias Sort = TablerSort<Fruit>
 
-private func header(_ ctx: Binding<Context>) -> some View {
+private func header(ctx: Binding<Context>) -> some View {
     LazyVGrid(columns: gridItems) {
         Sort.columnTitle("ID", ctx, \.id)
             .onTapGesture { tablerSort(ctx, &fruits, \.id) { $0.id < $1.id } }
@@ -166,7 +166,7 @@ macOS | iOS
 When used with 'bound' variants (e.g., `TablerListB`), the data can be modified directly, mutating your data source. From the demo:
 
 ```swift
-private func brow(_ element: Binding<Fruit>) -> some View {
+private func brow(element: Binding<Fruit>) -> some View {
     LazyVGrid(columns: gridItems) {
         Text(element.wrappedValue.id)
         TextField("Name", text: element.name)
@@ -192,7 +192,7 @@ var body: some View {
                results: fruits)
 }
 
-private func rowBackgroundAction(_ fruit: Fruit) -> some View {
+private func rowBackgroundAction(fruit: Fruit) -> some View {
     LinearGradient(gradient: .init(colors: [fruit.color, fruit.color.opacity(0.2)]),
                    startPoint: .top, 
                    endPoint: .bottom)
