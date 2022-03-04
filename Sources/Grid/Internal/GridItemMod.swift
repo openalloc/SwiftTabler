@@ -35,13 +35,13 @@ struct GridItemMod<Element>: ViewModifier
 
     func body(content: Content) -> some View {
         content
-            .foregroundColor(colorPair?.0 ?? .primary)
-            .background(colorPair?.1 ?? Color.clear)
+//            .foregroundColor(colorPair?.0 ?? .primary)
+//            .background(colorPair?.1 ?? Color.clear)
     }
 
     // MARK: Helpers
 
-    private var colorPair: (Color, Color)? {
-        config.onRowColor?(element)
-    }
+//    private var colorPair: (Color, Color)? {
+//        config.onRowColor?(element)
+//    }
 }

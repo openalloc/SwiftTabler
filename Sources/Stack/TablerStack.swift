@@ -19,10 +19,11 @@
 import SwiftUI
 
 /// Stack-based table
-public struct TablerStack<Element, Header, Row, Results>: View
+public struct TablerStack<Element, Header, Row, Back, Results>: View
     where Element: Identifiable,
     Header: View,
     Row: View,
+    Back: View,
     Results: RandomAccessCollection,
     Results.Element == Element
 {
@@ -31,22 +32,26 @@ public struct TablerStack<Element, Header, Row, Results>: View
     public typealias Hovered = Element.ID?
     public typealias HeaderContent = (Binding<Context>) -> Header
     public typealias RowContent = (Element) -> Row
+    public typealias Background = (Element) -> Back
 
     // MARK: Parameters
 
     private let config: Config
     private let headerContent: HeaderContent
     private let rowContent: RowContent
+    private let background: Background
     private var results: Results
 
     public init(_ config: Config,
                 @ViewBuilder header: @escaping HeaderContent,
                 @ViewBuilder row: @escaping RowContent,
+                background: @escaping Background,
                 results: Results)
     {
         self.config = config
         self.headerContent = header
         self.rowContent = row
+        self.background = background
         self.results = results
         _context = State(initialValue: TablerContext(config))
     }
@@ -64,6 +69,7 @@ public struct TablerStack<Element, Header, Row, Results>: View
             ForEach(results.filter(config.filter ?? { _ in true })) { element in
                 rowContent(element)
                     .modifier(StackRowMod(config, element, $hovered))
+                    .background(background(element))
             }
         }
     }
@@ -73,12 +79,41 @@ public extension TablerStack {
     // omitting Header
     init(_ config: Config,
          @ViewBuilder row: @escaping RowContent,
+         background: @escaping Background,
          results: Results)
         where Header == EmptyView
     {
         self.init(config,
                   header: { _ in EmptyView() },
                   row: row,
+                  background: background,
+                  results: results)
+    }
+    
+    // omitting Background
+    init(_ config: Config,
+         @ViewBuilder header: @escaping HeaderContent,
+         @ViewBuilder row: @escaping RowContent,
+         results: Results)
+        where Back == EmptyView
+    {
+        self.init(config,
+                  header: header,
+                  row: row,
+                  background: { _ in EmptyView() },
+                  results: results)
+    }
+    
+    // omitting Header AND Background
+    init(_ config: Config,
+         @ViewBuilder row: @escaping RowContent,
+         results: Results)
+        where Header == EmptyView, Back == EmptyView
+    {
+        self.init(config,
+                  header: { _ in EmptyView() },
+                  row: row,
+                  background: { _ in EmptyView() },
                   results: results)
     }
 }

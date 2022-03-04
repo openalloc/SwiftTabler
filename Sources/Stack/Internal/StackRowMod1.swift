@@ -43,7 +43,9 @@ struct StackRowMod1<Element>: ViewModifier
 
     func body(content: Content) -> some View {
         content
-            .foregroundColor(colorPair?.0 ?? .primary)
+            .padding(config.rowPadding)
+
+//            .foregroundColor(colorPair?.0 ?? .primary)
 
         #if os(macOS) || targetEnvironment(macCatalyst)
             // NOTE keeping selection part of mac, as on iOS you press to get the context menu
@@ -59,23 +61,23 @@ struct StackRowMod1<Element>: ViewModifier
         .onHover { if $0 { hovered = element.id } }
 
         // If hovering, set the background here.
-        .background(colorPair?.1 ?? (
-            element.id == selected ? Color.accentColor : (
+        .background(//colorPair?.1 ?? (
+//            element.id == selected ? Color.accentColor : (
                 hovered == element.id ? Color.accentColor.opacity(0.2) : Color.clear
-            )
-        ))
-        #elseif os(iOS)
-        .background(colorPair?.1 ?? (
-            element.id == selected ? Color.accentColor : Color.clear
-        ))
+//            )
+        )
+//        #elseif os(iOS)
+//        .background(colorPair?.1 ?? (
+//            element.id == selected ? Color.accentColor : Color.clear
+//        ))
         #endif
     }
 
     // MARK: Helpers
 
-    private var colorPair: (Color, Color)? {
-        config.onRowColor?(element)
-    }
+//    private var colorPair: (Color, Color)? {
+//        config.onRowColor?(element)
+//    }
 
     // MARK: Action Handlers
 

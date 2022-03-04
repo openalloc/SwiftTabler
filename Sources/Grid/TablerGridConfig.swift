@@ -42,7 +42,7 @@ where Element: Identifiable
                 rowSpacing: CGFloat = TablerGridConfigDefaults.rowSpacing,
                 paddingInsets: EdgeInsets = TablerGridConfigDefaults.paddingInsets,
                 filter: Filter? = nil,
-                onRowColor: OnRowColor? = nil,
+                //onRowColor: OnRowColor? = nil,
                 sortIndicatorForward: AnyView = TablerConfigDefaults.sortIndicatorForward,
                 sortIndicatorReverse: AnyView = TablerConfigDefaults.sortIndicatorReverse,
                 sortIndicatorNeutral: AnyView = TablerConfigDefaults.sortIndicatorNeutral)
@@ -52,7 +52,7 @@ where Element: Identifiable
         self.alignment = alignment
 
         super.init(filter: filter,
-                   onRowColor: onRowColor,
+                   //onRowColor: onRowColor,
                    sortIndicatorForward: sortIndicatorForward,
                    sortIndicatorReverse: sortIndicatorReverse,
                    sortIndicatorNeutral: sortIndicatorNeutral)
