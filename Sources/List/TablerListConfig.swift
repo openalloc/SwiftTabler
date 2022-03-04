@@ -1,6 +1,6 @@
 //
 //  TablerListConfig.swift
-//  
+//
 //
 //  Created by Reed Esau on 3/3/22.
 //
@@ -8,7 +8,7 @@
 import SwiftUI
 
 public class TablerListConfig<Element>: TablerConfig<Element>
-where Element: Identifiable
+    where Element: Identifiable
 {
     public typealias CanMove<Element> = (Element) -> Bool
     public typealias OnMove<Element> = (IndexSet, Int) -> Void
@@ -19,7 +19,7 @@ where Element: Identifiable
     public init(canMove: @escaping CanMove<Element> = { _ in true },
                 onMove: OnMove<Element>? = nil,
                 filter: Filter? = nil,
-                onRowColor: OnRowColor? = nil,
+                hoverColor: Color = TablerConfigDefaults.hoverColor,
                 sortIndicatorForward: AnyView = TablerConfigDefaults.sortIndicatorForward,
                 sortIndicatorReverse: AnyView = TablerConfigDefaults.sortIndicatorReverse,
                 sortIndicatorNeutral: AnyView = TablerConfigDefaults.sortIndicatorNeutral)
@@ -28,7 +28,7 @@ where Element: Identifiable
         self.onMove = onMove
 
         super.init(filter: filter,
-                   onRowColor: onRowColor,
+                   hoverColor: hoverColor,
                    sortIndicatorForward: sortIndicatorForward,
                    sortIndicatorReverse: sortIndicatorReverse,
                    sortIndicatorNeutral: sortIndicatorNeutral)

@@ -20,10 +20,11 @@ import CoreData
 import SwiftUI
 
 /// List-based table, with support for bound values through Core Data
-public struct TablerListC<Element, Header, Row>: View
+public struct TablerListC<Element, Header, Row, RowBack>: View
     where Element: Identifiable & NSFetchRequestResult & ObservableObject,
     Header: View,
-    Row: View
+    Row: View,
+    RowBack: View
 {
     public typealias Config = TablerListConfig<Element>
     public typealias Context = TablerContext<Element>
@@ -31,6 +32,7 @@ public struct TablerListC<Element, Header, Row>: View
     public typealias HeaderContent = (Binding<Context>) -> Header
     public typealias ProjectedValue = ObservedObject<Element>.Wrapper
     public typealias RowContent = (ProjectedValue) -> Row
+    public typealias RowBackground = (Element) -> RowBack
     public typealias Fetched = FetchedResults<Element>
 
     // MARK: Parameters
@@ -38,16 +40,19 @@ public struct TablerListC<Element, Header, Row>: View
     private let config: Config
     private let headerContent: HeaderContent
     private let rowContent: RowContent
+    private let rowBackground: RowBackground
     private var results: Fetched
 
     public init(_ config: Config,
                 @ViewBuilder header: @escaping HeaderContent,
                 @ViewBuilder row: @escaping RowContent,
+                @ViewBuilder rowBackground: @escaping RowBackground,
                 results: Fetched)
     {
         self.config = config
-        self.headerContent = header
-        self.rowContent = row
+        headerContent = header
+        rowContent = row
+        self.rowBackground = rowBackground
         self.results = results
         _context = State(initialValue: TablerContext(config))
     }
@@ -66,6 +71,7 @@ public struct TablerListC<Element, Header, Row>: View
                 ObservableHolder(element: rawElem) { obsElem in
                     rowContent(obsElem)
                         .modifier(ListRowMod(config, rawElem, $hovered))
+                        .listRowBackground(rowBackground(rawElem))
                 }
             }
             .onMove(perform: config.onMove)
@@ -77,12 +83,41 @@ public extension TablerListC {
     // omitting Header
     init(_ config: Config,
          @ViewBuilder row: @escaping RowContent,
+         @ViewBuilder rowBackground: @escaping RowBackground,
          results: Fetched)
         where Header == EmptyView
     {
         self.init(config,
                   header: { _ in EmptyView() },
                   row: row,
+                  rowBackground: rowBackground,
+                  results: results)
+    }
+
+    // omitting Background
+    init(_ config: Config,
+         @ViewBuilder header: @escaping HeaderContent,
+         @ViewBuilder row: @escaping RowContent,
+         results: Fetched)
+        where RowBack == EmptyView
+    {
+        self.init(config,
+                  header: header,
+                  row: row,
+                  rowBackground: { _ in EmptyView() },
+                  results: results)
+    }
+
+    // omitting Header AND Background
+    init(_ config: Config,
+         @ViewBuilder row: @escaping RowContent,
+         results: Fetched)
+        where Header == EmptyView, RowBack == EmptyView
+    {
+        self.init(config,
+                  header: { _ in EmptyView() },
+                  row: row,
+                  rowBackground: { _ in EmptyView() },
                   results: results)
     }
 }

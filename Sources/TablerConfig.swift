@@ -19,6 +19,8 @@
 import SwiftUI
 
 public enum TablerConfigDefaults {
+    public static let hoverColor = Color.accentColor.opacity(0.2)
+    
     public static let sortIndicatorForward = AnyView(
         Image(systemName: "chevron.up")
             .foregroundColor(.secondary)
@@ -37,28 +39,26 @@ public enum TablerConfigDefaults {
 open class TablerConfig<Element>
     where Element: Identifiable
 {
-    public typealias RowColor = (Color, Color)
     public typealias Filter = (Element) -> Bool
-    public typealias OnRowColor = (Element) -> RowColor
 
     // MARK: Parameters
 
     /// NOTE filtering not supported in Core Data-based tables, as it's assumed you'll use a predicate in your FetchRequest.
     public let filter: Filter?
-    public let onRowColor: OnRowColor?
-   
+    public let hoverColor: Color
+
     public let sortIndicatorForward: AnyView
     public let sortIndicatorReverse: AnyView
     public let sortIndicatorNeutral: AnyView
 
     public init(filter: Filter? = nil,
-                onRowColor: OnRowColor? = nil,
+                hoverColor: Color = TablerConfigDefaults.hoverColor,
                 sortIndicatorForward: AnyView = TablerConfigDefaults.sortIndicatorForward,
                 sortIndicatorReverse: AnyView = TablerConfigDefaults.sortIndicatorReverse,
                 sortIndicatorNeutral: AnyView = TablerConfigDefaults.sortIndicatorNeutral)
     {
         self.filter = filter
-        self.onRowColor = onRowColor
+        self.hoverColor = hoverColor
         self.sortIndicatorForward = sortIndicatorForward
         self.sortIndicatorReverse = sortIndicatorReverse
         self.sortIndicatorNeutral = sortIndicatorNeutral

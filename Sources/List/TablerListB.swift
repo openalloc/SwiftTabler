@@ -19,10 +19,11 @@
 import SwiftUI
 
 /// List-based table, with support for bound values
-public struct TablerListB<Element, Header, Row, Results>: View
+public struct TablerListB<Element, Header, Row, RowBack, Results>: View
     where Element: Identifiable,
     Header: View,
     Row: View,
+    RowBack: View,
     Results: RandomAccessCollection & MutableCollection,
     Results.Element == Element,
     Results.Index: Hashable
@@ -32,22 +33,26 @@ public struct TablerListB<Element, Header, Row, Results>: View
     public typealias Hovered = Element.ID?
     public typealias HeaderContent = (Binding<Context>) -> Header
     public typealias RowContent = (Binding<Element>) -> Row
+    public typealias RowBackground = (Element) -> RowBack
 
     // MARK: Parameters
 
     private let config: Config
     private let headerContent: HeaderContent
     private let rowContent: RowContent
+    private let rowBackground: RowBackground
     @Binding private var results: Results
 
     public init(_ config: Config,
                 @ViewBuilder header: @escaping HeaderContent,
                 @ViewBuilder row: @escaping RowContent,
+                @ViewBuilder rowBackground: @escaping RowBackground,
                 results: Binding<Results>)
     {
         self.config = config
-        self.headerContent = header
-        self.rowContent = row
+        headerContent = header
+        rowContent = row
+        self.rowBackground = rowBackground
         _results = results
         _context = State(initialValue: TablerContext(config))
     }
@@ -82,6 +87,7 @@ public struct TablerListB<Element, Header, Row, Results>: View
     private func row(_ element: Binding<Element>) -> some View {
         rowContent(element)
             .modifier(ListRowMod(config, element.wrappedValue, $hovered))
+            .listRowBackground(rowBackground(element.wrappedValue))
     }
 }
 
@@ -89,12 +95,41 @@ public extension TablerListB {
     // omitting Header
     init(_ config: Config,
          @ViewBuilder row: @escaping RowContent,
+         @ViewBuilder rowBackground: @escaping RowBackground,
          results: Binding<Results>)
         where Header == EmptyView
     {
         self.init(config,
                   header: { _ in EmptyView() },
                   row: row,
+                  rowBackground: rowBackground,
+                  results: results)
+    }
+
+    // omitting Background
+    init(_ config: Config,
+         @ViewBuilder header: @escaping HeaderContent,
+         @ViewBuilder row: @escaping RowContent,
+         results: Binding<Results>)
+        where RowBack == EmptyView
+    {
+        self.init(config,
+                  header: header,
+                  row: row,
+                  rowBackground: { _ in EmptyView() },
+                  results: results)
+    }
+
+    // omitting Header AND Background
+    init(_ config: Config,
+         @ViewBuilder row: @escaping RowContent,
+         results: Binding<Results>)
+        where Header == EmptyView, RowBack == EmptyView
+    {
+        self.init(config,
+                  header: { _ in EmptyView() },
+                  row: row,
+                  rowBackground: { _ in EmptyView() },
                   results: results)
     }
 }

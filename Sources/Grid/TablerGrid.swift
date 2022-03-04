@@ -19,11 +19,11 @@
 import SwiftUI
 
 /// Grid-based table
-public struct TablerGrid<Element, Header, Row, Results>: View // , ItemMod
+public struct TablerGrid<Element, Header, Row, RowBack, Results>: View
     where Element: Identifiable,
     Header: View,
     Row: View,
-    // ItemMod: ViewModifier,
+    RowBack: View,
     Results: RandomAccessCollection,
     Results.Element == Element
 {
@@ -31,29 +31,26 @@ public struct TablerGrid<Element, Header, Row, Results>: View // , ItemMod
     public typealias Context = TablerContext<Element>
     public typealias HeaderContent = (Binding<Context>) -> Header
     public typealias RowContent = (Element) -> Row
-    // public typealias ItemModifier = (Element) -> ItemMod
+    public typealias RowBackground = (Element) -> RowBack
 
     // MARK: Parameters
 
-    private let gridItems: [GridItem]
     private let config: Config
     private let headerContent: HeaderContent
     private let rowContent: RowContent
-    // private let itemModifier: ItemModifier
+    private let rowBackground: RowBackground
     private var results: Results
 
     public init(_ config: Config,
-                gridItems: [GridItem],
                 @ViewBuilder header: @escaping HeaderContent,
                 @ViewBuilder row: @escaping RowContent,
-                // itemModifier: @escaping ItemModifier,
+                @ViewBuilder rowBackground: @escaping RowBackground,
                 results: Results)
     {
-        self.gridItems = gridItems
         self.config = config
-        self.headerContent = header
-        self.rowContent = row
-        // self.itemModifier = itemModifier
+        headerContent = header
+        rowContent = row
+        self.rowBackground = rowBackground
         self.results = results
         _context = State(initialValue: TablerContext(config))
     }
@@ -66,12 +63,11 @@ public struct TablerGrid<Element, Header, Row, Results>: View // , ItemMod
 
     public var body: some View {
         BaseGrid(context: $context,
-                 gridItems: gridItems,
                  header: headerContent) {
             ForEach(results.filter(config.filter ?? { _ in true })) { element in
                 rowContent(element)
                     .modifier(GridItemMod(config, element))
-                // .modifier(itemModifier(element))
+                    .background(rowBackground(element))
             }
         }
     }
@@ -80,17 +76,43 @@ public struct TablerGrid<Element, Header, Row, Results>: View // , ItemMod
 public extension TablerGrid {
     // omitting Header
     init(_ config: Config,
-         gridItems: [GridItem],
          @ViewBuilder row: @escaping RowContent,
-         // itemModifier: @escaping ItemModifier,
+         @ViewBuilder rowBackground: @escaping RowBackground,
          results: Results)
         where Header == EmptyView
     {
         self.init(config,
-                  gridItems: gridItems,
                   header: { _ in EmptyView() },
                   row: row,
-                  // itemModifier: itemModifier,
+                  rowBackground: rowBackground,
                   results: results)
     }
+
+    // omitting Background
+    init(_ config: Config,
+         @ViewBuilder header: @escaping HeaderContent,
+         @ViewBuilder row: @escaping RowContent,
+         results: Results)
+        where RowBack == EmptyView
+    {
+        self.init(config,
+                  header: header,
+                  row: row,
+                  rowBackground: { _ in EmptyView() },
+                  results: results)
+    }
+
+    // omitting Header AND Background
+    init(_ config: Config,
+         @ViewBuilder row: @escaping RowContent,
+         results: Results)
+        where Header == EmptyView, RowBack == EmptyView
+    {
+        self.init(config,
+                  header: { _ in EmptyView() },
+                  row: row,
+                  rowBackground: { _ in EmptyView() },
+                  results: results)
+    }
+
 }

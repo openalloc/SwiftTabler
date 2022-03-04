@@ -19,10 +19,11 @@
 import SwiftUI
 
 /// List-based table
-public struct TablerList<Element, Header, Row, Results>: View
+public struct TablerList<Element, Header, RowBack, Row, Results>: View
     where Element: Identifiable,
     Header: View,
     Row: View,
+    RowBack: View,
     Results: RandomAccessCollection,
     Results.Element == Element
 {
@@ -31,22 +32,26 @@ public struct TablerList<Element, Header, Row, Results>: View
     public typealias Hovered = Element.ID?
     public typealias HeaderContent = (Binding<Context>) -> Header
     public typealias RowContent = (Element) -> Row
+    public typealias RowBackground = (Element) -> RowBack
 
     // MARK: Parameters
 
     private let config: Config
     private let headerContent: HeaderContent
     private let rowContent: RowContent
+    private let rowBackground: RowBackground
     private var results: Results
 
     public init(_ config: Config,
                 @ViewBuilder header: @escaping HeaderContent,
                 @ViewBuilder row: @escaping RowContent,
+                @ViewBuilder rowBackground: @escaping RowBackground,
                 results: Results)
     {
         self.config = config
-        self.headerContent = header
-        self.rowContent = row
+        headerContent = header
+        rowContent = row
+        self.rowBackground = rowBackground
         self.results = results
         _context = State(initialValue: TablerContext(config))
     }
@@ -64,6 +69,7 @@ public struct TablerList<Element, Header, Row, Results>: View
             ForEach(results.filter(config.filter ?? { _ in true })) { element in
                 rowContent(element)
                     .modifier(ListRowMod(config, element, $hovered))
+                    .listRowBackground(rowBackground(element))
             }
             .onMove(perform: config.onMove)
         }
@@ -74,12 +80,41 @@ public extension TablerList {
     // omitting Header
     init(_ config: Config,
          @ViewBuilder row: @escaping RowContent,
+         @ViewBuilder rowBackground: @escaping RowBackground,
          results: Results)
         where Header == EmptyView
     {
         self.init(config,
                   header: { _ in EmptyView() },
                   row: row,
+                  rowBackground: rowBackground,
+                  results: results)
+    }
+
+    // omitting Background
+    init(_ config: Config,
+         @ViewBuilder header: @escaping HeaderContent,
+         @ViewBuilder row: @escaping RowContent,
+         results: Results)
+        where RowBack == EmptyView
+    {
+        self.init(config,
+                  header: header,
+                  row: row,
+                  rowBackground: { _ in EmptyView() },
+                  results: results)
+    }
+
+    // omitting Header AND Background
+    init(_ config: Config,
+         @ViewBuilder row: @escaping RowContent,
+         results: Results)
+        where Header == EmptyView, RowBack == EmptyView
+    {
+        self.init(config,
+                  header: { _ in EmptyView() },
+                  row: row,
+                  rowBackground: { _ in EmptyView() },
                   results: results)
     }
 }

@@ -19,15 +19,15 @@
 import SwiftUI
 
 struct StackRowMod<Element>: ViewModifier
-    where Element: Identifiable
+where Element: Identifiable
 {
     typealias Config = TablerStackConfig<Element>
     typealias Hovered = Element.ID?
-
+    
     let config: Config
     let element: Element
     @Binding var hovered: Hovered
-
+    
     init(_ config: Config,
          _ element: Element,
          _ hovered: Binding<Hovered>)
@@ -36,30 +36,14 @@ struct StackRowMod<Element>: ViewModifier
         self.element = element
         _hovered = hovered
     }
-
+    
     func body(content: Content) -> some View {
         content
-            .foregroundColor(colorPair?.0 ?? .primary)
-
-        #if os(macOS) || targetEnvironment(macCatalyst)
-            // support hovering, but not for colored rows (yet)
-            // no background for colored rows (yet)
+            .padding(config.rowPadding)
+        
+#if os(macOS) || targetEnvironment(macCatalyst)
             .onHover { if $0 { hovered = element.id } }
-
-            // If hovering, set the background here.
-            .background(colorPair?.1 ?? (
-                hovered == element.id
-                    ? Color.accentColor.opacity(0.2)
-                    : Color.clear
-            ))
-        #elseif os(iOS)
-            .background(colorPair?.1 ?? Color.clear)
-        #endif
-    }
-
-    // MARK: Helpers
-
-    private var colorPair: (Color, Color)? {
-        config.onRowColor?(element)
+            .background(hovered == element.id ? config.hoverColor : Color.clear)
+#endif
     }
 }
