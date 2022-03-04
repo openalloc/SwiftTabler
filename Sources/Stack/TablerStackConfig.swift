@@ -26,9 +26,10 @@ public enum TablerStackConfigDefaults {
     public static let rowPadding = EdgeInsets(top: 4, leading: 0, bottom: 4, trailing: 0)
     public static let paddingInsets = EdgeInsets(top: 14, leading: 16, bottom: 15, trailing: 16)
 #elseif os(iOS)
-    public static let headerSpacing: CGFloat = 4
-    public static let rowSpacing: CGFloat = 17
-    public static let paddingInsets = EdgeInsets(top: 48, leading: 32, bottom: 20, trailing: 32)
+    public static let headerSpacing: CGFloat = 12
+    public static let rowSpacing: CGFloat = 0
+    public static let rowPadding = EdgeInsets(top: 11, leading: 0, bottom: 12, trailing: 0)
+    public static let paddingInsets = EdgeInsets(top: 46, leading: 32, bottom: 20, trailing: 32)
 #endif
 }
 
