@@ -74,7 +74,7 @@ struct ContentView: View {
         GridItem(.flexible(minimum: 35, maximum: 50), alignment: .leading),
     ]
 
-    private func header(_ ctx: TablerContext<Fruit>) -> some View {
+    private func header(_ ctx: Binding<TablerContext<Fruit>>) -> some View {
         LazyVGrid(columns: gridItems) {
             Text("ID")
             Text("Name")
