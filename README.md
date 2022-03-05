@@ -108,8 +108,9 @@ While `LazyVGrid` is used to wrap the header and row items, you could alternativ
 
 ## Tabler Views
 
-_Tabler_ offers eighteen (18) views from which you can choose. They break down along the following lines:
+_Tabler_ offers twenty-one (21) variants of table views from which you can choose. They break down along the following lines:
 
+* View - the name of the variant View
 * Type - each of the three table types differ in how they render:
   * **List** - based on `List`
   * **Stack** - based on `ScrollView`/`LazyVStack`
@@ -118,29 +119,32 @@ _Tabler_ offers eighteen (18) views from which you can choose. They break down a
 * RAC - if checked, can be used with `RandomAccessCollection` (e.g., array of struct values)
 * CD - if checked, can be used with Core Data
 * Filter - if checked, `config.filter` is supported (see caveat below)
+* SO - if checked, you have option to use a Select Overlay
 * Bound - the mechanism through which values are bound, if at all
-* View - the name of the view
 
-Type      | Select | RAC | CD  | Filter | Bound               | View      
----       | ---    | --- | --- | ---    | ---                 | ---           
-**List**  |        |  ✓  |  ✓  |  ✓     |                     | `TablerList`    
-**List**  |        |  ✓  |     |  ✓\*   | `Binding<Element>`  | `TablerListB` 
-**List**  |        |     |  ✓  |        | `NSManagedObject`   | `TablerListC`    
-**List**  | Single |  ✓  |  ✓  |  ✓     |                     | `TablerList1`   
-**List**  | Single |  ✓  |     |  ✓\*   | `Binding<Element>`  | `TablerList1B`  
-**List**  | Single |     |  ✓  |        | `NSManagedObject`   | `TablerList1C`   
-**List**  | Multi  |  ✓  |  ✓  |  ✓     |                     | `TablerListM`   
-**List**  | Multi  |  ✓  |     |  ✓\*   | `Binding<Element>`  | `TablerListMB`  
-**List**  | Multi  |     |  ✓  |        | `NSManagedObject`   | `TablerListMC`   
-**Stack** |        |  ✓  |  ✓  |  ✓     |                     | `TablerStack`   
-**Stack** |        |  ✓  |     |  ✓\*   | `Binding<Element>`  | `TablerStackB`  
-**Stack** |        |     |  ✓  |        | `NSManagedObject`   | `TablerStackC`   
-**Stack** | Single |  ✓  |  ✓  |  ✓     |                     | `TablerStack1`  
-**Stack** | Single |  ✓  |     |  ✓\*   | `Binding<Element>`  | `TablerStack1B` 
-**Stack** | Single |     |  ✓  |        | `NSManagedObject`   | `TablerStack1C`  
-**Grid**  |        |  ✓  |  ✓  |  ✓     |                     | `TablerGrid`    
-**Grid**  |        |  ✓  |     |        | `Binding<Element>`  | `TablerGridB`         
-**Grid**  |        |     |  ✓  |        | `NSManagedObject`   | `TablerGridC`           
+View            | Type      | Select | RAC | CD  | Filter | SO  | Bound              
+---             | ---       | ---    | --- | --- | ---    | --- | ---                
+`TablerList`    | **List**  |        |  ✓  |  ✓  |  ✓     |  ✓  |                     
+`TablerListB`   | **List**  |        |  ✓  |     |  ✓\*   |  ✓  | `Binding<Element>` 
+`TablerListC`   | **List**  |        |     |  ✓  |        |  ✓  | `NSManagedObject`    
+`TablerList1`   | **List**  | Single |  ✓  |  ✓  |  ✓     |  ✓  |                     
+`TablerList1B`  | **List**  | Single |  ✓  |     |  ✓\*   |  ✓  | `Binding<Element>`  
+`TablerList1C`  | **List**  | Single |     |  ✓  |        |  ✓  | `NSManagedObject`    
+`TablerListM`   | **List**  | Multi  |  ✓  |  ✓  |  ✓     |  ✓  |                     
+`TablerListMB`  | **List**  | Multi  |  ✓  |     |  ✓\*   |  ✓  | `Binding<Element>`  
+`TablerListMC`  | **List**  | Multi  |     |  ✓  |        |  ✓  | `NSManagedObject`    
+`TablerStack`   | **Stack** |        |  ✓  |  ✓  |  ✓     |  ✓  |                     
+`TablerStackB`  | **Stack** |        |  ✓  |     |  ✓\*   |  ✓  | `Binding<Element>`  
+`TablerStackC`  | **Stack** |        |     |  ✓  |        |  ✓  | `NSManagedObject`    
+`TablerStack1`  | **Stack** | Single |  ✓  |  ✓  |  ✓     |  ✓  |                     
+`TablerStack1B` | **Stack** | Single |  ✓  |     |  ✓\*   |  ✓  | `Binding<Element>`  
+`TablerStack1C` | **Stack** | Single |     |  ✓  |        |  ✓  | `NSManagedObject`    
+`TablerGrid`    | **Grid**  |        |  ✓  |  ✓  |  ✓     |     |                     
+`TablerGridB`   | **Grid**  |        |  ✓  |     |        |     | `Binding<Element>`        
+`TablerGridC`   | **Grid**  |        |     |  ✓  |        |     | `NSManagedObject`           
+`TablerGrid1`   | **Grid**  | Single |  ✓  |  ✓  |  ✓     |     |                     
+`TablerGrid1B`  | **Grid**  | Single |  ✓  |     |        |     | `Binding<Element>`        
+`TablerGrid1C`  | **Grid**  | Single |     |  ✓  |        |     | `NSManagedObject`           
 
 \* filtering with Binding-based data likely not scalable as implemented. If you can find a better way to implement, submit a pull request!
 
@@ -302,8 +306,6 @@ private func rowBackgroundAction(fruit: Fruit) -> some View {
 }
 ```
 
-Where you're using selection with row background, you may want to use a 'selection overlay', as the normal selection may be obscured. See _TablerDemo_ for examples.
-
 Also, when using a row background on macOS, you might wish to disable the hover effect.
 
 ```swift
@@ -315,6 +317,64 @@ var body: some View {
                row: row,
                rowBackground: rowBackgroundAction,
                results: fruits)
+}
+```
+
+## Selection Indicator
+
+**List** based tables DO have a native selection indicator. However, **Stack** or **Grid** based tables do not. You have an option to specify your own. 
+
+Two approaches are available:
+* Row Background
+* Select Overlay
+
+(Select Overlay also available for **List** based tables, for when you're using selection with a row background. See _TablerDemo_ for an example.)
+
+### Row Background
+
+Row Background, as the name suggests, sits BELOW the row.
+
+An example of a selection indicator using row background:
+
+```swift
+@State private var selected: Fruit.ID? = nil
+
+private func rowBackground(fruit: Fruit) -> some View {
+    RoundedRectangle(cornerRadius: 5)
+        .fill(fruit.id == selected ? Color.accentColor : Color.clear)
+}
+
+var body: some View {
+    TablerStack1(header: header,
+                 row: row,
+                 rowBackground: rowBackground,
+                 results: fruits,
+                 selected: $selected)
+}
+```
+
+### Select Overlay
+
+Select Overlay, as the name suggests, sits ABOVE the row.
+
+An example of a selection indicator using select overlay:
+
+```swift
+@State private var selected: Fruit.ID? = nil
+
+private func selectOverlay(_ selected: Bool) -> some View {
+    RoundedRectangle(cornerRadius: 5)
+        .strokeBorder(selected ? .white : .clear,
+                      lineWidth: 2,
+                      antialiased: true)
+}
+
+var body: some View {
+    TablerStack1(header: header,
+                 row: row,
+                 selectOverlay: selectOverlay,
+                 results: fruits,
+                 selected: $selected)
 }
 ```
 

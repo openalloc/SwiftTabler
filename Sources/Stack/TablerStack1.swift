@@ -158,7 +158,7 @@ public extension TablerStack1 {
                   results: results,
                   selected: selected)
     }
-    
+
     // omitting Header AND Background
     init(_ config: Config,
          @ViewBuilder row: @escaping RowContent,
@@ -175,7 +175,7 @@ public extension TablerStack1 {
                   results: results,
                   selected: selected)
     }
-    
+
     // omitting Background AND Select
     init(_ config: Config,
          @ViewBuilder header: @escaping HeaderContent,
@@ -208,5 +208,4 @@ public extension TablerStack1 {
                   results: results,
                   selected: selected)
     }
-
 }

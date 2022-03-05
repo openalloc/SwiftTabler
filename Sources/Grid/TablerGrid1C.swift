@@ -1,5 +1,5 @@
 //
-//  TablerGridB.swift
+//  TablerGrid1C.swift
 //
 // Copyright 2022 FlowAllocator LLC
 //
@@ -16,24 +16,25 @@
 // limitations under the License.
 //
 
+import CoreData
 import SwiftUI
 
-/// Grid-based table, with support for bound values from RandomAccessCollection
-public struct TablerGridB<Element, Header, Row, RowBack, Results>: View
-    where Element: Identifiable,
+/// Grid-based table, with support for bound values through Core Data
+public struct TablerGrid1C<Element, Header, Row, RowBack>: View
+    where Element: Identifiable & NSFetchRequestResult & ObservableObject,
     Header: View,
     Row: View,
-    RowBack: View,
-    Results: RandomAccessCollection & MutableCollection,
-    Results.Element == Element,
-    Results.Index: Hashable
+    RowBack: View
 {
     public typealias Config = TablerGridConfig<Element>
     public typealias Context = TablerContext<Element>
     public typealias Hovered = Element.ID?
     public typealias HeaderContent = (Binding<Context>) -> Header
-    public typealias RowContent = (Binding<Element>) -> Row
+    public typealias ProjectedValue = ObservedObject<Element>.Wrapper
+    public typealias RowContent = (ProjectedValue) -> Row
     public typealias RowBackground = (Element) -> RowBack
+    public typealias Fetched = FetchedResults<Element>
+    public typealias Selected = Element.ID?
 
     // MARK: Parameters
 
@@ -41,19 +42,22 @@ public struct TablerGridB<Element, Header, Row, RowBack, Results>: View
     private let headerContent: HeaderContent
     private let rowContent: RowContent
     private let rowBackground: RowBackground
-    @Binding private var results: Results
+    private var results: Fetched
+    @Binding private var selected: Selected
 
     public init(_ config: Config = .init(),
                 @ViewBuilder header: @escaping HeaderContent,
                 @ViewBuilder row: @escaping RowContent,
                 @ViewBuilder rowBackground: @escaping RowBackground,
-                results: Binding<Results>)
+                results: Fetched,
+                selected: Binding<Selected>)
     {
         self.config = config
         headerContent = header
         rowContent = row
         self.rowBackground = rowBackground
-        _results = results
+        self.results = results
+        _selected = selected
         _context = State(initialValue: TablerContext(config))
     }
 
@@ -67,55 +71,63 @@ public struct TablerGridB<Element, Header, Row, RowBack, Results>: View
     public var body: some View {
         BaseGrid(context: $context,
                  header: headerContent) {
-            ForEach($results) { $element in
-                rowContent($element)
-                    .modifier(GridItemMod(config, element, $hovered))
-                    .background(rowBackground(element))
+            ForEach(results) { rawElem in
+                ObservableHolder(element: rawElem) { obsElem in
+                    rowContent(obsElem)
+                        .modifier(GridItemMod1(config, rawElem, $hovered, $selected))
+                        .background(rowBackground(rawElem))
+                }
             }
         }
     }
 }
 
-public extension TablerGridB {
+public extension TablerGrid1C {
     // omitting Header
     init(_ config: Config,
          @ViewBuilder row: @escaping RowContent,
          @ViewBuilder rowBackground: @escaping RowBackground,
-         results: Binding<Results>)
+         results: Fetched,
+         selected: Binding<Selected>)
         where Header == EmptyView
     {
         self.init(config,
                   header: { _ in EmptyView() },
                   row: row,
                   rowBackground: rowBackground,
-                  results: results)
+                  results: results,
+                  selected: selected)
     }
 
     // omitting Background
     init(_ config: Config,
          @ViewBuilder header: @escaping HeaderContent,
          @ViewBuilder row: @escaping RowContent,
-         results: Binding<Results>)
+         results: Fetched,
+         selected: Binding<Selected>)
         where RowBack == EmptyView
     {
         self.init(config,
                   header: header,
                   row: row,
                   rowBackground: { _ in EmptyView() },
-                  results: results)
+                  results: results,
+                  selected: selected)
     }
 
     // omitting Header AND Background
     init(_ config: Config,
          @ViewBuilder row: @escaping RowContent,
-         results: Binding<Results>)
+         results: Fetched,
+         selected: Binding<Selected>)
         where Header == EmptyView, RowBack == EmptyView
     {
         self.init(config,
                   header: { _ in EmptyView() },
                   row: row,
                   rowBackground: { _ in EmptyView() },
-                  results: results)
+                  results: results,
+                  selected: selected)
     }
 
 }
