@@ -141,6 +141,49 @@ Grid   |        |     |  ✓  |        | NSManagedObject   | TablerGridC
 
 \* filtering with Binding-based data likely not scalable as implemented. If you can find a better way to implement, submit a pull request!
 
+## Configuration
+
+Configuration options will vary by table type.
+
+See the code for the default constants.
+
+### List
+
+* canMove: @escaping CanMove\<Element> = { \_ in true }
+* onMove: OnMove\<Element>? = nil
+* filter: Filter? = nil
+* hoverColor: Color = TablerConfigDefaults.hoverColor
+* tablePadding: EdgeInsets = TablerConfigDefaults.tablePadding
+* sortIndicatorForward: AnyView = TablerConfigDefaults.sortIndicatorForward
+* sortIndicatorReverse: AnyView = TablerConfigDefaults.sortIndicatorReverse
+* sortIndicatorNeutral: AnyView = TablerConfigDefaults.sortIndicatorNeutral
+
+### Stack
+
+* rowPadding: EdgeInsets =  TablerStackConfigDefaults.rowPadding
+* headerSpacing: CGFloat = TablerStackConfigDefaults.headerSpacing
+* rowSpacing: CGFloat = TablerStackConfigDefaults.rowSpacing
+* filter: Filter? = nil,
+* hoverColor: Color = TablerConfigDefaults.hoverColor
+* tablePadding: EdgeInsets = TablerStackConfigDefaults.tablePadding
+* sortIndicatorForward: AnyView = TablerConfigDefaults.sortIndicatorForward
+* sortIndicatorReverse: AnyView = TablerConfigDefaults.sortIndicatorReverse
+* sortIndicatorNeutral: AnyView = TablerConfigDefaults.sortIndicatorNeutral
+
+### Grid
+
+* gridItems: [GridItem] = []
+* alignment: HorizontalAlignment = TablerGridConfigDefaults.alignment
+* itemPadding: EdgeInsets = TablerGridConfigDefaults.itemPadding
+* headerSpacing: CGFloat = TablerGridConfigDefaults.headerSpacing
+* rowSpacing: CGFloat = TablerGridConfigDefaults.rowSpacing,
+* filter: Filter? = nil
+* hoverColor: Color = TablerConfigDefaults.hoverColor
+* tablePadding: EdgeInsets = TablerGridConfigDefaults.tablePadding
+* sortIndicatorForward: AnyView = TablerConfigDefaults.sortIndicatorForward
+* sortIndicatorReverse: AnyView = TablerConfigDefaults.sortIndicatorReverse
+* sortIndicatorNeutral: AnyView = TablerConfigDefaults.sortIndicatorNeutral
+
 ## Column Sorting
 
 Column sorting is available through the `tablerSort` view function.
