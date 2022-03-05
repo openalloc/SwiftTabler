@@ -18,7 +18,6 @@
 
 import SwiftUI
 
-// Base table
 struct BaseTable<Element, Header, Rows>: View
     where Element: Identifiable,
     Header: View,
@@ -26,21 +25,20 @@ struct BaseTable<Element, Header, Rows>: View
 {
     typealias Context = TablerContext<Element>
     typealias HeaderContent = (Binding<Context>) -> Header
-    typealias HeaderBuilder = () -> HeaderView<Element, Header>
+    typealias HeaderBuilder = () -> Header
     typealias TableBuilder = (@escaping HeaderBuilder) -> Rows
 
     // MARK: Parameters
 
     @Binding var context: Context
     var header: HeaderContent
-    var content: TableBuilder
+    var tableBuilder: TableBuilder
 
     // MARK: Views
 
     var body: some View {
-        content {
-            HeaderView(context: $context, content: header)
+        tableBuilder {
+            header($context)
         }
-        // .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
     }
 }
