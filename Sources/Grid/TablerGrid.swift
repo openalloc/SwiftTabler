@@ -29,6 +29,7 @@ public struct TablerGrid<Element, Header, Row, RowBack, Results>: View
 {
     public typealias Config = TablerGridConfig<Element>
     public typealias Context = TablerContext<Element>
+    public typealias Hovered = Element.ID?
     public typealias HeaderContent = (Binding<Context>) -> Header
     public typealias RowContent = (Element) -> Row
     public typealias RowBackground = (Element) -> RowBack
@@ -57,6 +58,7 @@ public struct TablerGrid<Element, Header, Row, RowBack, Results>: View
 
     // MARK: Locals
 
+    @State private var hovered: Hovered = nil
     @State private var context: Context
 
     // MARK: Views
@@ -66,7 +68,7 @@ public struct TablerGrid<Element, Header, Row, RowBack, Results>: View
                  header: headerContent) {
             ForEach(results.filter(config.filter ?? { _ in true })) { element in
                 rowContent(element)
-                    .modifier(GridItemMod(config, element))
+                    .modifier(GridItemMod(config, element, $hovered))
                     .background(rowBackground(element))
             }
         }

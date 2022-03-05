@@ -22,18 +22,27 @@ struct GridItemMod<Element>: ViewModifier
     where Element: Identifiable
 {
     typealias Config = TablerConfig<Element>
-
+    typealias Hovered = Element.ID?
+    
     let config: Config
     let element: Element
+    @Binding var hovered: Hovered
 
     init(_ config: Config,
-         _ element: Element)
+         _ element: Element,
+         _ hovered: Binding<Hovered>)
     {
         self.config = config
         self.element = element
+        _hovered = hovered
     }
 
     func body(content: Content) -> some View {
         content
+#if os(macOS) || targetEnvironment(macCatalyst)
+            .onHover { if $0 { hovered = element.id } }
+            .frame(maxWidth: .infinity)
+            .background(hovered == element.id ? config.hoverColor : Color.clear)
+#endif
     }
 }
