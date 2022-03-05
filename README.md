@@ -110,25 +110,28 @@ You can choose from any of sixteen (16) variants, which break down along the fol
 * Selection types offered: none, single-select, and multi-select; availability depending on base
 * RAC - usable with `RandomAccessCollection` (e.g., array of struct), with or without binding
 * CD - usable with Core Data, with or without binding
+* Filter - is `config.filter` supported?
 
-Base   | Row Selection | RAC | CD  | View name     | Element wrapping  
----    | ---           | --- | --- | ---           | ---               
-List   | No Select     |  ✓  |  ✓  | TablerList    | (none)            
-List   | No Select     |  ✓  |     | TablerListB   | Binding\<Element> 
-List   | No Select     |     |  ✓  | TablerListC   | ObservedObject    
-List   | Single-select |  ✓  |  ✓  | TablerList1   | (none)            
-List   | Single-select |  ✓  |     | TablerList1B  | Binding\<Element> 
-List   | Single-Select |     |  ✓  | TablerList1C  | ObservedObject    
-List   | Multi-select  |  ✓  |  ✓  | TablerListM   | (none)            
-List   | Multi-select  |  ✓  |     | TablerListMB  | Binding\<Element> 
-List   | Multi-select  |     |  ✓  | TablerListMC  | ObservedObject    
-Stack  | No Select     |  ✓  |  ✓  | TablerStack   | (none)            
-Stack  | No Select     |  ✓  |     | TablerStackB  | Binding\<Element> 
-Stack  | No Select     |     |  ✓  | TablerStackC  | ObservedObject    
-Stack  | Single-select |  ✓  |  ✓  | TablerStack1  | (none)            
-Stack  | Single-select |  ✓  |     | TablerStack1B | Binding\<Element> 
-Stack  | Single-select |     |  ✓  | TablerStack1C | ObservedObject    
-Grid   | No Select     |  ✓  |  ✓  | TablerGrid    | (none)            
+Base   | Row Selection | RAC | CD  | Filter | View name     | Element wrapping  
+---    | ---           | --- | --- | ---    | ---           | ---               
+List   | No Select     |  ✓  |  ✓  |  ✓     | TablerList    | (none)            
+List   | No Select     |  ✓  |     |  ✓     | TablerListB   | Binding\<Element> 
+List   | No Select     |     |  ✓  |        | TablerListC   | ObservedObject    
+List   | Single-select |  ✓  |  ✓  |  ✓     | TablerList1   | (none)            
+List   | Single-select |  ✓  |     |  ✓     | TablerList1B  | Binding\<Element> 
+List   | Single-Select |     |  ✓  |        | TablerList1C  | ObservedObject    
+List   | Multi-select  |  ✓  |  ✓  |  ✓     | TablerListM   | (none)            
+List   | Multi-select  |  ✓  |     |  ✓     | TablerListMB  | Binding\<Element> 
+List   | Multi-select  |     |  ✓  |        | TablerListMC  | ObservedObject    
+Stack  | No Select     |  ✓  |  ✓  |  ✓     | TablerStack   | (none)            
+Stack  | No Select     |  ✓  |     |  ✓     | TablerStackB  | Binding\<Element> 
+Stack  | No Select     |     |  ✓  |        | TablerStackC  | ObservedObject    
+Stack  | Single-select |  ✓  |  ✓  |  ✓     | TablerStack1  | (none)            
+Stack  | Single-select |  ✓  |     |  ✓     | TablerStack1B | Binding\<Element> 
+Stack  | Single-select |     |  ✓  |        | TablerStack1C | ObservedObject    
+Grid   | No Select     |  ✓  |  ✓  |  ✓     | TablerGrid    | (none)            
+Grid   | No Select     |  ✓  |  ✓  |        | TablerGridB   | Binding\<Element       
+Grid   | No Select     |  ✓  |  ✓  |        | TablerGridC   | ObservedObject           
 
 ## Column Sorting
 

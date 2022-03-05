@@ -18,7 +18,7 @@
 
 import SwiftUI
 
-/// List-based table, with support for multi-select and bound values
+/// List-based table, with support for multi-select and bound values from RandomAccessCollection
 public struct TablerListMB<Element, Header, Row, RowBack, Select, Results>: View
     where Element: Identifiable,
     Header: View,

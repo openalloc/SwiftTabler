@@ -18,7 +18,7 @@
 
 import SwiftUI
 
-/// Stack-based table, with support for single-select and bound values
+/// Stack-based table, with support for single-select and bound values from RandomAccessCollection
 public struct TablerStack1B<Element, Header, Row, RowBack, Select, Results>: View
     where Element: Identifiable,
     Header: View,

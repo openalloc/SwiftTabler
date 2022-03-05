@@ -1,5 +1,5 @@
 //
-//  TablerStackB.swift
+//  TablerGridB.swift
 //
 // Copyright 2022 FlowAllocator LLC
 //
@@ -18,8 +18,8 @@
 
 import SwiftUI
 
-/// Stack-based table, with support for bound values from RandomAccessCollection
-public struct TablerStackB<Element, Header, Row, RowBack, Results>: View
+/// Grid-based table, with support for bound values from RandomAccessCollection
+public struct TablerGridB<Element, Header, Row, RowBack, Results>: View
     where Element: Identifiable,
     Header: View,
     Row: View,
@@ -28,7 +28,7 @@ public struct TablerStackB<Element, Header, Row, RowBack, Results>: View
     Results.Element == Element,
     Results.Index: Hashable
 {
-    public typealias Config = TablerStackConfig<Element>
+    public typealias Config = TablerGridConfig<Element>
     public typealias Context = TablerContext<Element>
     public typealias Hovered = Element.ID?
     public typealias HeaderContent = (Binding<Context>) -> Header
@@ -65,31 +65,32 @@ public struct TablerStackB<Element, Header, Row, RowBack, Results>: View
     // MARK: Views
 
     public var body: some View {
-        BaseStack(context: $context,
-                  header: headerContent) {
+        BaseGrid(context: $context,
+                 header: headerContent) {
+            // TODO: get filter working
             // TODO: is there a better way to filter bound data source?
-            if let _filter = config.filter {
-                ForEach($results) { $element in
-                    if _filter(element) {
-                        row($element)
-                    }
-                }
-            } else {
+//            if let _filter = config.filter {
+//                ForEach($results) { $element in
+//                    if _filter(element) {
+//                        row($element)
+//                    }
+//                }
+//            } else {
                 ForEach($results) { $element in
                     row($element)
                 }
-            }
+//            }
         }
     }
 
     private func row(_ element: Binding<Element>) -> some View {
         rowContent(element)
-            .modifier(StackRowMod(config, element.wrappedValue, $hovered))
+            .modifier(GridItemMod(config, element.wrappedValue, $hovered))
             .background(rowBackground(element.wrappedValue))
     }
 }
 
-public extension TablerStackB {
+public extension TablerGridB {
     // omitting Header
     init(_ config: Config,
          @ViewBuilder row: @escaping RowContent,

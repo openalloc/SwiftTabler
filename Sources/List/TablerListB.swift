@@ -18,7 +18,7 @@
 
 import SwiftUI
 
-/// List-based table, with support for bound values
+/// List-based table, with support for bound values from RandomAccessCollection
 public struct TablerListB<Element, Header, Row, RowBack, Results>: View
     where Element: Identifiable,
     Header: View,

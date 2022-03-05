@@ -30,17 +30,14 @@ struct BaseGrid<Element, Header, Rows>: View
     typealias RowContent = () -> Rows
 
     @Binding private var context: Context
-    //private let gridItems: [GridItem]
     private let headerContent: HeaderContent
     private let rowsContent: RowContent
 
     init(context: Binding<Context>,
-         //gridItems: [GridItem],
          header: @escaping HeaderContent,
          rows: @escaping RowContent)
     {
         _context = context
-        //self.gridItems = gridItems
         headerContent = header
         rowsContent = rows
     }
