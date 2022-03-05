@@ -136,8 +136,8 @@ Stack  | Single |  ✓  |  ✓  |  ✓     |                   | TablerStack1
 Stack  | Single |  ✓  |     |  ✓\*   | Binding\<Element> | TablerStack1B 
 Stack  | Single |     |  ✓  |        | NSManagedObject   | TablerStack1C  
 Grid   |        |  ✓  |  ✓  |  ✓     |                   | TablerGrid    
-Grid   |        |  ✓  |  ✓  |        | Binding\<Element> | TablerGridB         
-Grid   |        |  ✓  |  ✓  |        | NSManagedObject   | TablerGridC           
+Grid   |        |  ✓  |     |        | Binding\<Element> | TablerGridB         
+Grid   |        |     |  ✓  |        | NSManagedObject   | TablerGridC           
 
 \* filtering with Binding-based data likely not scalable as implemented. If you can find a better way to implement, submit a pull request!
 
