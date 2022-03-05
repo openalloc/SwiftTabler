@@ -1,5 +1,5 @@
 //
-//  TablerStackC.swift
+//  TablerGridC.swift
 //
 // Copyright 2022 FlowAllocator LLC
 //
@@ -16,17 +16,16 @@
 // limitations under the License.
 //
 
-import CoreData
 import SwiftUI
 
-/// Stack-based table, with support for bound values through Core Data
-public struct TablerStackC<Element, Header, Row, RowBack>: View
+/// Grid-based table, with support for bound values through Core Data
+public struct TablerGridC<Element, Header, Row, RowBack>: View
     where Element: Identifiable & NSFetchRequestResult & ObservableObject,
     Header: View,
     Row: View,
     RowBack: View
 {
-    public typealias Config = TablerStackConfig<Element>
+    public typealias Config = TablerGridConfig<Element>
     public typealias Context = TablerContext<Element>
     public typealias Hovered = Element.ID?
     public typealias HeaderContent = (Binding<Context>) -> Header
@@ -65,12 +64,12 @@ public struct TablerStackC<Element, Header, Row, RowBack>: View
     // MARK: Views
 
     public var body: some View {
-        BaseStack(context: $context,
-                  header: headerContent) {
+        BaseGrid(context: $context,
+                 header: headerContent) {
             ForEach(results) { rawElem in
                 ObservableHolder(element: rawElem) { obsElem in
                     rowContent(obsElem)
-                        .modifier(StackRowMod(config, rawElem, $hovered))
+                        .modifier(GridItemMod(config, rawElem, $hovered))
                         .background(rowBackground(rawElem))
                 }
             }
@@ -78,7 +77,7 @@ public struct TablerStackC<Element, Header, Row, RowBack>: View
     }
 }
 
-public extension TablerStackC {
+public extension TablerGridC {
     // omitting Header
     init(_ config: Config,
          @ViewBuilder row: @escaping RowContent,
@@ -119,4 +118,5 @@ public extension TablerStackC {
                   rowBackground: { _ in EmptyView() },
                   results: results)
     }
+
 }

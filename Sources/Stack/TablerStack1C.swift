@@ -19,7 +19,7 @@
 import CoreData
 import SwiftUI
 
-/// Stack-based table, with support for bound values
+/// Stack-based table, with support for bound values through Core Data
 public struct TablerStack1C<Element, Header, Row, RowBack, Select>: View
     where Element: Identifiable & NSFetchRequestResult & ObservableObject,
     Header: View,

@@ -37,13 +37,15 @@ For ScrollView/LazyVGrid-based tables:
 On macOS:
 * Hovering highlight, indicating which row the mouse is over
 
+Notes:
+
 \* Other platforms like macCatalyst, iPad on Mac, watchOS, tvOS, etc. are poorly supported, if at all. Please contribute to improve support!
 
 \*\* AnyView only used to specify sort configuration images in configuration, which shouldn't impact scalability.
 
 ## Tabler Example
 
-The basic example below shows the display of tabular data using `TablerList`, which is for the display of unbound data without any selection capability.
+The example below shows the display of tabular data from an array using `TablerList`, which is for the display of unbound data without any selection capability.
 
 ```swift
 import SwiftUI
@@ -102,42 +104,56 @@ struct ContentView: View {
 }
 ```
 
-## Tables
+While `LazyVGrid` is used to wrap the header and row items, you could alternatively wrap them with `HStack` or similar mechanism.
 
-You can choose from any of sixteen (16) variants, which break down along the following lines:
+## Tabler Views
 
-* Three foundations: List-based, ScrollView/LazyVStack-based, and ScrollView/LazyVGrid-based
-* Selection types offered: none, single-select, and multi-select; availability depending on base
-* RAC - usable with `RandomAccessCollection` (e.g., array of struct), with or without binding
-* CD - usable with Core Data, with or without binding
+You can choose from any of eighteen (18) variants, which break down along the following lines:
+
+* Base - three foundations: `List`, `ScrollView/LazyVStack`, and `ScrollView/LazyVGrid`
+* Select - single-select, and multi-select, or selection not supported
+* RAC - can be used with `RandomAccessCollection` (e.g., array of struct)
+* CD - can be used with Core Data
 * Filter - is `config.filter` supported?
+* Bound - the mechanism through which values are bound, if at all
+* View - the view to use
 
-Base   | Row Selection | RAC | CD  | Filter | View name     | Element wrapping  
----    | ---           | --- | --- | ---    | ---           | ---               
-List   | No Select     |  ✓  |  ✓  |  ✓     | TablerList    | (none)            
-List   | No Select     |  ✓  |     |  ✓     | TablerListB   | Binding\<Element> 
-List   | No Select     |     |  ✓  |        | TablerListC   | ObservedObject    
-List   | Single-select |  ✓  |  ✓  |  ✓     | TablerList1   | (none)            
-List   | Single-select |  ✓  |     |  ✓     | TablerList1B  | Binding\<Element> 
-List   | Single-Select |     |  ✓  |        | TablerList1C  | ObservedObject    
-List   | Multi-select  |  ✓  |  ✓  |  ✓     | TablerListM   | (none)            
-List   | Multi-select  |  ✓  |     |  ✓     | TablerListMB  | Binding\<Element> 
-List   | Multi-select  |     |  ✓  |        | TablerListMC  | ObservedObject    
-Stack  | No Select     |  ✓  |  ✓  |  ✓     | TablerStack   | (none)            
-Stack  | No Select     |  ✓  |     |  ✓     | TablerStackB  | Binding\<Element> 
-Stack  | No Select     |     |  ✓  |        | TablerStackC  | ObservedObject    
-Stack  | Single-select |  ✓  |  ✓  |  ✓     | TablerStack1  | (none)            
-Stack  | Single-select |  ✓  |     |  ✓     | TablerStack1B | Binding\<Element> 
-Stack  | Single-select |     |  ✓  |        | TablerStack1C | ObservedObject    
-Grid   | No Select     |  ✓  |  ✓  |  ✓     | TablerGrid    | (none)            
-Grid   | No Select     |  ✓  |  ✓  |        | TablerGridB   | Binding\<Element       
-Grid   | No Select     |  ✓  |  ✓  |        | TablerGridC   | ObservedObject           
+Base   | Select | RAC | CD  | Filter | Bound             | View      
+---    | ---    | --- | --- | ---    | ---               | ---           
+List   |        |  ✓  |  ✓  |  ✓     |                   | TablerList    
+List   |        |  ✓  |     |  ✓\*   | Binding\<Element> | TablerListB   
+List   |        |     |  ✓  |        | NSManagedObject   | TablerListC    
+List   | Single |  ✓  |  ✓  |  ✓     |                   | TablerList1   
+List   | Single |  ✓  |     |  ✓\*   | Binding\<Element> | TablerList1B  
+List   | Single |     |  ✓  |        | NSManagedObject   | TablerList1C   
+List   | Multi  |  ✓  |  ✓  |  ✓     |                   | TablerListM   
+List   | Multi  |  ✓  |     |  ✓\*   | Binding\<Element> | TablerListMB  
+List   | Multi  |     |  ✓  |        | NSManagedObject   | TablerListMC   
+Stack  |        |  ✓  |  ✓  |  ✓     |                   | TablerStack   
+Stack  |        |  ✓  |     |  ✓\*   | Binding\<Element> | TablerStackB  
+Stack  |        |     |  ✓  |        | NSManagedObject   | TablerStackC   
+Stack  | Single |  ✓  |  ✓  |  ✓     |                   | TablerStack1  
+Stack  | Single |  ✓  |     |  ✓\*   | Binding\<Element> | TablerStack1B 
+Stack  | Single |     |  ✓  |        | NSManagedObject   | TablerStack1C  
+Grid   |        |  ✓  |  ✓  |  ✓     |                   | TablerGrid    
+Grid   |        |  ✓  |  ✓  |        | Binding\<Element> | TablerGridB         
+Grid   |        |  ✓  |  ✓  |        | NSManagedObject   | TablerGridC           
+
+\* filtering with Binding-based data likely not scalable as implemented. If you can find a better way to implement, submit a pull request!
 
 ## Column Sorting
 
 Column sorting is available through `tablerSort` view function.
 
-From the demo app, an example of using the sort capability, where an indicator displays in the header if the column is actively sorted: 
+The example below show how the header items can support sort.
+
+The `columnTitle` is a convenience function that displays header name along with an indicator showing the current sort, if any.
+
+Caret images are used by default, but are configurable in `TablerConfig`.
+
+### Random Access Collection
+
+From the _TablerDemo_ app:
 
 ```swift
 private typealias Context = TablerContext<Fruit>
@@ -156,9 +172,25 @@ private func header(ctx: Binding<Context>) -> some View {
 }
 ```
 
-When the user clicks on a header column for the first time, it is sorted in ascending order, with an up-chevron "^" indicator. If clicked a successive time, a descending sort is executed, with a down-chevron "v" indicator. See `TablerConfig` for configuration.
+### Core Data
 
-For sorting with Core Data, see the _TablerCoreDemo_ app.
+The sort method used with Core Data differs. From the _TablerCoreDemo_ app:
+
+```swift
+private typealias Context = TablerContext<Fruit>
+private typealias Sort = TablerSort<Fruit>
+
+private func header(ctx: Binding<Context>) -> some View {
+    LazyVGrid(columns: gridItems, alignment: .leading) {
+        Sort.columnTitle("ID", ctx, \.id)
+            .onTapGesture { fruits.sortDescriptors = [tablerSort(ctx, \.id)] }
+        Sort.columnTitle("Name", ctx, \.name)
+            .onTapGesture { fruits.sortDescriptors = [tablerSort(ctx, \.name)] }
+        Sort.columnTitle("Weight", ctx, \.weight)
+            .onTapGesture { fruits.sortDescriptors = [tablerSort(ctx, \.weight)] }
+    }
+}
+```
 
 ## Bound data
 
@@ -169,7 +201,7 @@ macOS | iOS
 When used with 'bound' variants (e.g., `TablerListB`), the data can be modified directly, mutating your data source. From the demo:
 
 ```swift
-private func brow(element: Binding<Fruit>) -> some View {
+private func brow(element: BoundValue) -> some View {
     LazyVGrid(columns: gridItems) {
         Text(element.wrappedValue.id)
         TextField("Name", text: element.name)
@@ -180,6 +212,26 @@ private func brow(element: Binding<Fruit>) -> some View {
     }
 }
 ```
+
+### Random Access Collection
+
+For Random Access Collection sources, `BoundValue` is:
+
+```swift
+typealias BoundValue = Binding<Fruit>
+```
+
+### Core Data
+
+For Core Data sources, `BoundValue` is:
+
+```swift
+typealias BoundValue = ObservedObject<Fruit>.Wrapper
+```
+
+Also known as `ProjectedValue`.
+
+Note that for Core Data, the user's changes will need to be committed to the Managed Object Context. See the _TablerCoreData_ code for an example of how this might be done.
 
 ## Row Background
 
