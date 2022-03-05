@@ -163,7 +163,7 @@ See the code for the default constants.
 * rowPadding: EdgeInsets =  TablerStackConfigDefaults.rowPadding
 * headerSpacing: CGFloat = TablerStackConfigDefaults.headerSpacing
 * rowSpacing: CGFloat = TablerStackConfigDefaults.rowSpacing
-* filter: Filter? = nil,
+* filter: Filter? = nil
 * hoverColor: Color = TablerConfigDefaults.hoverColor
 * tablePadding: EdgeInsets = TablerStackConfigDefaults.tablePadding
 * sortIndicatorForward: AnyView = TablerConfigDefaults.sortIndicatorForward
@@ -176,7 +176,7 @@ See the code for the default constants.
 * alignment: HorizontalAlignment = TablerGridConfigDefaults.alignment
 * itemPadding: EdgeInsets = TablerGridConfigDefaults.itemPadding
 * headerSpacing: CGFloat = TablerGridConfigDefaults.headerSpacing
-* rowSpacing: CGFloat = TablerGridConfigDefaults.rowSpacing,
+* rowSpacing: CGFloat = TablerGridConfigDefaults.rowSpacing
 * filter: Filter? = nil
 * hoverColor: Color = TablerConfigDefaults.hoverColor
 * tablePadding: EdgeInsets = TablerGridConfigDefaults.tablePadding
