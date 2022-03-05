@@ -17,33 +17,27 @@ macOS | iOS
 
 * Convenient display of tabular data from a `RandomAccessCollection` or Core Data source
 * Presently targeting macOS v11+ and iOS v14+\*
-* Option to support bound data source, where inline controls can directly mutate your data model
+* Option to support a bound data source, where inline controls can directly mutate your data model
 * Option to sort by column, with indicators and concise syntax
 * Option to specify a row background, with selection overlay
+* On macOS, option for a hovering highlight, to indicate which row the mouse is over
 * MINIMAL use of View erasure (i.e., use of `AnyView`), which can impact scalability and performance\*\*
 * No external dependencies!
 
-On macOS:
-* Hovering highlight, indicating which row the mouse is over
-
-### Features specific to table types
-
 Three table types are supported, as determined by the mechanism by which their header and rows are rendered.
 
-#### List
+### List
 * Based on SwiftUI's `List`
 * Option to support moving of rows through drag and drop
 * Support for single-select, multi-select, or no selection at all
 
-#### Stack
+### Stack
 * Based on `ScrollView`/`LazyVStack`
 * Support for single-select and no selection at all
 
-#### Grid
+### Grid
 * Based on `ScrollView`/`LazyVGrid`
 * Likely the most scalable and efficient, but least flexible
-
-### Feature Notes
 
 \* Other platforms like macCatalyst, iPad on Mac, watchOS, tvOS, etc. are poorly supported, if at all. Please contribute to improve support!
 
@@ -114,38 +108,38 @@ While `LazyVGrid` is used to wrap the header and row items, you could alternativ
 
 ## Tabler Views
 
-You can choose from any of eighteen (18) variants, which break down along the following lines:
+_Tabler_ offers eighteen (18) views from which you can choose. They break down along the following lines:
 
 * Type - each of the three table types differ in how they render:
   * **List** - based on `List`
-  * **Stack** - based on `ScrollView/LazyVStack`
-  * **Grid** - based on `ScrollView/LazyVGrid`
+  * **Stack** - based on `ScrollView`/`LazyVStack`
+  * **Grid** - based on `ScrollView`/`LazyVGrid`
 * Select - single-select, and multi-select, or selection not supported
-* RAC - can be used with `RandomAccessCollection` (e.g., array of struct values)
-* CD - can be used with Core Data
-* Filter - is `config.filter` supported?
+* RAC - if checked, can be used with `RandomAccessCollection` (e.g., array of struct values)
+* CD - if checked, can be used with Core Data
+* Filter - if checked, `config.filter` is supported (see caveat below)
 * Bound - the mechanism through which values are bound, if at all
 * View - the view to use
 
 Type      | Select | RAC | CD  | Filter | Bound               | View      
 ---       | ---    | --- | --- | ---    | ---                 | ---           
 **List**  |        |  ✓  |  ✓  |  ✓     |                     | `TablerList`    
-**List**  |        |  ✓  |     |  ✓\*   | `Binding\<Element>` | `TablerListB` 
+**List**  |        |  ✓  |     |  ✓\*   | `Binding<Element>`  | `TablerListB` 
 **List**  |        |     |  ✓  |        | `NSManagedObject`   | `TablerListC`    
 **List**  | Single |  ✓  |  ✓  |  ✓     |                     | `TablerList1`   
-**List**  | Single |  ✓  |     |  ✓\*   | `Binding\<Element>` | `TablerList1B`  
+**List**  | Single |  ✓  |     |  ✓\*   | `Binding<Element>`  | `TablerList1B`  
 **List**  | Single |     |  ✓  |        | `NSManagedObject`   | `TablerList1C`   
 **List**  | Multi  |  ✓  |  ✓  |  ✓     |                     | `TablerListM`   
-**List**  | Multi  |  ✓  |     |  ✓\*   | `Binding\<Element>` | `TablerListMB`  
+**List**  | Multi  |  ✓  |     |  ✓\*   | `Binding<Element>`  | `TablerListMB`  
 **List**  | Multi  |     |  ✓  |        | `NSManagedObject`   | `TablerListMC`   
 **Stack** |        |  ✓  |  ✓  |  ✓     |                     | `TablerStack`   
-**Stack** |        |  ✓  |     |  ✓\*   | `Binding\<Element>` | `TablerStackB`  
+**Stack** |        |  ✓  |     |  ✓\*   | `Binding<Element>`  | `TablerStackB`  
 **Stack** |        |     |  ✓  |        | `NSManagedObject`   | `TablerStackC`   
 **Stack** | Single |  ✓  |  ✓  |  ✓     |                     | `TablerStack1`  
-**Stack** | Single |  ✓  |     |  ✓\*   | `Binding\<Element>` | `TablerStack1B` 
+**Stack** | Single |  ✓  |     |  ✓\*   | `Binding<Element>`  | `TablerStack1B` 
 **Stack** | Single |     |  ✓  |        | `NSManagedObject`   | `TablerStack1C`  
 **Grid**  |        |  ✓  |  ✓  |  ✓     |                     | `TablerGrid`    
-**Grid**  |        |  ✓  |     |        | `Binding\<Element>` | `TablerGridB`         
+**Grid**  |        |  ✓  |     |        | `Binding<Element>`  | `TablerGridB`         
 **Grid**  |        |     |  ✓  |        | `NSManagedObject`   | `TablerGridC`           
 
 \* filtering with Binding-based data likely not scalable as implemented. If you can find a better way to implement, submit a pull request!
@@ -252,7 +246,7 @@ macOS | iOS
 :---:|:---:
 ![](https://github.com/openalloc/SwiftTabler/blob/main/Images/macOSb.png)  |  ![](https://github.com/openalloc/SwiftTabler/blob/main/Images/iOSb.png)
 
-When used with 'bound' variants (e.g., `TablerListB` or `TablerListC`), the data can be modified directly, mutating your data source. From the demo:
+When used with 'bound' views (e.g., `TablerListB` or `TablerListC`), the data can be modified directly, mutating your data source. From the demo:
 
 ```swift
 private func brow(element: BoundValue) -> some View {
