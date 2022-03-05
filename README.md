@@ -17,27 +17,33 @@ macOS | iOS
 
 * Convenient display of tabular data from a `RandomAccessCollection` or Core Data source
 * Presently targeting macOS v11+ and iOS v14+\*
-* Supporting bound and unbound arrays, and Core Data too
-* With bound data, add inline controls to interactively change (and mutate) your data model
-* Optional sort-by-column support, with indicators and concise syntax
-* Optional support for row background, with selection overlay
+* Option to support bound data source, where inline controls can directly mutate your data model
+* Option to sort by column, with indicators and concise syntax
+* Option to specify a row background, with selection overlay
 * MINIMAL use of View erasure (i.e., use of `AnyView`), which can impact scalability and performance\*\*
 * No external dependencies!
-
-For List-based tables:
-* Optional moving of rows through drag and drop
-* Support for single-select, multi-select, or no selection at all
-
-For ScrollView/LazyVStack-based tables:
-* Support for single-select and no selection at all
-
-For ScrollView/LazyVGrid-based tables:
-* Likely the most scalable and efficient, but least flexible
 
 On macOS:
 * Hovering highlight, indicating which row the mouse is over
 
-Notes:
+### Features specific to table types
+
+Three table types are supported, as determined by the mechanism by which their header and rows are rendered.
+
+#### List
+* Based on SwiftUI's `List`
+* Option to support moving of rows through drag and drop
+* Support for single-select, multi-select, or no selection at all
+
+#### Stack
+* Based on `ScrollView`/`LazyVStack`
+* Support for single-select and no selection at all
+
+#### Grid
+* Based on `ScrollView`/`LazyVGrid`
+* Likely the most scalable and efficient, but least flexible
+
+### Feature Notes
 
 \* Other platforms like macCatalyst, iPad on Mac, watchOS, tvOS, etc. are poorly supported, if at all. Please contribute to improve support!
 
@@ -110,7 +116,10 @@ While `LazyVGrid` is used to wrap the header and row items, you could alternativ
 
 You can choose from any of eighteen (18) variants, which break down along the following lines:
 
-* Base - three foundations: `List`, `ScrollView/LazyVStack`, and `ScrollView/LazyVGrid`
+* Type - each of the three table types differ in how they render:
+  * **List** - based on `List`
+  * **Stack** - based on `ScrollView/LazyVStack`
+  * **Grid** - based on `ScrollView/LazyVGrid`
 * Select - single-select, and multi-select, or selection not supported
 * RAC - can be used with `RandomAccessCollection` (e.g., array of struct values)
 * CD - can be used with Core Data
@@ -118,26 +127,26 @@ You can choose from any of eighteen (18) variants, which break down along the fo
 * Bound - the mechanism through which values are bound, if at all
 * View - the view to use
 
-Base   | Select | RAC | CD  | Filter | Bound             | View      
----    | ---    | --- | --- | ---    | ---               | ---           
-List   |        |  ✓  |  ✓  |  ✓     |                   | TablerList    
-List   |        |  ✓  |     |  ✓\*   | Binding\<Element> | TablerListB   
-List   |        |     |  ✓  |        | NSManagedObject   | TablerListC    
-List   | Single |  ✓  |  ✓  |  ✓     |                   | TablerList1   
-List   | Single |  ✓  |     |  ✓\*   | Binding\<Element> | TablerList1B  
-List   | Single |     |  ✓  |        | NSManagedObject   | TablerList1C   
-List   | Multi  |  ✓  |  ✓  |  ✓     |                   | TablerListM   
-List   | Multi  |  ✓  |     |  ✓\*   | Binding\<Element> | TablerListMB  
-List   | Multi  |     |  ✓  |        | NSManagedObject   | TablerListMC   
-Stack  |        |  ✓  |  ✓  |  ✓     |                   | TablerStack   
-Stack  |        |  ✓  |     |  ✓\*   | Binding\<Element> | TablerStackB  
-Stack  |        |     |  ✓  |        | NSManagedObject   | TablerStackC   
-Stack  | Single |  ✓  |  ✓  |  ✓     |                   | TablerStack1  
-Stack  | Single |  ✓  |     |  ✓\*   | Binding\<Element> | TablerStack1B 
-Stack  | Single |     |  ✓  |        | NSManagedObject   | TablerStack1C  
-Grid   |        |  ✓  |  ✓  |  ✓     |                   | TablerGrid    
-Grid   |        |  ✓  |     |        | Binding\<Element> | TablerGridB         
-Grid   |        |     |  ✓  |        | NSManagedObject   | TablerGridC           
+Type      | Select | RAC | CD  | Filter | Bound               | View      
+---       | ---    | --- | --- | ---    | ---                 | ---           
+**List**  |        |  ✓  |  ✓  |  ✓     |                     | `TablerList`    
+**List**  |        |  ✓  |     |  ✓\*   | `Binding\<Element>` | `TablerListB` 
+**List**  |        |     |  ✓  |        | `NSManagedObject`   | `TablerListC`    
+**List**  | Single |  ✓  |  ✓  |  ✓     |                     | `TablerList1`   
+**List**  | Single |  ✓  |     |  ✓\*   | `Binding\<Element>` | `TablerList1B`  
+**List**  | Single |     |  ✓  |        | `NSManagedObject`   | `TablerList1C`   
+**List**  | Multi  |  ✓  |  ✓  |  ✓     |                     | `TablerListM`   
+**List**  | Multi  |  ✓  |     |  ✓\*   | `Binding\<Element>` | `TablerListMB`  
+**List**  | Multi  |     |  ✓  |        | `NSManagedObject`   | `TablerListMC`   
+**Stack** |        |  ✓  |  ✓  |  ✓     |                     | `TablerStack`   
+**Stack** |        |  ✓  |     |  ✓\*   | `Binding\<Element>` | `TablerStackB`  
+**Stack** |        |     |  ✓  |        | `NSManagedObject`   | `TablerStackC`   
+**Stack** | Single |  ✓  |  ✓  |  ✓     |                     | `TablerStack1`  
+**Stack** | Single |  ✓  |     |  ✓\*   | `Binding\<Element>` | `TablerStack1B` 
+**Stack** | Single |     |  ✓  |        | `NSManagedObject`   | `TablerStack1C`  
+**Grid**  |        |  ✓  |  ✓  |  ✓     |                     | `TablerGrid`    
+**Grid**  |        |  ✓  |     |        | `Binding\<Element>` | `TablerGridB`         
+**Grid**  |        |     |  ✓  |        | `NSManagedObject`   | `TablerGridC`           
 
 \* filtering with Binding-based data likely not scalable as implemented. If you can find a better way to implement, submit a pull request!
 
@@ -146,6 +155,8 @@ Grid   |        |     |  ✓  |        | NSManagedObject   | TablerGridC
 Configuration options will vary by table type.
 
 Defaults can vary by platform (macOS, iOS, etc.). See the code for the default constants.
+
+Spacing defaults are driven by the goal of achieving uniform appearance among table types, with the *List* type being the standard.
 
 ### List
 
