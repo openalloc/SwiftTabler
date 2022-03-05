@@ -24,6 +24,7 @@ struct BaseList<Element, Header, Rows>: View
     Header: View,
     Rows: View
 {
+    typealias Config = TablerListConfig<Element>
     typealias Context = TablerContext<Element>
     typealias HeaderContent = (Binding<Context>) -> Header
     typealias RowContent = () -> Rows
@@ -48,6 +49,11 @@ struct BaseList<Element, Header, Rows>: View
                 buildHeader()
                 rowsContent()
             }
+            .padding(config.tablePadding)
         }
+    }
+
+    private var config: Config {
+        context.config as? Config ?? Config()
     }
 }

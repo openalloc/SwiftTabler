@@ -46,7 +46,7 @@ struct BaseGrid<Element, Header, Rows>: View
         BaseTable(context: $context,
                   header: headerContent) { buildHeader in
 
-            VStack(spacing: config.rowSpacing) {  //TODO headerSpacing
+            VStack(spacing: config.headerSpacing) {
                 buildHeader()
 
                 ScrollView {
@@ -57,7 +57,7 @@ struct BaseGrid<Element, Header, Rows>: View
                     }
                 }
             }
-            .padding(config.paddingInsets)
+            .padding(config.tablePadding)
         }
     }
 

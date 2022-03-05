@@ -16,6 +16,7 @@
 // limitations under the License.
 //
 
+import CoreData
 import SwiftUI
 
 /// Grid-based table, with support for bound values through Core Data

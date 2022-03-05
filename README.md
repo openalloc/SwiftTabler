@@ -112,7 +112,7 @@ You can choose from any of eighteen (18) variants, which break down along the fo
 
 * Base - three foundations: `List`, `ScrollView/LazyVStack`, and `ScrollView/LazyVGrid`
 * Select - single-select, and multi-select, or selection not supported
-* RAC - can be used with `RandomAccessCollection` (e.g., array of struct)
+* RAC - can be used with `RandomAccessCollection` (e.g., array of struct values)
 * CD - can be used with Core Data
 * Filter - is `config.filter` supported?
 * Bound - the mechanism through which values are bound, if at all
@@ -198,7 +198,7 @@ macOS | iOS
 :---:|:---:
 ![](https://github.com/openalloc/SwiftTabler/blob/main/Images/macOSb.png)  |  ![](https://github.com/openalloc/SwiftTabler/blob/main/Images/iOSb.png)
 
-When used with 'bound' variants (e.g., `TablerListB`), the data can be modified directly, mutating your data source. From the demo:
+When used with 'bound' variants (e.g., `TablerListB` or `TablerListC`), the data can be modified directly, mutating your data source. From the demo:
 
 ```swift
 private func brow(element: BoundValue) -> some View {
@@ -231,7 +231,7 @@ typealias BoundValue = ObservedObject<Fruit>.Wrapper
 
 Also known as `ProjectedValue`.
 
-Note that for Core Data, the user's changes will need to be committed to the Managed Object Context. See the _TablerCoreData_ code for an example of how this might be done.
+Note that for Core Data, the user's changes will need to be saved to the Managed Object Context. See the _TablerCoreData_ code for an example of how this might be done.
 
 ## Row Background
 
@@ -254,7 +254,7 @@ private func rowBackgroundAction(fruit: Fruit) -> some View {
 }
 ```
 
-Where you're using selection with colored rows, you may want to use a 'selection overlay', as the normal selection is obscured with colored rows. See _TablerDemo_ for examples.
+Where you're using selection with row background, you may want to use a 'selection overlay', as the normal selection may be obscured. See _TablerDemo_ for examples.
 
 Also, when using a row background on macOS, you might wish to disable the hover effect.
 

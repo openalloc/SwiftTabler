@@ -22,7 +22,7 @@ struct HeaderView<Element, Header>: View
     where Element: Identifiable,
     Header: View
 {
-    typealias Config = TablerConfig<Element>
+    typealias Config = TablerBaseConfig<Element>
     typealias Context = TablerContext<Element>
 
     // MARK: Parameters

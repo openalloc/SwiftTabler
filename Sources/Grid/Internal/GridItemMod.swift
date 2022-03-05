@@ -21,7 +21,7 @@ import SwiftUI
 struct GridItemMod<Element>: ViewModifier
     where Element: Identifiable
 {
-    typealias Config = TablerConfig<Element>
+    typealias Config = TablerGridConfig<Element>
     typealias Hovered = Element.ID?
     
     let config: Config
@@ -39,9 +39,11 @@ struct GridItemMod<Element>: ViewModifier
 
     func body(content: Content) -> some View {
         content
+            .padding(config.itemPadding)
+        
 #if os(macOS) || targetEnvironment(macCatalyst)
             .onHover { if $0 { hovered = element.id } }
-            .frame(maxWidth: .infinity)
+            //.frame(maxWidth: .infinity)  // NOTE this centers the grid item
             .background(hovered == element.id ? config.hoverColor : Color.clear)
 #endif
     }

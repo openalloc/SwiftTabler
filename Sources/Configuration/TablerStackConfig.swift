@@ -19,45 +19,41 @@
 import SwiftUI
 
 public enum TablerStackConfigDefaults {
-    // approximately match the layout of Stack
 #if os(macOS)
     public static let headerSpacing: CGFloat = 4
-    public static let rowSpacing: CGFloat = 0
     public static let rowPadding = EdgeInsets(top: 4, leading: 0, bottom: 4, trailing: 0)
-    public static let paddingInsets = EdgeInsets(top: 14, leading: 16, bottom: 15, trailing: 16)
+    public static let tablePadding = EdgeInsets(top: 14, leading: 16, bottom: 15, trailing: 16)
 #elseif os(iOS)
     public static let headerSpacing: CGFloat = 12
-    public static let rowSpacing: CGFloat = 0
     public static let rowPadding = EdgeInsets(top: 11, leading: 0, bottom: 12, trailing: 0)
-    public static let paddingInsets = EdgeInsets(top: 46, leading: 32, bottom: 20, trailing: 32)
+    public static let tablePadding = EdgeInsets(top: 46, leading: 32, bottom: 20, trailing: 32)
 #endif
+
+    public static let rowSpacing: CGFloat = 0
 }
 
-public class TablerStackConfig<Element>: TablerConfig<Element>
+public class TablerStackConfig<Element>: TablerSpacedConfig<Element>
 where Element: Identifiable
 {
-    public let headerSpacing: CGFloat
-    public let rowSpacing: CGFloat
     public let rowPadding: EdgeInsets
-    public let paddingInsets: EdgeInsets
     
-    public init(headerSpacing: CGFloat = TablerStackConfigDefaults.headerSpacing,
+    public init(rowPadding: EdgeInsets =  TablerStackConfigDefaults.rowPadding,
+                headerSpacing: CGFloat = TablerStackConfigDefaults.headerSpacing,
                 rowSpacing: CGFloat = TablerStackConfigDefaults.rowSpacing,
-                rowPadding: EdgeInsets = TablerStackConfigDefaults.rowPadding,
-                paddingInsets: EdgeInsets = TablerStackConfigDefaults.paddingInsets,
                 filter: Filter? = nil,
                 hoverColor: Color = TablerConfigDefaults.hoverColor,
+                tablePadding: EdgeInsets = TablerStackConfigDefaults.tablePadding,
                 sortIndicatorForward: AnyView = TablerConfigDefaults.sortIndicatorForward,
                 sortIndicatorReverse: AnyView = TablerConfigDefaults.sortIndicatorReverse,
                 sortIndicatorNeutral: AnyView = TablerConfigDefaults.sortIndicatorNeutral)
     {
-        self.headerSpacing = headerSpacing
-        self.rowSpacing = rowSpacing
         self.rowPadding = rowPadding
-        self.paddingInsets = paddingInsets
         
-        super.init(filter: filter,
+        super.init(headerSpacing: headerSpacing,
+                   rowSpacing: rowSpacing,
+                   filter: filter,
                    hoverColor: hoverColor,
+                   tablePadding: tablePadding,
                    sortIndicatorForward: sortIndicatorForward,
                    sortIndicatorReverse: sortIndicatorReverse,
                    sortIndicatorNeutral: sortIndicatorNeutral)

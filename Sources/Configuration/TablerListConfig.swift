@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-public class TablerListConfig<Element>: TablerConfig<Element>
+public class TablerListConfig<Element>: TablerBaseConfig<Element>
     where Element: Identifiable
 {
     public typealias CanMove<Element> = (Element) -> Bool
@@ -20,6 +20,7 @@ public class TablerListConfig<Element>: TablerConfig<Element>
                 onMove: OnMove<Element>? = nil,
                 filter: Filter? = nil,
                 hoverColor: Color = TablerConfigDefaults.hoverColor,
+                tablePadding: EdgeInsets = TablerConfigDefaults.tablePadding,
                 sortIndicatorForward: AnyView = TablerConfigDefaults.sortIndicatorForward,
                 sortIndicatorReverse: AnyView = TablerConfigDefaults.sortIndicatorReverse,
                 sortIndicatorNeutral: AnyView = TablerConfigDefaults.sortIndicatorNeutral)
@@ -29,6 +30,7 @@ public class TablerListConfig<Element>: TablerConfig<Element>
 
         super.init(filter: filter,
                    hoverColor: hoverColor,
+                   tablePadding: tablePadding,
                    sortIndicatorForward: sortIndicatorForward,
                    sortIndicatorReverse: sortIndicatorReverse,
                    sortIndicatorNeutral: sortIndicatorNeutral)

@@ -24,8 +24,9 @@ struct BaseListM<Element, Header, Rows>: View
     Header: View,
     Rows: View
 {
+    typealias Config = TablerListConfig<Element>
     typealias Context = TablerContext<Element>
-    typealias HeaderContent = (Binding<Context>) -> Header // (Binding<SwSort<Field>?>) -> Header
+    typealias HeaderContent = (Binding<Context>) -> Header
     typealias RowContent = () -> Rows
     typealias Selected = Set<Element.ID>
 
@@ -52,6 +53,11 @@ struct BaseListM<Element, Header, Rows>: View
                 buildHeader()
                 rowsContent()
             }
+            .padding(config.tablePadding)
         }
+    }
+
+    private var config: Config {
+        context.config as? Config ?? Config()
     }
 }

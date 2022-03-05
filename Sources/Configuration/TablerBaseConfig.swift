@@ -1,5 +1,5 @@
 //
-//  TablerConfig.swift
+//  TablerBaseConfig.swift
 //
 // Copyright 2022 FlowAllocator LLC
 //
@@ -19,8 +19,11 @@
 import SwiftUI
 
 public enum TablerConfigDefaults {
+    
     public static let hoverColor = Color.accentColor.opacity(0.2)
     
+    public static let tablePadding: EdgeInsets = .init()
+
     public static let sortIndicatorForward = AnyView(
         Image(systemName: "chevron.up")
             .foregroundColor(.secondary)
@@ -36,16 +39,14 @@ public enum TablerConfigDefaults {
     )
 }
 
-open class TablerConfig<Element>
+open class TablerBaseConfig<Element>
     where Element: Identifiable
 {
     public typealias Filter = (Element) -> Bool
 
-    // MARK: Parameters
-
-    /// NOTE filtering not supported in Core Data-based tables, as it's assumed you'll use a predicate in your FetchRequest.
     public let filter: Filter?
     public let hoverColor: Color
+    public let tablePadding: EdgeInsets
 
     public let sortIndicatorForward: AnyView
     public let sortIndicatorReverse: AnyView
@@ -53,12 +54,14 @@ open class TablerConfig<Element>
 
     public init(filter: Filter? = nil,
                 hoverColor: Color = TablerConfigDefaults.hoverColor,
+                tablePadding: EdgeInsets = TablerConfigDefaults.tablePadding,
                 sortIndicatorForward: AnyView = TablerConfigDefaults.sortIndicatorForward,
                 sortIndicatorReverse: AnyView = TablerConfigDefaults.sortIndicatorReverse,
                 sortIndicatorNeutral: AnyView = TablerConfigDefaults.sortIndicatorNeutral)
     {
         self.filter = filter
         self.hoverColor = hoverColor
+        self.tablePadding = tablePadding
         self.sortIndicatorForward = sortIndicatorForward
         self.sortIndicatorReverse = sortIndicatorReverse
         self.sortIndicatorNeutral = sortIndicatorNeutral

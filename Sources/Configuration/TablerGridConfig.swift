@@ -19,43 +19,48 @@
 import SwiftUI
 
 public enum TablerGridConfigDefaults {
-    // TODO: these values probably need to be tweaked to match the basic layout of `List`
-    #if os(macOS)
-        public static let rowSpacing: CGFloat = 8
-        public static let paddingInsets = EdgeInsets(top: 14, leading: 16, bottom: 15, trailing: 16)
-    #elseif os(iOS)
-        public static let rowSpacing: CGFloat = 17
-        public static let paddingInsets = EdgeInsets(top: 48, leading: 32, bottom: 20, trailing: 32)
-    #endif
-
+#if os(macOS)
+    public static let headerSpacing: CGFloat = 8
+    public static let rowSpacing: CGFloat = 8
+    public static let tablePadding = EdgeInsets(top: 14, leading: 16, bottom: 15, trailing: 16)
+#elseif os(iOS)
+    public static let headerSpacing: CGFloat = 23.5
+    public static let rowSpacing: CGFloat = 23.5
+    public static let tablePadding = EdgeInsets(top: 46, leading: 32, bottom: 20, trailing: 32)
+#endif
+    
+    public static let itemPadding: EdgeInsets = .init()
     public static let alignment: HorizontalAlignment = .leading
 }
 
-public class TablerGridConfig<Element>: TablerConfig<Element>
-    where Element: Identifiable
+public class TablerGridConfig<Element>: TablerSpacedConfig<Element>
+where Element: Identifiable
 {
     public let gridItems: [GridItem]
     public let alignment: HorizontalAlignment
-    public let rowSpacing: CGFloat
-    public let paddingInsets: EdgeInsets
-
+    public let itemPadding: EdgeInsets
+    
     public init(gridItems: [GridItem] = [],
                 alignment: HorizontalAlignment = TablerGridConfigDefaults.alignment,
+                itemPadding: EdgeInsets = TablerGridConfigDefaults.itemPadding,
+                headerSpacing: CGFloat = TablerGridConfigDefaults.headerSpacing,
                 rowSpacing: CGFloat = TablerGridConfigDefaults.rowSpacing,
-                paddingInsets: EdgeInsets = TablerGridConfigDefaults.paddingInsets,
                 filter: Filter? = nil,
                 hoverColor: Color = TablerConfigDefaults.hoverColor,
+                tablePadding: EdgeInsets = TablerGridConfigDefaults.tablePadding,
                 sortIndicatorForward: AnyView = TablerConfigDefaults.sortIndicatorForward,
                 sortIndicatorReverse: AnyView = TablerConfigDefaults.sortIndicatorReverse,
                 sortIndicatorNeutral: AnyView = TablerConfigDefaults.sortIndicatorNeutral)
     {
         self.gridItems = gridItems
-        self.rowSpacing = rowSpacing
-        self.paddingInsets = paddingInsets
         self.alignment = alignment
-
-        super.init(filter: filter,
+        self.itemPadding = itemPadding
+        
+        super.init(headerSpacing: headerSpacing,
+                   rowSpacing: rowSpacing,
+                   filter: filter,
                    hoverColor: hoverColor,
+                   tablePadding: tablePadding,
                    sortIndicatorForward: sortIndicatorForward,
                    sortIndicatorReverse: sortIndicatorReverse,
                    sortIndicatorNeutral: sortIndicatorNeutral)

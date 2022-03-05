@@ -55,7 +55,7 @@ struct BaseStack<Element, Header, Rows>: View
                     }
                 }
             }
-            .padding(config.paddingInsets)
+            .padding(config.tablePadding)
         }
     }
 
