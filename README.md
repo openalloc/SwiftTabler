@@ -19,17 +19,17 @@ macOS | iOS
 * Presently targeting macOS v11+ and iOS v14+\*
 * Supporting bound and unbound arrays, and Core Data too
 * With bound data, add inline controls to interactively change (and mutate) your data model
-* Optional sort-by-column support, with concise syntax
-* Optional support for colored rows, with selection overlay
+* Optional sort-by-column support, with indicators and concise syntax
+* Optional support for row background, with selection overlay
 * MINIMAL use of View erasure (i.e., use of `AnyView`), which can impact scalability and performance\*\*
 * No external dependencies!
 
 For List-based tables:
 * Optional moving of rows through drag and drop
-* Support for no-select, single-select, and multi-select
+* Support for single-select, multi-select, or no selection at all
 
 For ScrollView/LazyVStack-based tables:
-* Support for no-select and single-select (possibily multi-select in future)
+* Support for single-select and no selection at all
 
 For ScrollView/LazyVGrid-based tables:
 * Likely the most scalable and efficient, but least flexible
@@ -45,7 +45,7 @@ Notes:
 
 ## Tabler Example
 
-The example below shows the display of tabular data from an array using `TablerList`, which is for the display of unbound data without any selection capability.
+The example below shows the display of tabular data from an array of values using `TablerList`, a simple variant based on `List`.
 
 ```swift
 import SwiftUI
@@ -143,13 +143,13 @@ Grid   |        |     |  ✓  |        | NSManagedObject   | TablerGridC
 
 ## Column Sorting
 
-Column sorting is available through `tablerSort` view function.
+Column sorting is available through the `tablerSort` view function.
 
-The example below show how the header items can support sort.
+The examples below show how the header items can support sort.
 
-The `columnTitle` is a convenience function that displays header name along with an indicator showing the current sort, if any.
+`columnTitle` is a convenience function that displays header name along with an indicator showing the current sort state, if any.
 
-Caret images are used by default, but are configurable in `TablerConfig`.
+Caret images are used by default, but are configurable.
 
 ### Random Access Collection
 
