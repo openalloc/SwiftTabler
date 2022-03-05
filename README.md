@@ -114,12 +114,12 @@ _Tabler_ offers eighteen (18) views from which you can choose. They break down a
   * **List** - based on `List`
   * **Stack** - based on `ScrollView`/`LazyVStack`
   * **Grid** - based on `ScrollView`/`LazyVGrid`
-* Select - single-select, and multi-select, or selection not supported
+* Select - single-select, multi-select, or selection not supported
 * RAC - if checked, can be used with `RandomAccessCollection` (e.g., array of struct values)
 * CD - if checked, can be used with Core Data
 * Filter - if checked, `config.filter` is supported (see caveat below)
 * Bound - the mechanism through which values are bound, if at all
-* View - the view to use
+* View - the name of the view
 
 Type      | Select | RAC | CD  | Filter | Bound               | View      
 ---       | ---    | --- | --- | ---    | ---                 | ---           
@@ -195,9 +195,9 @@ Column sorting is available through the `tablerSort` view function.
 
 The examples below show how the header items can support sort.
 
-`columnTitle` is a convenience function that displays header name along with an indicator showing the current sort state, if any.
+`.columnTitle()` is a convenience function that displays header name along with an indicator showing the current sort state, if any. Alternatively, build your own header and call the `.indicator()` method to get the active indicator image.  
 
-Caret images are used by default, but are configurable.
+Caret images are used by default for indicators, but are configurable.
 
 ### Random Access Collection
 
