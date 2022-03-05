@@ -145,7 +145,7 @@ Grid   |        |     |  ✓  |        | NSManagedObject   | TablerGridC
 
 Configuration options will vary by table type.
 
-See the code for the default constants.
+Defaults can vary by platform (macOS, iOS, etc.). See the code for the default constants.
 
 ### List
 
