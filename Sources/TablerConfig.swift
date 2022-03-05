@@ -39,7 +39,7 @@ public enum TablerConfigDefaults {
     )
 }
 
-open class TablerBaseConfig<Element>
+open class TablerConfig<Element>
     where Element: Identifiable
 {
     public typealias Filter = (Element) -> Bool

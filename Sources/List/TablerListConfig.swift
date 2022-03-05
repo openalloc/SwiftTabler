@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-public class TablerListConfig<Element>: TablerBaseConfig<Element>
+public class TablerListConfig<Element>: TablerConfig<Element>
     where Element: Identifiable
 {
     public typealias CanMove<Element> = (Element) -> Bool

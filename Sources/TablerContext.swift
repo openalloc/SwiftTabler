@@ -21,10 +21,10 @@ import SwiftUI
 public struct TablerContext<Element>
     where Element: Identifiable
 {
-    public let config: TablerBaseConfig<Element>
+    public let config: TablerConfig<Element>
     public var sort: TablerSort<Element>?
 
-    public init(_ config: TablerBaseConfig<Element>) {
+    public init(_ config: TablerConfig<Element>) {
         self.config = config
         sort = nil
     }
