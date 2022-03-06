@@ -105,13 +105,13 @@ struct ContentView: View {
 }
 ```
 
-While `LazyVGrid` is used to wrap the header and row items, you could alternatively wrap them with `HStack` or similar mechanism.
+While `LazyVGrid` is used here to wrap the header and row items, you could alternatively wrap them with `HStack` or similar mechanism.
 
 ## Tabler Views
 
 _Tabler_ offers twenty-one (21) variants of table views from which you can choose. They break down along the following lines:
 
-* View - the name of the variant View
+* Table View - the name of the variant
 * Type - each of the three table types differ in how they render:
   * **List** - based on `List`
   * **Stack** - based on `ScrollView`/`LazyVStack`
@@ -122,7 +122,7 @@ _Tabler_ offers twenty-one (21) variants of table views from which you can choos
 * Filter - if checked, `config.filter` is supported (see caveat below)
 * Bound - the mechanism through which values are bound, if at all
 
-View            | Type      | Select | RAC | CD  | Filter | Bound              
+Table View      | Type      | Select | RAC | CD  | Filter | Bound              
 ---             | ---       | ---    | --- | --- | ---    | ---                
 `TablerList`    | **List**  |        |  ✓  |  ✓  |  ✓     |                     
 `TablerListB`   | **List**  |        |  ✓  |     |  ✓\*   | `Binding<Element>` 
@@ -265,15 +265,11 @@ private func brow(element: BoundValue) -> some View {
 }
 ```
 
-### Random Access Collection
-
 For Random Access Collection sources, `BoundValue` is:
 
 ```swift
 typealias BoundValue = Binding<Fruit>
 ```
-
-### Core Data
 
 For Core Data sources, `BoundValue` is:
 
