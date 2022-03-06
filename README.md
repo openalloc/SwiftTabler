@@ -86,12 +86,12 @@ struct ContentView: View {
         }
     }
     
-    private func row(element: Fruit) -> some View {
+    private func row(fruit: Fruit) -> some View {
         LazyVGrid(columns: gridItems) {
-            Text(element.id)
-            Text(element.name).foregroundColor(element.color)
-            Text(String(format: "%.0f g", element.weight))
-            Image(systemName: "rectangle.fill").foregroundColor(element.color)
+            Text(fruit.id)
+            Text(fruit.name).foregroundColor(fruit.color)
+            Text(String(format: "%.0f g", fruit.weight))
+            Image(systemName: "rectangle.fill").foregroundColor(fruit.color)
         }
     }
 
@@ -153,7 +153,7 @@ The examples below show how the header items can support sort.
 
 `.columnTitle()` is a convenience function that displays header name along with an indicator showing the current sort state, if any. Alternatively, build your own header and call the `.indicator()` method to get the active indicator image.  
 
-Caret images are used by default for indicators, but are configurable.
+Caret images are used by default for indicators, but are configurable (see Configuration section below).
 
 ### Random Access Collection
 
@@ -205,13 +205,13 @@ macOS | iOS
 When used with 'bound' views (e.g., `TablerListB` or `TablerListC`), the data can be modified directly, mutating your data source. From the demo:
 
 ```swift
-private func brow(element: BoundValue) -> some View {
+private func brow(fruit: BoundValue) -> some View {
     LazyVGrid(columns: gridItems) {
-        Text(element.wrappedValue.id)
-        TextField("Name", text: element.name)
+        Text(fruit.wrappedValue.id)
+        TextField("Name", text: fruit.name)
             .textFieldStyle(.roundedBorder)
-        Text(String(format: "%.0f g", element.wrappedValue.weight))
-        ColorPicker("Color", selection: element.color)
+        Text(String(format: "%.0f g", fruit.wrappedValue.weight))
+        ColorPicker("Color", selection: fruit.color)
             .labelsHidden()
     }
 }
@@ -360,6 +360,8 @@ Defaults can vary by platform (macOS, iOS, etc.). See the code for specifics.
 Spacing defaults are driven by the goal of achieving uniform appearance among table types, with the *List* type serving as the standard.
 
 ### Base Defaults
+
+Base defaults are defined in the `TablerConfig` module.
 
 - `hoverColor: Color` - accent color with opacity of 0.2
 - `tablePadding: EdgeInsets` - no padding
