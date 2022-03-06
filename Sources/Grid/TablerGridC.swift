@@ -19,13 +19,15 @@
 import CoreData
 import SwiftUI
 
-/// Grid-based table, with support for bound values through Core Data
-public struct TablerGridC<Element, Header, Row, RowBack, RowOver>: View
-    where Element: Identifiable & NSFetchRequestResult & ObservableObject,
+/// Grid-based table, with support for reference types
+public struct TablerGridC<Element, Header, Row, RowBack, RowOver, Results>: View
+    where Element: Identifiable & ObservableObject,
     Header: View,
     Row: View,
     RowBack: View,
-    RowOver: View
+    RowOver: View,
+    Results: RandomAccessCollection,
+    Results.Element == Element
 {
     public typealias Config = TablerGridConfig<Element>
     public typealias Context = TablerContext<Element>
@@ -35,7 +37,6 @@ public struct TablerGridC<Element, Header, Row, RowBack, RowOver>: View
     public typealias RowContent = (ProjectedValue) -> Row
     public typealias RowBackground = (Element) -> RowBack
     public typealias RowOverlay = (Element) -> RowOver
-    public typealias Fetched = FetchedResults<Element>
 
     // MARK: Parameters
 
@@ -44,14 +45,14 @@ public struct TablerGridC<Element, Header, Row, RowBack, RowOver>: View
     private let rowContent: RowContent
     private let rowBackground: RowBackground
     private let rowOverlay: RowOverlay
-    private var results: Fetched
+    private var results: Results
 
     public init(_ config: Config = .init(),
                 @ViewBuilder header: @escaping HeaderContent,
                 @ViewBuilder row: @escaping RowContent,
                 @ViewBuilder rowBackground: @escaping RowBackground,
                 @ViewBuilder rowOverlay: @escaping RowOverlay,
-                results: Fetched)
+                results: Results)
     {
         self.config = config
         headerContent = header
@@ -89,7 +90,7 @@ public extension TablerGridC {
          @ViewBuilder row: @escaping RowContent,
          @ViewBuilder rowBackground: @escaping RowBackground,
          @ViewBuilder rowOverlay: @escaping RowOverlay,
-         results: Fetched)
+         results: Results)
         where Header == EmptyView
     {
         self.init(config,
@@ -105,7 +106,7 @@ public extension TablerGridC {
          @ViewBuilder header: @escaping HeaderContent,
          @ViewBuilder row: @escaping RowContent,
          @ViewBuilder rowBackground: @escaping RowBackground,
-         results: Fetched)
+         results: Results)
         where RowOver == EmptyView
     {
         self.init(config,
@@ -121,7 +122,7 @@ public extension TablerGridC {
          @ViewBuilder header: @escaping HeaderContent,
          @ViewBuilder row: @escaping RowContent,
          @ViewBuilder rowOverlay: @escaping RowOverlay,
-         results: Fetched)
+         results: Results)
         where RowBack == EmptyView
     {
         self.init(config,
@@ -136,7 +137,7 @@ public extension TablerGridC {
     init(_ config: Config,
          @ViewBuilder row: @escaping RowContent,
          @ViewBuilder rowBackground: @escaping RowBackground,
-         results: Fetched)
+         results: Results)
         where Header == EmptyView, RowOver == EmptyView
     {
         self.init(config,
@@ -151,7 +152,7 @@ public extension TablerGridC {
     init(_ config: Config,
          @ViewBuilder row: @escaping RowContent,
          @ViewBuilder rowOverlay: @escaping RowOverlay,
-         results: Fetched)
+         results: Results)
         where Header == EmptyView, RowBack == EmptyView
     {
         self.init(config,
@@ -166,7 +167,7 @@ public extension TablerGridC {
     init(_ config: Config,
          @ViewBuilder header: @escaping HeaderContent,
          @ViewBuilder row: @escaping RowContent,
-         results: Fetched)
+         results: Results)
         where RowBack == EmptyView, RowOver == EmptyView
     {
         self.init(config,
@@ -180,7 +181,7 @@ public extension TablerGridC {
     // omitting Header, Background, AND Overlay
     init(_ config: Config,
          @ViewBuilder row: @escaping RowContent,
-         results: Fetched)
+         results: Results)
         where Header == EmptyView, RowBack == EmptyView, RowOver == EmptyView
     {
         self.init(config,

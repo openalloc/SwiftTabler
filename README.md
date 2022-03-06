@@ -15,8 +15,9 @@ macOS | iOS
 
 ## Features
 
-* Convenient display of tabular data from a `RandomAccessCollection` or Core Data source
+* Convenient display of tabular data from `RandomAccessCollection` data sources
 * Presently targeting macOS v11+ and iOS v14+\*
+* Supporting both value and reference semantics (including Core Data, which uses the latter)
 * Option to support a bound data source, where inline controls can directly mutate your data model
 * Option to sort by column, with indicators and concise syntax
 * Option to specify a row background
@@ -111,42 +112,41 @@ While `LazyVGrid` is used here to wrap the header and row items, you could alter
 
 _Tabler_ offers twenty-one (21) variants of table views from which you can choose. They break down along the following lines:
 
-* Table View - the name of the variant
+* Table View - the View name
 * Type - each of the three table types differ in how they render:
   * **List** - based on `List`
   * **Stack** - based on `ScrollView`/`LazyVStack`
   * **Grid** - based on `ScrollView`/`LazyVGrid`
 * Select - single-select, multi-select, or selection not supported
-* RAC - if checked, can be used with `RandomAccessCollection` (e.g., array of struct values)
-* CD - if checked, can be used with Core Data
+* Val - if checked, can be used with value types (e.g., struct values)
+* Ref - if checked, can be used with reference types (e.g., class objects, Core Data, etc.)
 * Filter - if checked, `config.filter` is supported (see caveat below)
-* Bound - the mechanism through which values are bound, if at all
 
-Table View      | Type      | Select | RAC | CD  | Filter | Bound              
----             | ---       | ---    | --- | --- | ---    | ---                
-`TablerList`    | **List**  |        |  ✓  |  ✓  |  ✓     |                     
-`TablerListB`   | **List**  |        |  ✓  |     |  ✓\*   | `Binding<Element>` 
-`TablerListC`   | **List**  |        |     |  ✓  |        | `NSManagedObject`    
-`TablerList1`   | **List**  | Single |  ✓  |  ✓  |  ✓     |                     
-`TablerList1B`  | **List**  | Single |  ✓  |     |  ✓\*   | `Binding<Element>`  
-`TablerList1C`  | **List**  | Single |     |  ✓  |        | `NSManagedObject`    
-`TablerListM`   | **List**  | Multi  |  ✓  |  ✓  |  ✓     |                     
-`TablerListMB`  | **List**  | Multi  |  ✓  |     |  ✓\*   | `Binding<Element>`  
-`TablerListMC`  | **List**  | Multi  |     |  ✓  |        | `NSManagedObject`    
-`TablerStack`   | **Stack** |        |  ✓  |  ✓  |  ✓     |                     
-`TablerStackB`  | **Stack** |        |  ✓  |     |  ✓\*   | `Binding<Element>`  
-`TablerStackC`  | **Stack** |        |     |  ✓  |        | `NSManagedObject`    
-`TablerStack1`  | **Stack** | Single |  ✓  |  ✓  |  ✓     |                     
-`TablerStack1B` | **Stack** | Single |  ✓  |     |  ✓\*   | `Binding<Element>`  
-`TablerStack1C` | **Stack** | Single |     |  ✓  |        | `NSManagedObject`    
-`TablerGrid`    | **Grid**  |        |  ✓  |  ✓  |  ✓     |                     
-`TablerGridB`   | **Grid**  |        |  ✓  |     |        | `Binding<Element>`        
-`TablerGridC`   | **Grid**  |        |     |  ✓  |        | `NSManagedObject`           
-`TablerGrid1`   | **Grid**  | Single |  ✓  |  ✓  |  ✓     |                     
-`TablerGrid1B`  | **Grid**  | Single |  ✓  |     |        | `Binding<Element>`        
-`TablerGrid1C`  | **Grid**  | Single |     |  ✓  |        | `NSManagedObject`           
+Table View      | Type      | Select | Val | Ref | Filter
+---             | ---       | ---    | --- | --- | ---   
+`TablerList`    | **List**  |        |  ✓  |  ✓  |  ✓     
+`TablerListB`   | **List**  |        |  ✓  |     |  ✓\*  
+`TablerListC`   | **List**  |        |     |  ✓  |         
+`TablerList1`   | **List**  | Single |  ✓  |  ✓  |  ✓     
+`TablerList1B`  | **List**  | Single |  ✓  |     |  ✓\*   
+`TablerList1C`  | **List**  | Single |     |  ✓  |         
+`TablerListM`   | **List**  | Multi  |  ✓  |  ✓  |  ✓     
+`TablerListMB`  | **List**  | Multi  |  ✓  |     |  ✓\*   
+`TablerListMC`  | **List**  | Multi  |     |  ✓  |         
+`TablerStack`   | **Stack** |        |  ✓  |  ✓  |  ✓     
+`TablerStackB`  | **Stack** |        |  ✓  |     |  ✓\*   
+`TablerStackC`  | **Stack** |        |     |  ✓  |         
+`TablerStack1`  | **Stack** | Single |  ✓  |  ✓  |  ✓     
+`TablerStack1B` | **Stack** | Single |  ✓  |     |  ✓\*   
+`TablerStack1C` | **Stack** | Single |     |  ✓  |         
+`TablerGrid`    | **Grid**  |        |  ✓  |  ✓  |  ✓     
+`TablerGridB`   | **Grid**  |        |  ✓  |     |              
+`TablerGridC`   | **Grid**  |        |     |  ✓  |                
+`TablerGrid1`   | **Grid**  | Single |  ✓  |  ✓  |  ✓     
+`TablerGrid1B`  | **Grid**  | Single |  ✓  |     |              
+`TablerGrid1C`  | **Grid**  | Single |     |  ✓  |                
 
-\* filtering with Binding-based data likely not scalable as implemented. If you can find a better way to implement, submit a pull request!
+\* filtering with bound values likely not scalable as implemented. If you can find a better way to implement, please submit a pull request!
 
 ## Configuration
 
@@ -265,19 +265,17 @@ private func brow(element: BoundValue) -> some View {
 }
 ```
 
-For Random Access Collection sources, `BoundValue` is:
+For value sources, `BoundValue` is a binding:
 
 ```swift
 typealias BoundValue = Binding<Fruit>
 ```
 
-For Core Data sources, `BoundValue` is:
+For reference sources, including Core Data, `BoundValue` is an object wrapper (aka 'ProjectedValue'):
 
 ```swift
 typealias BoundValue = ObservedObject<Fruit>.Wrapper
 ```
-
-Also known as `ProjectedValue`.
 
 Note that for Core Data, the user's changes will need to be saved to the Managed Object Context. See the _TablerCoreData_ code for an example of how this might be done.
 
