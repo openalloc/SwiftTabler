@@ -353,6 +353,17 @@ TODO need Core Data example, if it's possible to do so.
 
 ## Configuration
 
+```swift
+var body: some View {
+    TablerList(.init(onMove: moveAction,
+                     filter: { $0.weight > 10 },
+                     hoverColor: .orange.opacity(0.4)),
+               header: header,
+               row: row,
+               results: fruits)
+}
+```
+
 Configuration options will vary by table type.
 
 Defaults can vary by platform (macOS, iOS, etc.). See the code for specifics.
