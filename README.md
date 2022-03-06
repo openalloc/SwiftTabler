@@ -19,7 +19,8 @@ macOS | iOS
 * Presently targeting macOS v11+ and iOS v14+\*
 * Option to support a bound data source, where inline controls can directly mutate your data model
 * Option to sort by column, with indicators and concise syntax
-* Option to specify a row background, with selection overlay
+* Option to specify a row background
+* Option to specify a row overlay
 * On macOS, option for a hovering highlight, to indicate which row the mouse is over
 * MINIMAL use of View erasure (i.e., use of `AnyView`), which can impact scalability and performance\*\*
 * No external dependencies!
@@ -119,10 +120,10 @@ _Tabler_ offers twenty-one (21) variants of table views from which you can choos
 * RAC - if checked, can be used with `RandomAccessCollection` (e.g., array of struct values)
 * CD - if checked, can be used with Core Data
 * Filter - if checked, `config.filter` is supported (see caveat below)
-* SO - if checked, you have option to use a Select Overlay
+* RO - if checked, you have option to use a Row Overlay
 * Bound - the mechanism through which values are bound, if at all
 
-View            | Type      | Select | RAC | CD  | Filter | SO  | Bound              
+View            | Type      | Select | RAC | CD  | Filter | RO  | Bound              
 ---             | ---       | ---    | --- | --- | ---    | --- | ---                
 `TablerList`    | **List**  |        |  ✓  |  ✓  |  ✓     |  ✓  |                     
 `TablerListB`   | **List**  |        |  ✓  |     |  ✓\*   |  ✓  | `Binding<Element>` 
@@ -287,26 +288,82 @@ Note that for Core Data, the user's changes will need to be saved to the Managed
 
 ## Row Background
 
+You have the option to specify a row background, such as to impart information, or as a selection indicator.
+
 macOS | iOS
 :---:|:---:
 ![](https://github.com/openalloc/SwiftTabler/blob/main/Images/macOSc.png)  |  ![](https://github.com/openalloc/SwiftTabler/blob/main/Images/iOSc.png)
+
+An example of using row background to impart information, as shown above:
 
 ```swift
 var body: some View {
     TablerList(header: header,
                row: row,
-               rowBackground: rowBackgroundAction,
+               rowBackground: rowBackground,
                results: fruits)
 }
 
-private func rowBackgroundAction(fruit: Fruit) -> some View {
+private func rowBackground(fruit: Fruit) -> some View {
     LinearGradient(gradient: .init(colors: [fruit.color, fruit.color.opacity(0.2)]),
                    startPoint: .top, 
                    endPoint: .bottom)
 }
 ```
 
-Also, when using a row background on macOS, you might wish to disable the hover effect.
+An example of a selection indicator using row background, such as for **Stack** based tables which do not have a native selection indicator:
+
+```swift
+@State private var selected: Fruit.ID? = nil
+
+var body: some View {
+    TablerStack1(header: header,
+                 row: row,
+                 rowBackground: rowBackground,
+                 results: fruits,
+                 selected: $selected)
+}
+
+private func rowBackground(fruit: Fruit) -> some View {
+    RoundedRectangle(cornerRadius: 5)
+        .fill(fruit.id == selected ? Color.accentColor : Color.clear)
+}
+```
+
+Row Background, as the name suggests, sits BELOW the row.
+
+## Row Overlay
+
+Similar to a row background, an overlay can be used to impart information, or to use as a selection indicator.
+
+An example of a selection indicator using row overlay:
+
+```swift
+@State private var selected: Fruit.ID? = nil
+
+var body: some View {
+    TablerStack1(header: header,
+                 row: row,
+                 rowOverlay: rowOverlay,
+                 results: fruits,
+                 selected: $selected)
+}
+
+private func rowOverlay(fruit: Fruit) -> some View {
+    RoundedRectangle(cornerRadius: 5)
+        .strokeBorder(fruit.id == selected ? .white : .clear,
+                      lineWidth: 2,
+                      antialiased: true)
+}
+```
+
+Row overlay, as the name suggests, sits ABOVE the row.
+
+## Hover Effect
+
+Available for macOS. It's enabled by default using the system's accent color.
+
+When using a row background or overlay on macOS, you might wish to disable the hover effect.
 
 ```swift
 typealias Config = TablerListConfig<Fruit>
@@ -317,64 +374,6 @@ var body: some View {
                row: row,
                rowBackground: rowBackgroundAction,
                results: fruits)
-}
-```
-
-## Selection Indicator
-
-**List** based tables DO have a native selection indicator. However, **Stack** or **Grid** based tables do not. You have an option to specify your own. 
-
-Two approaches are available:
-* Row Background
-* Select Overlay
-
-(Select Overlay also available for **List** based tables, for when you're using selection with a row background. See _TablerDemo_ for an example.)
-
-### Row Background
-
-Row Background, as the name suggests, sits BELOW the row.
-
-An example of a selection indicator using row background:
-
-```swift
-@State private var selected: Fruit.ID? = nil
-
-private func rowBackground(fruit: Fruit) -> some View {
-    RoundedRectangle(cornerRadius: 5)
-        .fill(fruit.id == selected ? Color.accentColor : Color.clear)
-}
-
-var body: some View {
-    TablerStack1(header: header,
-                 row: row,
-                 rowBackground: rowBackground,
-                 results: fruits,
-                 selected: $selected)
-}
-```
-
-### Select Overlay
-
-Select Overlay, as the name suggests, sits ABOVE the row.
-
-An example of a selection indicator using select overlay:
-
-```swift
-@State private var selected: Fruit.ID? = nil
-
-private func selectOverlay(_ selected: Bool) -> some View {
-    RoundedRectangle(cornerRadius: 5)
-        .strokeBorder(selected ? .white : .clear,
-                      lineWidth: 2,
-                      antialiased: true)
-}
-
-var body: some View {
-    TablerStack1(header: header,
-                 row: row,
-                 selectOverlay: selectOverlay,
-                 results: fruits,
-                 selected: $selected)
 }
 ```
 
