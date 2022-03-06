@@ -28,15 +28,6 @@ where Element: Identifiable
     let element: Element
     @Binding var hovered: Hovered
     
-    init(_ config: Config,
-         _ element: Element,
-         _ hovered: Binding<Hovered>)
-    {
-        self.config = config
-        self.element = element
-        _hovered = hovered
-    }
-    
     func body(content: Content) -> some View {
         content
             .moveDisabled(!config.canMove(element))

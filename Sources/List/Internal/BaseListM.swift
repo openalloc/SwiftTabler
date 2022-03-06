@@ -31,27 +31,16 @@ struct BaseListM<Element, Header, Rows>: View
     typealias Selected = Set<Element.ID>
 
     @Binding var context: Context
-    let headerContent: HeaderContent
     @Binding var selected: Selected
-    let rowsContent: RowContent
-
-    init(context: Binding<Context>,
-         selected: Binding<Selected>,
-         @ViewBuilder header: @escaping HeaderContent,
-         @ViewBuilder rowsContent: @escaping RowContent)
-    {
-        _context = context
-        _selected = selected
-        headerContent = header
-        self.rowsContent = rowsContent
-    }
+    @ViewBuilder let header: HeaderContent
+    @ViewBuilder let rows: RowContent
 
     var body: some View {
         BaseTable(context: $context,
-                  header: headerContent) { buildHeader in
+                  header: header) { buildHeader in
             List(selection: $selected) {
                 buildHeader()
-                rowsContent()
+                rows()
             }
         }
         .padding(config.tablePadding)

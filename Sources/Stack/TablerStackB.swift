@@ -89,7 +89,9 @@ public struct TablerStackB<Element, Header, Row, RowBack, RowOver, Results>: Vie
 
     private func row(_ element: Binding<Element>) -> some View {
         rowContent(element)
-            .modifier(StackRowMod(config, element.wrappedValue, $hovered))
+            .modifier(StackRowMod(config: config,
+                                  element: element.wrappedValue,
+                                  hovered: $hovered))
             .background(rowBackground(element.wrappedValue))
     }
 }

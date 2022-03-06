@@ -72,7 +72,7 @@ public struct TablerStack<Element, Header, Row, RowBack, RowOver, Results>: View
                   header: headerContent) {
             ForEach(results.filter(config.filter ?? { _ in true })) { element in
                 rowContent(element)
-                    .modifier(StackRowMod(config, element, $hovered))
+                    .modifier(StackRowMod(config: config, element: element, hovered: $hovered))
                     .background(rowBackground(element))
             }
         }

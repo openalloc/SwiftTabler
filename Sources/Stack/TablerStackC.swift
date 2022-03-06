@@ -76,7 +76,9 @@ public struct TablerStackC<Element, Header, Row, RowBack, RowOver, Results>: Vie
             ForEach(results) { rawElem in
                 ObservableHolder(element: rawElem) { obsElem in
                     rowContent(obsElem)
-                        .modifier(StackRowMod(config, rawElem, $hovered))
+                        .modifier(StackRowMod(config: config,
+                                              element: rawElem,
+                                              hovered: $hovered))
                         .background(rowBackground(rawElem))
                 }
             }

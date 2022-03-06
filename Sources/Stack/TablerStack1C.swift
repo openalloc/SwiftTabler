@@ -80,7 +80,10 @@ public struct TablerStack1C<Element, Header, Row, RowBack, RowOver, Results>: Vi
             ForEach(results) { rawElem in
                 ObservableHolder(element: rawElem) { obsElem in
                     rowContent(obsElem)
-                        .modifier(StackRowMod1(config, rawElem, $hovered, $selected))
+                        .modifier(StackRowMod1(config: config,
+                                               element: rawElem,
+                                               hovered: $hovered,
+                                               selected: $selected))
                         .background(rowBackground(rawElem))
                 }
             }

@@ -73,7 +73,9 @@ where Element: Identifiable,
                  header: headerContent) {
             ForEach(results.filter(config.filter ?? { _ in true })) { element in
                 rowContent(element)
-                    .modifier(ListRowMod(config, element, $hovered))
+                    .modifier(ListRowMod(config: config,
+                                         element: element,
+                                         hovered: $hovered))
                     .listRowBackground(rowBackground(element))
                     .overlay(rowOverlay(element))
             }

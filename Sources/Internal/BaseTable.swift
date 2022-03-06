@@ -31,8 +31,8 @@ struct BaseTable<Element, Header, Rows>: View
     // MARK: Parameters
 
     @Binding var context: Context
-    var header: HeaderContent
-    var tableBuilder: TableBuilder
+    let header: HeaderContent
+    let tableBuilder: TableBuilder
 
     // MARK: Views
 

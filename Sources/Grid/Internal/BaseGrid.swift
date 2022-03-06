@@ -29,22 +29,13 @@ struct BaseGrid<Element, Header, Rows>: View
     typealias HeaderContent = (Binding<Context>) -> Header
     typealias RowContent = () -> Rows
 
-    @Binding private var context: Context
-    private let headerContent: HeaderContent
-    private let rowsContent: RowContent
-
-    init(context: Binding<Context>,
-         header: @escaping HeaderContent,
-         rows: @escaping RowContent)
-    {
-        _context = context
-        headerContent = header
-        rowsContent = rows
-    }
+    @Binding var context: Context
+    @ViewBuilder let header: HeaderContent
+    @ViewBuilder let rows: RowContent
 
     var body: some View {
         BaseTable(context: $context,
-                  header: headerContent) { buildHeader in
+                  header: header) { buildHeader in
 
             VStack(spacing: config.headerSpacing) {
                 buildHeader()
@@ -53,7 +44,7 @@ struct BaseGrid<Element, Header, Rows>: View
                     LazyVGrid(columns: config.gridItems,
                               alignment: config.alignment,
                               spacing: config.rowSpacing) {
-                        rowsContent()
+                        rows()
                     }
                 }
             }

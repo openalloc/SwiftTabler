@@ -29,25 +29,16 @@ struct BaseList<Element, Header, Rows>: View
     typealias HeaderContent = (Binding<Context>) -> Header
     typealias RowContent = () -> Rows
 
-    @Binding private var context: Context
-    private let headerContent: HeaderContent
-    private let rowsContent: RowContent
-
-    init(context: Binding<Context>,
-         @ViewBuilder header: @escaping HeaderContent,
-         @ViewBuilder rowsContent: @escaping RowContent)
-    {
-        _context = context
-        headerContent = header
-        self.rowsContent = rowsContent
-    }
+    @Binding var context: Context
+    @ViewBuilder let header: HeaderContent
+    @ViewBuilder let rows: RowContent
 
     var body: some View {
         BaseTable(context: $context,
-                  header: headerContent) { buildHeader in
+                  header: header) { buildHeader in
             List {
                 buildHeader()
-                rowsContent()
+                rows()
             }
         }
         .padding(config.tablePadding)

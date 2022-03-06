@@ -76,7 +76,9 @@ public struct TablerGridC<Element, Header, Row, RowBack, RowOver, Results>: View
             ForEach(results) { rawElem in
                 ObservableHolder(element: rawElem) { obsElem in
                     rowContent(obsElem)
-                        .modifier(GridItemMod(config, rawElem, $hovered))
+                        .modifier(GridItemMod(config: config,
+                                              element: rawElem,
+                                              hovered: $hovered))
                         .background(rowBackground(rawElem))
                 }
             }

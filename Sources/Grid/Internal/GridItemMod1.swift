@@ -30,17 +30,6 @@ struct GridItemMod1<Element>: ViewModifier
     @Binding var hovered: Hovered
     @Binding var selected: Selected
 
-    init(_ config: Config,
-         _ element: Element,
-         _ hovered: Binding<Hovered>,
-         _ selected: Binding<Selected>)
-    {
-        self.config = config
-        self.element = element
-        _hovered = hovered
-        _selected = selected
-    }
-
     func body(content: Content) -> some View {
         content
             .padding(config.itemPadding)

@@ -76,7 +76,9 @@ public struct TablerListC<Element, Header, Row, RowBack, RowOver, Results>: View
             ForEach(results) { rawElem in
                 ObservableHolder(element: rawElem) { obsElem in
                     rowContent(obsElem)
-                        .modifier(ListRowMod(config, rawElem, $hovered))
+                        .modifier(ListRowMod(config: config,
+                                             element: rawElem,
+                                             hovered: $hovered))
                         .listRowBackground(rowBackground(rawElem))
                 }
             }

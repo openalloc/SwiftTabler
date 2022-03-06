@@ -78,7 +78,10 @@ public struct TablerGrid1B<Element, Header, Row, RowBack, RowOver, Results>: Vie
                  header: headerContent) {
             ForEach($results) { $element in
                 rowContent($element)
-                    .modifier(GridItemMod1(config, element, $hovered, $selected))
+                    .modifier(GridItemMod1(config: config,
+                                           element: element,
+                                           hovered: $hovered,
+                                           selected: $selected))
                     .background(rowBackground(element))
             }
         }

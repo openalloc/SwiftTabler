@@ -77,7 +77,10 @@ public struct TablerStack1<Element, Header, Row, RowBack, RowOver, Results>: Vie
                   header: headerContent) {
             ForEach(results.filter(config.filter ?? { _ in true })) { element in
                 rowContent(element)
-                    .modifier(StackRowMod1(config, element, $hovered, $selected))
+                    .modifier(StackRowMod1(config: config,
+                                           element: element,
+                                           hovered: $hovered,
+                                           selected: $selected))
                     .background(rowBackground(element))
                     .overlay(rowOverlay(element))
             }

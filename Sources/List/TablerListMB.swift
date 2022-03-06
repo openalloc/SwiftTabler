@@ -96,7 +96,9 @@ public struct TablerListMB<Element, Header, Row, RowBack, RowOver, Results>: Vie
 
     private func row(_ element: Binding<Element>) -> some View {
         rowContent(element)
-            .modifier(ListRowMod(config, element.wrappedValue, $hovered))
+            .modifier(ListRowMod(config: config,
+                                 element: element.wrappedValue,
+                                 hovered: $hovered))
             .listRowBackground(rowBackground(element.wrappedValue))
             .overlay(rowOverlay(element.wrappedValue))
     }

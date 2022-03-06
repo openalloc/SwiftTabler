@@ -80,7 +80,10 @@ public struct TablerGrid1C<Element, Header, Row, RowBack, RowOver, Results>: Vie
             ForEach(results) { rawElem in
                 ObservableHolder(element: rawElem) { obsElem in
                     rowContent(obsElem)
-                        .modifier(GridItemMod1(config, rawElem, $hovered, $selected))
+                        .modifier(GridItemMod1(config: config,
+                                               element: rawElem,
+                                               hovered: $hovered,
+                                               selected: $selected))
                         .background(rowBackground(rawElem))
                 }
             }
