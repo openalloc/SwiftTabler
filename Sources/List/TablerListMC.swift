@@ -19,13 +19,15 @@
 import CoreData
 import SwiftUI
 
-/// List-based table, with support for multi-selection and bound values through Core Data
-public struct TablerListMC<Element, Header, Row, RowBack, RowOver>: View
-    where Element: Identifiable & NSFetchRequestResult & ObservableObject,
+/// List-based table, with support for multi-selection and reference types
+public struct TablerListMC<Element, Header, Row, RowBack, RowOver, Results>: View
+    where Element: Identifiable & ObservableObject,
     Header: View,
     Row: View,
     RowBack: View,
-    RowOver: View
+    RowOver: View,
+    Results: RandomAccessCollection,
+    Results.Element == Element
 {
     public typealias Config = TablerListConfig<Element>
     public typealias Context = TablerContext<Element>
@@ -36,7 +38,6 @@ public struct TablerListMC<Element, Header, Row, RowBack, RowOver>: View
     public typealias RowBackground = (Element) -> RowBack
     public typealias RowOverlay = (Element) -> RowOver
     public typealias Selected = Set<Element.ID>
-    public typealias Fetched = FetchedResults<Element>
 
     // MARK: Parameters
 
@@ -45,7 +46,7 @@ public struct TablerListMC<Element, Header, Row, RowBack, RowOver>: View
     private let rowContent: RowContent
     private let rowBackground: RowBackground
     private let rowOverlay: RowOverlay
-    private var results: Fetched
+    private var results: Results
     @Binding private var selected: Selected
 
     public init(_ config: Config = .init(),
@@ -53,7 +54,7 @@ public struct TablerListMC<Element, Header, Row, RowBack, RowOver>: View
                 @ViewBuilder row: @escaping RowContent,
                 @ViewBuilder rowBackground: @escaping RowBackground,
                 @ViewBuilder rowOverlay: @escaping RowOverlay,
-                results: Fetched,
+                results: Results,
                 selected: Binding<Selected>)
     {
         self.config = config
@@ -95,7 +96,7 @@ public extension TablerListMC {
          @ViewBuilder row: @escaping RowContent,
          @ViewBuilder rowBackground: @escaping RowBackground,
          @ViewBuilder rowOverlay: @escaping RowOverlay,
-         results: Fetched,
+         results: Results,
          selected: Binding<Selected>)
         where Header == EmptyView
     {
@@ -113,7 +114,7 @@ public extension TablerListMC {
          @ViewBuilder header: @escaping HeaderContent,
          @ViewBuilder row: @escaping RowContent,
          @ViewBuilder rowBackground: @escaping RowBackground,
-         results: Fetched,
+         results: Results,
          selected: Binding<Selected>)
         where RowOver == EmptyView
     {
@@ -131,7 +132,7 @@ public extension TablerListMC {
          @ViewBuilder header: @escaping HeaderContent,
          @ViewBuilder row: @escaping RowContent,
          @ViewBuilder rowOverlay: @escaping RowOverlay,
-         results: Fetched,
+         results: Results,
          selected: Binding<Selected>)
         where RowBack == EmptyView
     {
@@ -148,7 +149,7 @@ public extension TablerListMC {
     init(_ config: Config,
          @ViewBuilder row: @escaping RowContent,
          @ViewBuilder rowBackground: @escaping RowBackground,
-         results: Fetched,
+         results: Results,
          selected: Binding<Selected>)
         where Header == EmptyView, RowOver == EmptyView
     {
@@ -165,7 +166,7 @@ public extension TablerListMC {
     init(_ config: Config,
          @ViewBuilder row: @escaping RowContent,
          @ViewBuilder rowOverlay: @escaping RowOverlay,
-         results: Fetched,
+         results: Results,
          selected: Binding<Selected>)
         where Header == EmptyView, RowBack == EmptyView
     {
@@ -182,7 +183,7 @@ public extension TablerListMC {
     init(_ config: Config,
          @ViewBuilder header: @escaping HeaderContent,
          @ViewBuilder row: @escaping RowContent,
-         results: Fetched,
+         results: Results,
          selected: Binding<Selected>)
         where RowBack == EmptyView, RowOver == EmptyView
     {
@@ -198,7 +199,7 @@ public extension TablerListMC {
     // omitting Header, Background, AND Overlay
     init(_ config: Config,
          @ViewBuilder row: @escaping RowContent,
-         results: Fetched,
+         results: Results,
          selected: Binding<Selected>)
         where Header == EmptyView, RowBack == EmptyView, RowOver == EmptyView
     {

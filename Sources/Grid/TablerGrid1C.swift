@@ -19,13 +19,15 @@
 import CoreData
 import SwiftUI
 
-/// Grid-based table, with support for bound values through Core Data
-public struct TablerGrid1C<Element, Header, Row, RowBack, RowOver>: View
-    where Element: Identifiable & NSFetchRequestResult & ObservableObject,
+/// Grid-based table, with support for reference types
+public struct TablerGrid1C<Element, Header, Row, RowBack, RowOver, Results>: View
+    where Element: Identifiable & ObservableObject,
     Header: View,
     Row: View,
     RowBack: View,
-    RowOver: View
+    RowOver: View,
+    Results: RandomAccessCollection,
+    Results.Element == Element
 {
     public typealias Config = TablerGridConfig<Element>
     public typealias Context = TablerContext<Element>
@@ -35,7 +37,6 @@ public struct TablerGrid1C<Element, Header, Row, RowBack, RowOver>: View
     public typealias RowContent = (ProjectedValue) -> Row
     public typealias RowBackground = (Element) -> RowBack
     public typealias RowOverlay = (Element) -> RowOver
-    public typealias Fetched = FetchedResults<Element>
     public typealias Selected = Element.ID?
 
     // MARK: Parameters
@@ -45,7 +46,7 @@ public struct TablerGrid1C<Element, Header, Row, RowBack, RowOver>: View
     private let rowContent: RowContent
     private let rowBackground: RowBackground
     private let rowOverlay: RowOverlay
-    private var results: Fetched
+    private var results: Results
     @Binding private var selected: Selected
 
     public init(_ config: Config = .init(),
@@ -53,7 +54,7 @@ public struct TablerGrid1C<Element, Header, Row, RowBack, RowOver>: View
                 @ViewBuilder row: @escaping RowContent,
                 @ViewBuilder rowBackground: @escaping RowBackground,
                 @ViewBuilder rowOverlay: @escaping RowOverlay,
-                results: Fetched,
+                results: Results,
                 selected: Binding<Selected>)
     {
         self.config = config
@@ -93,7 +94,7 @@ public extension TablerGrid1C {
          @ViewBuilder row: @escaping RowContent,
          @ViewBuilder rowBackground: @escaping RowBackground,
          @ViewBuilder rowOverlay: @escaping RowOverlay,
-         results: Fetched,
+         results: Results,
          selected: Binding<Selected>)
         where Header == EmptyView
     {
@@ -111,7 +112,7 @@ public extension TablerGrid1C {
          @ViewBuilder header: @escaping HeaderContent,
          @ViewBuilder row: @escaping RowContent,
          @ViewBuilder rowBackground: @escaping RowBackground,
-         results: Fetched,
+         results: Results,
          selected: Binding<Selected>)
         where RowOver == EmptyView
     {
@@ -129,7 +130,7 @@ public extension TablerGrid1C {
          @ViewBuilder header: @escaping HeaderContent,
          @ViewBuilder row: @escaping RowContent,
          @ViewBuilder rowOverlay: @escaping RowOverlay,
-         results: Fetched,
+         results: Results,
          selected: Binding<Selected>)
         where RowBack == EmptyView
     {
@@ -146,7 +147,7 @@ public extension TablerGrid1C {
     init(_ config: Config,
          @ViewBuilder row: @escaping RowContent,
          @ViewBuilder rowBackground: @escaping RowBackground,
-         results: Fetched,
+         results: Results,
          selected: Binding<Selected>)
         where Header == EmptyView, RowOver == EmptyView
     {
@@ -163,7 +164,7 @@ public extension TablerGrid1C {
     init(_ config: Config,
          @ViewBuilder row: @escaping RowContent,
          @ViewBuilder rowOverlay: @escaping RowOverlay,
-         results: Fetched,
+         results: Results,
          selected: Binding<Selected>)
         where Header == EmptyView, RowBack == EmptyView
     {
@@ -180,7 +181,7 @@ public extension TablerGrid1C {
     init(_ config: Config,
          @ViewBuilder header: @escaping HeaderContent,
          @ViewBuilder row: @escaping RowContent,
-         results: Fetched,
+         results: Results,
          selected: Binding<Selected>)
         where RowBack == EmptyView, RowOver == EmptyView
     {
@@ -196,7 +197,7 @@ public extension TablerGrid1C {
     // omitting Header, Background, AND Overlay
     init(_ config: Config,
          @ViewBuilder row: @escaping RowContent,
-         results: Fetched,
+         results: Results,
          selected: Binding<Selected>)
         where Header == EmptyView, RowBack == EmptyView, RowOver == EmptyView
     {
