@@ -40,7 +40,7 @@ where Element: Identifiable
     public let alignment: HorizontalAlignment
     public let itemPadding: EdgeInsets
     
-    public init(gridItems: [GridItem] = [],
+    public init(gridItems: [GridItem],
                 alignment: HorizontalAlignment = TablerGridConfigDefaults.alignment,
                 itemPadding: EdgeInsets = TablerGridConfigDefaults.itemPadding,
                 headerSpacing: CGFloat = TablerGridConfigDefaults.headerSpacing,

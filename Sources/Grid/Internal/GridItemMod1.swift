@@ -46,22 +46,12 @@ struct GridItemMod1<Element>: ViewModifier
             .padding(config.itemPadding)
         
 #if os(macOS) || targetEnvironment(macCatalyst)
-        // NOTE keeping selection part of mac, as on iOS you press to get the context menu
             .contentShape(Rectangle())
-            .onTapGesture { selectAction(element) }
+            .onTapGesture { selected = element.id }
 
             .onHover { if $0 { hovered = element.id } }
             //.frame(maxWidth: .infinity)  // NOTE this centers the grid item
             .background(hovered == element.id ? config.hoverColor : Color.clear)
 #endif
     }
-    
-    // MARK: Action Handlers
-    
-#if os(macOS) || targetEnvironment(macCatalyst)
-    private func selectAction(_ element: Element) {
-        selected = element.id
-        // onSelect?(element)
-    }
-#endif
 }

@@ -62,6 +62,6 @@ struct BaseGrid<Element, Header, Rows>: View
     }
 
     private var config: Config {
-        context.config as? Config ?? Config()
+        context.config as? Config ?? Config(gridItems: [])
     }
 }

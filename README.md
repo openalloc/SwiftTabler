@@ -111,84 +111,39 @@ _Tabler_ offers twenty-one (21) variants of table views from which you can choos
 
 * Table View - the View name
 * Type - each of the three table types differ in how they render:
-  * **List** - based on `List`
-  * **Stack** - based on `ScrollView`/`LazyVStack`
-  * **Grid** - based on `ScrollView`/`LazyVGrid`
+  - **List** - based on `List`
+  - **Stack** - based on `ScrollView`/`LazyVStack`
+  - **Grid** - based on `ScrollView`/`LazyVGrid`
 * Select - single-select, multi-select, or selection not supported
-* Val - if checked, can be used with value types (e.g., struct values)
-* Ref - if checked, can be used with reference types (e.g., class objects, Core Data, etc.)
+* Value - if checked, can be used with value types (e.g., struct values)
+* Reference - if checked, can be used with reference types (e.g., class objects, Core Data, etc.)
 * Filter - if checked, `config.filter` is supported (see caveat below)
 
-Table View      | Type      | Select | Val | Ref | Filter
----             | ---       | ---    | --- | --- | ---   
-`TablerList`    | **List**  |        |  ✓  |  ✓  |  ✓     
-`TablerListB`   | **List**  |        |  ✓  |     |  ✓\*  
-`TablerListC`   | **List**  |        |     |  ✓  |         
-`TablerList1`   | **List**  | Single |  ✓  |  ✓  |  ✓     
-`TablerList1B`  | **List**  | Single |  ✓  |     |  ✓\*   
-`TablerList1C`  | **List**  | Single |     |  ✓  |         
-`TablerListM`   | **List**  | Multi  |  ✓  |  ✓  |  ✓     
-`TablerListMB`  | **List**  | Multi  |  ✓  |     |  ✓\*   
-`TablerListMC`  | **List**  | Multi  |     |  ✓  |         
-`TablerStack`   | **Stack** |        |  ✓  |  ✓  |  ✓     
-`TablerStackB`  | **Stack** |        |  ✓  |     |  ✓\*   
-`TablerStackC`  | **Stack** |        |     |  ✓  |         
-`TablerStack1`  | **Stack** | Single |  ✓  |  ✓  |  ✓     
-`TablerStack1B` | **Stack** | Single |  ✓  |     |  ✓\*   
-`TablerStack1C` | **Stack** | Single |     |  ✓  |         
-`TablerGrid`    | **Grid**  |        |  ✓  |  ✓  |  ✓     
-`TablerGridB`   | **Grid**  |        |  ✓  |     |              
-`TablerGridC`   | **Grid**  |        |     |  ✓  |                
-`TablerGrid1`   | **Grid**  | Single |  ✓  |  ✓  |  ✓     
-`TablerGrid1B`  | **Grid**  | Single |  ✓  |     |              
-`TablerGrid1C`  | **Grid**  | Single |     |  ✓  |                
+Table View      | Type      | Select | Value | Reference | Filter
+:---            | :---      | :---   | :---: | :---:     | :---:   
+`TablerList`    | **List**  |        |  ✓    |  ✓        |  ✓     
+`TablerListB`   | **List**  |        |  ✓    |           |  ✓\*  
+`TablerListC`   | **List**  |        |       |  ✓        |         
+`TablerList1`   | **List**  | Single |  ✓    |  ✓        |  ✓     
+`TablerList1B`  | **List**  | Single |  ✓    |           |  ✓\*   
+`TablerList1C`  | **List**  | Single |       |  ✓        |         
+`TablerListM`   | **List**  | Multi  |  ✓    |  ✓        |  ✓     
+`TablerListMB`  | **List**  | Multi  |  ✓    |           |  ✓\*   
+`TablerListMC`  | **List**  | Multi  |       |  ✓        |         
+`TablerStack`   | **Stack** |        |  ✓    |  ✓        |  ✓     
+`TablerStackB`  | **Stack** |        |  ✓    |           |  ✓\*   
+`TablerStackC`  | **Stack** |        |       |  ✓        |         
+`TablerStack1`  | **Stack** | Single |  ✓    |  ✓        |  ✓     
+`TablerStack1B` | **Stack** | Single |  ✓    |           |  ✓\*   
+`TablerStack1C` | **Stack** | Single |       |  ✓        |         
+`TablerGrid`    | **Grid**  |        |  ✓    |  ✓        |  ✓     
+`TablerGridB`   | **Grid**  |        |  ✓    |           |              
+`TablerGridC`   | **Grid**  |        |       |  ✓        |                
+`TablerGrid1`   | **Grid**  | Single |  ✓    |  ✓        |  ✓     
+`TablerGrid1B`  | **Grid**  | Single |  ✓    |           |              
+`TablerGrid1C`  | **Grid**  | Single |       |  ✓        |                
 
 \* filtering with bound values likely not scalable as implemented. If you can find a better way to implement, please submit a pull request!
-
-## Configuration
-
-Configuration options will vary by table type.
-
-Defaults can vary by platform (macOS, iOS, etc.). See the code for the default constants.
-
-Spacing defaults are driven by the goal of achieving uniform appearance among table types, with the *List* type being the standard.
-
-### List
-
-* canMove: @escaping CanMove\<Element> = { \_ in true }
-* onMove: OnMove\<Element>? = nil
-* filter: Filter? = nil
-* hoverColor: Color = TablerConfigDefaults.hoverColor
-* tablePadding: EdgeInsets = TablerConfigDefaults.tablePadding
-* sortIndicatorForward: AnyView = TablerConfigDefaults.sortIndicatorForward
-* sortIndicatorReverse: AnyView = TablerConfigDefaults.sortIndicatorReverse
-* sortIndicatorNeutral: AnyView = TablerConfigDefaults.sortIndicatorNeutral
-
-### Stack
-
-* rowPadding: EdgeInsets =  TablerStackConfigDefaults.rowPadding
-* headerSpacing: CGFloat = TablerStackConfigDefaults.headerSpacing
-* rowSpacing: CGFloat = TablerStackConfigDefaults.rowSpacing
-* filter: Filter? = nil
-* hoverColor: Color = TablerConfigDefaults.hoverColor
-* tablePadding: EdgeInsets = TablerStackConfigDefaults.tablePadding
-* sortIndicatorForward: AnyView = TablerConfigDefaults.sortIndicatorForward
-* sortIndicatorReverse: AnyView = TablerConfigDefaults.sortIndicatorReverse
-* sortIndicatorNeutral: AnyView = TablerConfigDefaults.sortIndicatorNeutral
-
-### Grid
-
-* gridItems: [GridItem] = []
-* alignment: HorizontalAlignment = TablerGridConfigDefaults.alignment
-* itemPadding: EdgeInsets = TablerGridConfigDefaults.itemPadding
-* headerSpacing: CGFloat = TablerGridConfigDefaults.headerSpacing
-* rowSpacing: CGFloat = TablerGridConfigDefaults.rowSpacing
-* filter: Filter? = nil
-* hoverColor: Color = TablerConfigDefaults.hoverColor
-* tablePadding: EdgeInsets = TablerGridConfigDefaults.tablePadding
-* sortIndicatorForward: AnyView = TablerConfigDefaults.sortIndicatorForward
-* sortIndicatorReverse: AnyView = TablerConfigDefaults.sortIndicatorReverse
-* sortIndicatorNeutral: AnyView = TablerConfigDefaults.sortIndicatorNeutral
 
 ## Column Sorting
 
@@ -356,10 +311,8 @@ Available for macOS. It's enabled by default using the system's accent color.
 When using a row background or overlay on macOS, you might wish to disable the hover effect.
 
 ```swift
-typealias Config = TablerListConfig<Fruit>
-
 var body: some View {
-    TablerList(Config(hoverColor: .clear),
+    TablerList(.init(hoverColor: .clear),
                header: header,
                row: row,
                rowBackground: rowBackgroundAction,
@@ -385,10 +338,8 @@ Row moving via drag and drop is available for the **List** based variants.
 An example for use with Random Access Collections, as seen in _TablerDemo_:
 
 ```swift
-typealias Config = TablerListConfig<Fruit>
-
 var body: some View {
-    TablerList(Config(onMove: moveAction),
+    TablerList(.init(onMove: moveAction),
                row: row,
                results: fruits)
 }
@@ -399,6 +350,71 @@ private func moveAction(from source: IndexSet, to destination: Int) {
 ```
 
 TODO need Core Data example, if it's possible to do so.
+
+## Configuration
+
+Configuration options will vary by table type.
+
+Defaults can vary by platform (macOS, iOS, etc.). See the code for specifics.
+
+Spacing defaults are driven by the goal of achieving uniform appearance among table types, with the *List* type serving as the standard.
+
+### Base Defaults
+
+- `hoverColor: Color` - accent color with opacity of 0.2
+- `tablePadding: EdgeInsets` - no padding
+- `sortIndicatorForward: AnyView` - "chevron.up" image
+- `sortIndicatorReverse: AnyView` - "chevron.down" image
+- `sortIndicatorNeutral: AnyView` - "chevron.up" image, with opacity of 0
+
+### List
+
+List configuration is optional.
+
+`TablerListConfig<Element>.init` parameters:
+
+- `canMove: CanMove<Element>` - with a default of `{ _ in true }`, allowing any row to move (if `onMove` defined)
+- `onMove: OnMove<Element>?` - with a default of `nil`, prohibiting any move
+- `filter: Filter?` - with a default of `nil`, indicating no filtering
+- `hoverColor: Color` - per Base defaults
+- `tablePadding: EdgeInsets` - per Base defaults
+- `sortIndicatorForward: AnyView` - per Base defaults
+- `sortIndicatorReverse: AnyView` - per Base defaults
+- `sortIndicatorNeutral: AnyView` - per Base defaults
+
+### Stack
+
+Stack configuration is optional.
+
+`TablerStackConfig<Element>.init` parameters:
+
+- `rowPadding: EdgeInsets` - Stack-specific default, varies by platform
+- `headerSpacing: CGFloat` - Stack-specific default, varies by platform
+- `rowSpacing: CGFloat` - Stack-specific default, varies by platform
+- `filter: Filter?` - with a default of `nil`, indicating no filtering
+- `hoverColor: Color` - per Base defaults
+- `tablePadding: EdgeInsets` - per Stack defaults
+- `sortIndicatorForward: AnyView` - per Base defaults
+- `sortIndicatorReverse: AnyView` - per Base defaults
+- `sortIndicatorNeutral: AnyView` - per Base defaults
+
+### Grid
+
+Grid configuration is required, where you supply a `GridItem` array.
+
+`TablerGridConfig<Element>.init` parameters:
+
+- `gridItems: [GridItem]` - required
+- `alignment: HorizontalAlignment` - `LazyVGrid` alignment, with a default of `.leading`
+- `itemPadding: EdgeInsets` - with a default of `.init()`, indicating no padding
+- `headerSpacing: CGFloat` - Grid-specific default, varies by platform
+- `rowSpacing: CGFloat` - Grid-specific default, varies by platform
+- `filter: Filter?` - with a default of `nil`, indicating no filtering
+- `hoverColor: Color` - per Base defaults
+- `tablePadding: EdgeInsets` - Grid-specific default, varies by platform
+- `sortIndicatorForward: AnyView` - per Base defaults
+- `sortIndicatorReverse: AnyView` - per Base defaults
+- `sortIndicatorNeutral: AnyView` - per Base defaults
 
 ## Horizontal Scrolling
 

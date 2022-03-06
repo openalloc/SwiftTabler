@@ -47,7 +47,7 @@ public struct TablerGridC<Element, Header, Row, RowBack, RowOver, Results>: View
     private let rowOverlay: RowOverlay
     private var results: Results
 
-    public init(_ config: Config = .init(),
+    public init(_ config: Config,
                 @ViewBuilder header: @escaping HeaderContent,
                 @ViewBuilder row: @escaping RowContent,
                 @ViewBuilder rowBackground: @escaping RowBackground,

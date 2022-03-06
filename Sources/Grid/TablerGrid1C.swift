@@ -49,7 +49,7 @@ public struct TablerGrid1C<Element, Header, Row, RowBack, RowOver, Results>: Vie
     private var results: Results
     @Binding private var selected: Selected
 
-    public init(_ config: Config = .init(),
+    public init(_ config: Config,
                 @ViewBuilder header: @escaping HeaderContent,
                 @ViewBuilder row: @escaping RowContent,
                 @ViewBuilder rowBackground: @escaping RowBackground,
