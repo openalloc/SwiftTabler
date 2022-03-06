@@ -390,7 +390,25 @@ var body: some View {
 
 ## Moving Rows
 
-TODO add details here, with example of move action handler.
+Row moving via drag and drop is available for the **List** based variants.
+
+An example for use with Random Access Collections, as seen in _TablerDemo_:
+
+```swift
+typealias Config = TablerListConfig<Fruit>
+
+var body: some View {
+    TablerList(Config(onMove: moveAction),
+               row: row,
+               results: fruits)
+}
+
+private func moveAction(from source: IndexSet, to destination: Int) {
+    fruits.move(fromOffsets: source, toOffset: destination)
+}
+```
+
+TODO need Core Data example, if it's possible to do so.
 
 ## Horizontal Scrolling
 
