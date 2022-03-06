@@ -76,6 +76,7 @@ public struct TablerGrid<Element, Header, Row, RowBack, RowOver, Results>: View
                                           element: element,
                                           hovered: $hovered))
                     .background(rowBackground(element))
+                    .overlay(rowOverlay(element))
             }
         }
     }

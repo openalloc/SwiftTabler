@@ -93,7 +93,8 @@ public struct TablerStackB<Element, Header, Row, RowBack, RowOver, Results>: Vie
                                   element: element.wrappedValue,
                                   hovered: $hovered))
             .background(rowBackground(element.wrappedValue))
-    }
+            .overlay(rowOverlay(element.wrappedValue))
+   }
 }
 
 public extension TablerStackB {

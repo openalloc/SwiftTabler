@@ -74,6 +74,7 @@ public struct TablerStack<Element, Header, Row, RowBack, RowOver, Results>: View
                 rowContent(element)
                     .modifier(StackRowMod(config: config, element: element, hovered: $hovered))
                     .background(rowBackground(element))
+                    .overlay(rowOverlay(element))
             }
         }
     }

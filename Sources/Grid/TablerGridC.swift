@@ -80,6 +80,7 @@ public struct TablerGridC<Element, Header, Row, RowBack, RowOver, Results>: View
                                               element: rawElem,
                                               hovered: $hovered))
                         .background(rowBackground(rawElem))
+                        .overlay(rowOverlay(rawElem))
                 }
             }
         }

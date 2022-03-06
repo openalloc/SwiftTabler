@@ -80,6 +80,7 @@ public struct TablerStackC<Element, Header, Row, RowBack, RowOver, Results>: Vie
                                               element: rawElem,
                                               hovered: $hovered))
                         .background(rowBackground(rawElem))
+                        .overlay(rowOverlay(rawElem))
                 }
             }
         }

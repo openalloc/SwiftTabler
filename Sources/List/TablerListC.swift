@@ -80,6 +80,7 @@ public struct TablerListC<Element, Header, Row, RowBack, RowOver, Results>: View
                                              element: rawElem,
                                              hovered: $hovered))
                         .listRowBackground(rowBackground(rawElem))
+                        .overlay(rowOverlay(rawElem))
                 }
             }
             .onMove(perform: config.onMove)

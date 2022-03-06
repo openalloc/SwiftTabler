@@ -83,6 +83,7 @@ public struct TablerGrid1B<Element, Header, Row, RowBack, RowOver, Results>: Vie
                                            hovered: $hovered,
                                            selected: $selected))
                     .background(rowBackground(element))
+                    .overlay(rowOverlay(element))
             }
         }
     }

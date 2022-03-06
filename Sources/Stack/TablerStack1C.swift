@@ -85,6 +85,7 @@ public struct TablerStack1C<Element, Header, Row, RowBack, RowOver, Results>: Vi
                                                hovered: $hovered,
                                                selected: $selected))
                         .background(rowBackground(rawElem))
+                        .overlay(rowOverlay(rawElem))
                 }
             }
         }

@@ -95,6 +95,7 @@ public struct TablerListB<Element, Header, Row, RowBack, RowOver, Results>: View
                                  element: element.wrappedValue,
                                  hovered: $hovered))
             .listRowBackground(rowBackground(element.wrappedValue))
+            .overlay(rowOverlay(element.wrappedValue))
     }
 }
 
