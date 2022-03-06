@@ -49,8 +49,8 @@ struct BaseList<Element, Header, Rows>: View
                 buildHeader()
                 rowsContent()
             }
-            .padding(config.tablePadding)
         }
+        .padding(config.tablePadding)
     }
 
     private var config: Config {

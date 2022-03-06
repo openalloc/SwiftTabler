@@ -57,8 +57,8 @@ struct BaseGrid<Element, Header, Rows>: View
                     }
                 }
             }
-            .padding(config.tablePadding)
         }
+        .padding(config.tablePadding)
     }
 
     private var config: Config {
