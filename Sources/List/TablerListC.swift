@@ -20,11 +20,12 @@ import CoreData
 import SwiftUI
 
 /// List-based table, with support for bound values through Core Data
-public struct TablerListC<Element, Header, Row, RowBack>: View
+public struct TablerListC<Element, Header, Row, RowBack, RowOver>: View
     where Element: Identifiable & NSFetchRequestResult & ObservableObject,
     Header: View,
     Row: View,
-    RowBack: View
+    RowBack: View,
+    RowOver: View
 {
     public typealias Config = TablerListConfig<Element>
     public typealias Context = TablerContext<Element>
@@ -33,6 +34,7 @@ public struct TablerListC<Element, Header, Row, RowBack>: View
     public typealias ProjectedValue = ObservedObject<Element>.Wrapper
     public typealias RowContent = (ProjectedValue) -> Row
     public typealias RowBackground = (Element) -> RowBack
+    public typealias RowOverlay = (Element) -> RowOver
     public typealias Fetched = FetchedResults<Element>
 
     // MARK: Parameters
@@ -41,18 +43,21 @@ public struct TablerListC<Element, Header, Row, RowBack>: View
     private let headerContent: HeaderContent
     private let rowContent: RowContent
     private let rowBackground: RowBackground
+    private let rowOverlay: RowOverlay
     private var results: Fetched
 
     public init(_ config: Config = .init(),
                 @ViewBuilder header: @escaping HeaderContent,
                 @ViewBuilder row: @escaping RowContent,
                 @ViewBuilder rowBackground: @escaping RowBackground,
+                @ViewBuilder rowOverlay: @escaping RowOverlay,
                 results: Fetched)
     {
         self.config = config
         headerContent = header
         rowContent = row
         self.rowBackground = rowBackground
+        self.rowOverlay = rowOverlay
         self.results = results
         _context = State(initialValue: TablerContext(config))
     }
@@ -84,6 +89,7 @@ public extension TablerListC {
     init(_ config: Config,
          @ViewBuilder row: @escaping RowContent,
          @ViewBuilder rowBackground: @escaping RowBackground,
+         @ViewBuilder rowOverlay: @escaping RowOverlay,
          results: Fetched)
         where Header == EmptyView
     {
@@ -91,6 +97,23 @@ public extension TablerListC {
                   header: { _ in EmptyView() },
                   row: row,
                   rowBackground: rowBackground,
+                  rowOverlay: rowOverlay,
+                  results: results)
+    }
+
+    // omitting Overlay
+    init(_ config: Config,
+         @ViewBuilder header: @escaping HeaderContent,
+         @ViewBuilder row: @escaping RowContent,
+         @ViewBuilder rowBackground: @escaping RowBackground,
+         results: Fetched)
+        where RowOver == EmptyView
+    {
+        self.init(config,
+                  header: header,
+                  row: row,
+                  rowBackground: rowBackground,
+                  rowOverlay: { _ in EmptyView() },
                   results: results)
     }
 
@@ -98,6 +121,7 @@ public extension TablerListC {
     init(_ config: Config,
          @ViewBuilder header: @escaping HeaderContent,
          @ViewBuilder row: @escaping RowContent,
+         @ViewBuilder rowOverlay: @escaping RowOverlay,
          results: Fetched)
         where RowBack == EmptyView
     {
@@ -105,12 +129,29 @@ public extension TablerListC {
                   header: header,
                   row: row,
                   rowBackground: { _ in EmptyView() },
+                  rowOverlay: rowOverlay,
                   results: results)
     }
 
+    // omitting Header AND Overlay
+    init(_ config: Config,
+         @ViewBuilder row: @escaping RowContent,
+         @ViewBuilder rowBackground: @escaping RowBackground,
+         results: Fetched)
+        where Header == EmptyView, RowOver == EmptyView
+    {
+        self.init(config,
+                  header: { _ in EmptyView() },
+                  row: row,
+                  rowBackground: rowBackground,
+                  rowOverlay: { _ in EmptyView() },
+                  results: results)
+    }
+    
     // omitting Header AND Background
     init(_ config: Config,
          @ViewBuilder row: @escaping RowContent,
+         @ViewBuilder rowOverlay: @escaping RowOverlay,
          results: Fetched)
         where Header == EmptyView, RowBack == EmptyView
     {
@@ -118,6 +159,36 @@ public extension TablerListC {
                   header: { _ in EmptyView() },
                   row: row,
                   rowBackground: { _ in EmptyView() },
+                  rowOverlay: rowOverlay,
+                  results: results)
+    }
+    
+    // omitting Background AND Overlay
+    init(_ config: Config,
+         @ViewBuilder header: @escaping HeaderContent,
+         @ViewBuilder row: @escaping RowContent,
+         results: Fetched)
+        where RowBack == EmptyView, RowOver == EmptyView
+    {
+        self.init(config,
+                  header: header,
+                  row: row,
+                  rowBackground: { _ in EmptyView() },
+                  rowOverlay: { _ in EmptyView() },
+                  results: results)
+    }
+
+    // omitting Header, Background, AND Overlay
+    init(_ config: Config,
+         @ViewBuilder row: @escaping RowContent,
+         results: Fetched)
+        where Header == EmptyView, RowBack == EmptyView, RowOver == EmptyView
+    {
+        self.init(config,
+                  header: { _ in EmptyView() },
+                  row: row,
+                  rowBackground: { _ in EmptyView() },
+                  rowOverlay: { _ in EmptyView() },
                   results: results)
     }
 }

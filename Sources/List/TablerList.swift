@@ -19,13 +19,14 @@
 import SwiftUI
 
 /// List-based table
-public struct TablerList<Element, Header, RowBack, Row, Results>: View
-    where Element: Identifiable,
-    Header: View,
-    Row: View,
-    RowBack: View,
-    Results: RandomAccessCollection,
-    Results.Element == Element
+public struct TablerList<Element, Header, Row, RowBack, RowOver, Results>: View
+where Element: Identifiable,
+      Header: View,
+      Row: View,
+      RowBack: View,
+      RowOver: View,
+      Results: RandomAccessCollection,
+      Results.Element == Element
 {
     public typealias Config = TablerListConfig<Element>
     public typealias Context = TablerContext<Element>
@@ -33,36 +34,40 @@ public struct TablerList<Element, Header, RowBack, Row, Results>: View
     public typealias HeaderContent = (Binding<Context>) -> Header
     public typealias RowContent = (Element) -> Row
     public typealias RowBackground = (Element) -> RowBack
+    public typealias RowOverlay = (Element) -> RowOver
 
     // MARK: Parameters
-
+    
     private let config: Config
     private let headerContent: HeaderContent
     private let rowContent: RowContent
     private let rowBackground: RowBackground
+    private let rowOverlay: RowOverlay
     private var results: Results
-
+    
     public init(_ config: Config = .init(),
                 @ViewBuilder header: @escaping HeaderContent,
                 @ViewBuilder row: @escaping RowContent,
                 @ViewBuilder rowBackground: @escaping RowBackground,
+                @ViewBuilder rowOverlay: @escaping RowOverlay,
                 results: Results)
     {
         self.config = config
         headerContent = header
         rowContent = row
         self.rowBackground = rowBackground
+        self.rowOverlay = rowOverlay
         self.results = results
         _context = State(initialValue: TablerContext(config))
     }
-
+    
     // MARK: Locals
-
+    
     @State private var hovered: Hovered = nil
     @State private var context: Context
-
+    
     // MARK: Views
-
+    
     public var body: some View {
         BaseList(context: $context,
                  header: headerContent) {
@@ -70,6 +75,7 @@ public struct TablerList<Element, Header, RowBack, Row, Results>: View
                 rowContent(element)
                     .modifier(ListRowMod(config, element, $hovered))
                     .listRowBackground(rowBackground(element))
+                    .overlay(rowOverlay(element))
             }
             .onMove(perform: config.onMove)
         }
@@ -81,6 +87,7 @@ public extension TablerList {
     init(_ config: Config,
          @ViewBuilder row: @escaping RowContent,
          @ViewBuilder rowBackground: @escaping RowBackground,
+         @ViewBuilder rowOverlay: @escaping RowOverlay,
          results: Results)
         where Header == EmptyView
     {
@@ -88,6 +95,23 @@ public extension TablerList {
                   header: { _ in EmptyView() },
                   row: row,
                   rowBackground: rowBackground,
+                  rowOverlay: rowOverlay,
+                  results: results)
+    }
+
+    // omitting Overlay
+    init(_ config: Config,
+         @ViewBuilder header: @escaping HeaderContent,
+         @ViewBuilder row: @escaping RowContent,
+         @ViewBuilder rowBackground: @escaping RowBackground,
+         results: Results)
+        where RowOver == EmptyView
+    {
+        self.init(config,
+                  header: header,
+                  row: row,
+                  rowBackground: rowBackground,
+                  rowOverlay: { _ in EmptyView() },
                   results: results)
     }
 
@@ -95,6 +119,7 @@ public extension TablerList {
     init(_ config: Config,
          @ViewBuilder header: @escaping HeaderContent,
          @ViewBuilder row: @escaping RowContent,
+         @ViewBuilder rowOverlay: @escaping RowOverlay,
          results: Results)
         where RowBack == EmptyView
     {
@@ -102,12 +127,29 @@ public extension TablerList {
                   header: header,
                   row: row,
                   rowBackground: { _ in EmptyView() },
+                  rowOverlay: rowOverlay,
                   results: results)
     }
 
+    // omitting Header AND Overlay
+    init(_ config: Config,
+         @ViewBuilder row: @escaping RowContent,
+         @ViewBuilder rowBackground: @escaping RowBackground,
+         results: Results)
+        where Header == EmptyView, RowOver == EmptyView
+    {
+        self.init(config,
+                  header: { _ in EmptyView() },
+                  row: row,
+                  rowBackground: rowBackground,
+                  rowOverlay: { _ in EmptyView() },
+                  results: results)
+    }
+    
     // omitting Header AND Background
     init(_ config: Config,
          @ViewBuilder row: @escaping RowContent,
+         @ViewBuilder rowOverlay: @escaping RowOverlay,
          results: Results)
         where Header == EmptyView, RowBack == EmptyView
     {
@@ -115,6 +157,36 @@ public extension TablerList {
                   header: { _ in EmptyView() },
                   row: row,
                   rowBackground: { _ in EmptyView() },
+                  rowOverlay: rowOverlay,
+                  results: results)
+    }
+    
+    // omitting Background AND Overlay
+    init(_ config: Config,
+         @ViewBuilder header: @escaping HeaderContent,
+         @ViewBuilder row: @escaping RowContent,
+         results: Results)
+        where RowBack == EmptyView, RowOver == EmptyView
+    {
+        self.init(config,
+                  header: header,
+                  row: row,
+                  rowBackground: { _ in EmptyView() },
+                  rowOverlay: { _ in EmptyView() },
+                  results: results)
+    }
+
+    // omitting Header, Background, AND Overlay
+    init(_ config: Config,
+         @ViewBuilder row: @escaping RowContent,
+         results: Results)
+        where Header == EmptyView, RowBack == EmptyView, RowOver == EmptyView
+    {
+        self.init(config,
+                  header: { _ in EmptyView() },
+                  row: row,
+                  rowBackground: { _ in EmptyView() },
+                  rowOverlay: { _ in EmptyView() },
                   results: results)
     }
 }

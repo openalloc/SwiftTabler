@@ -81,6 +81,7 @@ public struct TablerListM<Element, Header, Row, RowBack, RowOver, Results>: View
                     .modifier(ListRowMod(config, element, $hovered))
                     .listRowBackground(rowBackground(element))
                     .overlay(rowOverlay(element))
+                    .overlay(rowOverlay(element))
             }
             .onMove(perform: config.onMove)
         }

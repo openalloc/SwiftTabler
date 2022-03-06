@@ -19,11 +19,12 @@
 import SwiftUI
 
 /// Grid-based table, with support for single-selection and bound values from RandomAccessCollection
-public struct TablerGrid1B<Element, Header, Row, RowBack, Results>: View
+public struct TablerGrid1B<Element, Header, Row, RowBack, RowOver, Results>: View
     where Element: Identifiable,
     Header: View,
     Row: View,
     RowBack: View,
+    RowOver: View,
     Results: RandomAccessCollection & MutableCollection,
     Results.Element == Element,
     Results.Index: Hashable
@@ -34,6 +35,7 @@ public struct TablerGrid1B<Element, Header, Row, RowBack, Results>: View
     public typealias HeaderContent = (Binding<Context>) -> Header
     public typealias RowContent = (Binding<Element>) -> Row
     public typealias RowBackground = (Element) -> RowBack
+    public typealias RowOverlay = (Element) -> RowOver
     public typealias Selected = Element.ID?
 
     // MARK: Parameters
@@ -42,6 +44,7 @@ public struct TablerGrid1B<Element, Header, Row, RowBack, Results>: View
     private let headerContent: HeaderContent
     private let rowContent: RowContent
     private let rowBackground: RowBackground
+    private let rowOverlay: RowOverlay
     @Binding private var results: Results
     @Binding private var selected: Selected
 
@@ -49,6 +52,7 @@ public struct TablerGrid1B<Element, Header, Row, RowBack, Results>: View
                 @ViewBuilder header: @escaping HeaderContent,
                 @ViewBuilder row: @escaping RowContent,
                 @ViewBuilder rowBackground: @escaping RowBackground,
+                @ViewBuilder rowOverlay: @escaping RowOverlay,
                 results: Binding<Results>,
                 selected: Binding<Selected>)
     {
@@ -56,6 +60,7 @@ public struct TablerGrid1B<Element, Header, Row, RowBack, Results>: View
         headerContent = header
         rowContent = row
         self.rowBackground = rowBackground
+        self.rowOverlay = rowOverlay
         _results = results
         _selected = selected
         _context = State(initialValue: TablerContext(config))
@@ -85,6 +90,7 @@ public extension TablerGrid1B {
     init(_ config: Config,
          @ViewBuilder row: @escaping RowContent,
          @ViewBuilder rowBackground: @escaping RowBackground,
+         @ViewBuilder rowOverlay: @escaping RowOverlay,
          results: Binding<Results>,
          selected: Binding<Selected>)
         where Header == EmptyView
@@ -93,6 +99,25 @@ public extension TablerGrid1B {
                   header: { _ in EmptyView() },
                   row: row,
                   rowBackground: rowBackground,
+                  rowOverlay: rowOverlay,
+                  results: results,
+                  selected: selected)
+    }
+
+    // omitting Overlay
+    init(_ config: Config,
+         @ViewBuilder header: @escaping HeaderContent,
+         @ViewBuilder row: @escaping RowContent,
+         @ViewBuilder rowBackground: @escaping RowBackground,
+         results: Binding<Results>,
+         selected: Binding<Selected>)
+        where RowOver == EmptyView
+    {
+        self.init(config,
+                  header: header,
+                  row: row,
+                  rowBackground: rowBackground,
+                  rowOverlay: { _ in EmptyView() },
                   results: results,
                   selected: selected)
     }
@@ -101,6 +126,7 @@ public extension TablerGrid1B {
     init(_ config: Config,
          @ViewBuilder header: @escaping HeaderContent,
          @ViewBuilder row: @escaping RowContent,
+         @ViewBuilder rowOverlay: @escaping RowOverlay,
          results: Binding<Results>,
          selected: Binding<Selected>)
         where RowBack == EmptyView
@@ -109,13 +135,32 @@ public extension TablerGrid1B {
                   header: header,
                   row: row,
                   rowBackground: { _ in EmptyView() },
+                  rowOverlay: rowOverlay,
                   results: results,
                   selected: selected)
     }
 
+    // omitting Header AND Overlay
+    init(_ config: Config,
+         @ViewBuilder row: @escaping RowContent,
+         @ViewBuilder rowBackground: @escaping RowBackground,
+         results: Binding<Results>,
+         selected: Binding<Selected>)
+        where Header == EmptyView, RowOver == EmptyView
+    {
+        self.init(config,
+                  header: { _ in EmptyView() },
+                  row: row,
+                  rowBackground: rowBackground,
+                  rowOverlay: { _ in EmptyView() },
+                  results: results,
+                  selected: selected)
+    }
+    
     // omitting Header AND Background
     init(_ config: Config,
          @ViewBuilder row: @escaping RowContent,
+         @ViewBuilder rowOverlay: @escaping RowOverlay,
          results: Binding<Results>,
          selected: Binding<Selected>)
         where Header == EmptyView, RowBack == EmptyView
@@ -124,6 +169,40 @@ public extension TablerGrid1B {
                   header: { _ in EmptyView() },
                   row: row,
                   rowBackground: { _ in EmptyView() },
+                  rowOverlay: rowOverlay,
+                  results: results,
+                  selected: selected)
+    }
+    
+    // omitting Background AND Overlay
+    init(_ config: Config,
+         @ViewBuilder header: @escaping HeaderContent,
+         @ViewBuilder row: @escaping RowContent,
+         results: Binding<Results>,
+         selected: Binding<Selected>)
+        where RowBack == EmptyView, RowOver == EmptyView
+    {
+        self.init(config,
+                  header: header,
+                  row: row,
+                  rowBackground: { _ in EmptyView() },
+                  rowOverlay: { _ in EmptyView() },
+                  results: results,
+                  selected: selected)
+    }
+
+    // omitting Header, Background, AND Overlay
+    init(_ config: Config,
+         @ViewBuilder row: @escaping RowContent,
+         results: Binding<Results>,
+         selected: Binding<Selected>)
+        where Header == EmptyView, RowBack == EmptyView, RowOver == EmptyView
+    {
+        self.init(config,
+                  header: { _ in EmptyView() },
+                  row: row,
+                  rowBackground: { _ in EmptyView() },
+                  rowOverlay: { _ in EmptyView() },
                   results: results,
                   selected: selected)
     }

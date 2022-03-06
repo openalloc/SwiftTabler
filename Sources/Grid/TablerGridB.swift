@@ -19,11 +19,12 @@
 import SwiftUI
 
 /// Grid-based table, with support for bound values from RandomAccessCollection
-public struct TablerGridB<Element, Header, Row, RowBack, Results>: View
+public struct TablerGridB<Element, Header, Row, RowBack, RowOver, Results>: View
     where Element: Identifiable,
     Header: View,
     Row: View,
     RowBack: View,
+    RowOver: View,
     Results: RandomAccessCollection & MutableCollection,
     Results.Element == Element,
     Results.Index: Hashable
@@ -34,6 +35,7 @@ public struct TablerGridB<Element, Header, Row, RowBack, Results>: View
     public typealias HeaderContent = (Binding<Context>) -> Header
     public typealias RowContent = (Binding<Element>) -> Row
     public typealias RowBackground = (Element) -> RowBack
+    public typealias RowOverlay = (Element) -> RowOver
 
     // MARK: Parameters
 
@@ -41,18 +43,21 @@ public struct TablerGridB<Element, Header, Row, RowBack, Results>: View
     private let headerContent: HeaderContent
     private let rowContent: RowContent
     private let rowBackground: RowBackground
+    private let rowOverlay: RowOverlay
     @Binding private var results: Results
 
     public init(_ config: Config = .init(),
                 @ViewBuilder header: @escaping HeaderContent,
                 @ViewBuilder row: @escaping RowContent,
                 @ViewBuilder rowBackground: @escaping RowBackground,
+                @ViewBuilder rowOverlay: @escaping RowOverlay,
                 results: Binding<Results>)
     {
         self.config = config
         headerContent = header
         rowContent = row
         self.rowBackground = rowBackground
+        self.rowOverlay = rowOverlay
         _results = results
         _context = State(initialValue: TablerContext(config))
     }
@@ -81,6 +86,7 @@ public extension TablerGridB {
     init(_ config: Config,
          @ViewBuilder row: @escaping RowContent,
          @ViewBuilder rowBackground: @escaping RowBackground,
+         @ViewBuilder rowOverlay: @escaping RowOverlay,
          results: Binding<Results>)
         where Header == EmptyView
     {
@@ -88,6 +94,23 @@ public extension TablerGridB {
                   header: { _ in EmptyView() },
                   row: row,
                   rowBackground: rowBackground,
+                  rowOverlay: rowOverlay,
+                  results: results)
+    }
+
+    // omitting Overlay
+    init(_ config: Config,
+         @ViewBuilder header: @escaping HeaderContent,
+         @ViewBuilder row: @escaping RowContent,
+         @ViewBuilder rowBackground: @escaping RowBackground,
+         results: Binding<Results>)
+        where RowOver == EmptyView
+    {
+        self.init(config,
+                  header: header,
+                  row: row,
+                  rowBackground: rowBackground,
+                  rowOverlay: { _ in EmptyView() },
                   results: results)
     }
 
@@ -95,6 +118,7 @@ public extension TablerGridB {
     init(_ config: Config,
          @ViewBuilder header: @escaping HeaderContent,
          @ViewBuilder row: @escaping RowContent,
+         @ViewBuilder rowOverlay: @escaping RowOverlay,
          results: Binding<Results>)
         where RowBack == EmptyView
     {
@@ -102,12 +126,29 @@ public extension TablerGridB {
                   header: header,
                   row: row,
                   rowBackground: { _ in EmptyView() },
+                  rowOverlay: rowOverlay,
                   results: results)
     }
 
+    // omitting Header AND Overlay
+    init(_ config: Config,
+         @ViewBuilder row: @escaping RowContent,
+         @ViewBuilder rowBackground: @escaping RowBackground,
+         results: Binding<Results>)
+        where Header == EmptyView, RowOver == EmptyView
+    {
+        self.init(config,
+                  header: { _ in EmptyView() },
+                  row: row,
+                  rowBackground: rowBackground,
+                  rowOverlay: { _ in EmptyView() },
+                  results: results)
+    }
+    
     // omitting Header AND Background
     init(_ config: Config,
          @ViewBuilder row: @escaping RowContent,
+         @ViewBuilder rowOverlay: @escaping RowOverlay,
          results: Binding<Results>)
         where Header == EmptyView, RowBack == EmptyView
     {
@@ -115,7 +156,36 @@ public extension TablerGridB {
                   header: { _ in EmptyView() },
                   row: row,
                   rowBackground: { _ in EmptyView() },
+                  rowOverlay: rowOverlay,
+                  results: results)
+    }
+    
+    // omitting Background AND Overlay
+    init(_ config: Config,
+         @ViewBuilder header: @escaping HeaderContent,
+         @ViewBuilder row: @escaping RowContent,
+         results: Binding<Results>)
+        where RowBack == EmptyView, RowOver == EmptyView
+    {
+        self.init(config,
+                  header: header,
+                  row: row,
+                  rowBackground: { _ in EmptyView() },
+                  rowOverlay: { _ in EmptyView() },
                   results: results)
     }
 
+    // omitting Header, Background, AND Overlay
+    init(_ config: Config,
+         @ViewBuilder row: @escaping RowContent,
+         results: Binding<Results>)
+        where Header == EmptyView, RowBack == EmptyView, RowOver == EmptyView
+    {
+        self.init(config,
+                  header: { _ in EmptyView() },
+                  row: row,
+                  rowBackground: { _ in EmptyView() },
+                  rowOverlay: { _ in EmptyView() },
+                  results: results)
+    }
 }

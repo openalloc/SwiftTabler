@@ -120,32 +120,31 @@ _Tabler_ offers twenty-one (21) variants of table views from which you can choos
 * RAC - if checked, can be used with `RandomAccessCollection` (e.g., array of struct values)
 * CD - if checked, can be used with Core Data
 * Filter - if checked, `config.filter` is supported (see caveat below)
-* RO - if checked, you have option to use a Row Overlay
 * Bound - the mechanism through which values are bound, if at all
 
-View            | Type      | Select | RAC | CD  | Filter | RO  | Bound              
----             | ---       | ---    | --- | --- | ---    | --- | ---                
-`TablerList`    | **List**  |        |  ✓  |  ✓  |  ✓     |  ✓  |                     
-`TablerListB`   | **List**  |        |  ✓  |     |  ✓\*   |  ✓  | `Binding<Element>` 
-`TablerListC`   | **List**  |        |     |  ✓  |        |  ✓  | `NSManagedObject`    
-`TablerList1`   | **List**  | Single |  ✓  |  ✓  |  ✓     |  ✓  |                     
-`TablerList1B`  | **List**  | Single |  ✓  |     |  ✓\*   |  ✓  | `Binding<Element>`  
-`TablerList1C`  | **List**  | Single |     |  ✓  |        |  ✓  | `NSManagedObject`    
-`TablerListM`   | **List**  | Multi  |  ✓  |  ✓  |  ✓     |  ✓  |                     
-`TablerListMB`  | **List**  | Multi  |  ✓  |     |  ✓\*   |  ✓  | `Binding<Element>`  
-`TablerListMC`  | **List**  | Multi  |     |  ✓  |        |  ✓  | `NSManagedObject`    
-`TablerStack`   | **Stack** |        |  ✓  |  ✓  |  ✓     |  ✓  |                     
-`TablerStackB`  | **Stack** |        |  ✓  |     |  ✓\*   |  ✓  | `Binding<Element>`  
-`TablerStackC`  | **Stack** |        |     |  ✓  |        |  ✓  | `NSManagedObject`    
-`TablerStack1`  | **Stack** | Single |  ✓  |  ✓  |  ✓     |  ✓  |                     
-`TablerStack1B` | **Stack** | Single |  ✓  |     |  ✓\*   |  ✓  | `Binding<Element>`  
-`TablerStack1C` | **Stack** | Single |     |  ✓  |        |  ✓  | `NSManagedObject`    
-`TablerGrid`    | **Grid**  |        |  ✓  |  ✓  |  ✓     |     |                     
-`TablerGridB`   | **Grid**  |        |  ✓  |     |        |     | `Binding<Element>`        
-`TablerGridC`   | **Grid**  |        |     |  ✓  |        |     | `NSManagedObject`           
-`TablerGrid1`   | **Grid**  | Single |  ✓  |  ✓  |  ✓     |     |                     
-`TablerGrid1B`  | **Grid**  | Single |  ✓  |     |        |     | `Binding<Element>`        
-`TablerGrid1C`  | **Grid**  | Single |     |  ✓  |        |     | `NSManagedObject`           
+View            | Type      | Select | RAC | CD  | Filter | Bound              
+---             | ---       | ---    | --- | --- | ---    | ---                
+`TablerList`    | **List**  |        |  ✓  |  ✓  |  ✓     |                     
+`TablerListB`   | **List**  |        |  ✓  |     |  ✓\*   | `Binding<Element>` 
+`TablerListC`   | **List**  |        |     |  ✓  |        | `NSManagedObject`    
+`TablerList1`   | **List**  | Single |  ✓  |  ✓  |  ✓     |                     
+`TablerList1B`  | **List**  | Single |  ✓  |     |  ✓\*   | `Binding<Element>`  
+`TablerList1C`  | **List**  | Single |     |  ✓  |        | `NSManagedObject`    
+`TablerListM`   | **List**  | Multi  |  ✓  |  ✓  |  ✓     |                     
+`TablerListMB`  | **List**  | Multi  |  ✓  |     |  ✓\*   | `Binding<Element>`  
+`TablerListMC`  | **List**  | Multi  |     |  ✓  |        | `NSManagedObject`    
+`TablerStack`   | **Stack** |        |  ✓  |  ✓  |  ✓     |                     
+`TablerStackB`  | **Stack** |        |  ✓  |     |  ✓\*   | `Binding<Element>`  
+`TablerStackC`  | **Stack** |        |     |  ✓  |        | `NSManagedObject`    
+`TablerStack1`  | **Stack** | Single |  ✓  |  ✓  |  ✓     |                     
+`TablerStack1B` | **Stack** | Single |  ✓  |     |  ✓\*   | `Binding<Element>`  
+`TablerStack1C` | **Stack** | Single |     |  ✓  |        | `NSManagedObject`    
+`TablerGrid`    | **Grid**  |        |  ✓  |  ✓  |  ✓     |                     
+`TablerGridB`   | **Grid**  |        |  ✓  |     |        | `Binding<Element>`        
+`TablerGridC`   | **Grid**  |        |     |  ✓  |        | `NSManagedObject`           
+`TablerGrid1`   | **Grid**  | Single |  ✓  |  ✓  |  ✓     |                     
+`TablerGrid1B`  | **Grid**  | Single |  ✓  |     |        | `Binding<Element>`        
+`TablerGrid1C`  | **Grid**  | Single |     |  ✓  |        | `NSManagedObject`           
 
 \* filtering with Binding-based data likely not scalable as implemented. If you can find a better way to implement, submit a pull request!
 
@@ -290,6 +289,8 @@ Note that for Core Data, the user's changes will need to be saved to the Managed
 
 You have the option to specify a row background, such as to impart information, or as a selection indicator.
 
+Row Background, as the name suggests, sits BEHIND the row.
+
 macOS | iOS
 :---:|:---:
 ![](https://github.com/openalloc/SwiftTabler/blob/main/Images/macOSc.png)  |  ![](https://github.com/openalloc/SwiftTabler/blob/main/Images/iOSc.png)
@@ -330,11 +331,11 @@ private func rowBackground(fruit: Fruit) -> some View {
 }
 ```
 
-Row Background, as the name suggests, sits BELOW the row.
-
 ## Row Overlay
 
 Similar to a row background, an overlay can be used to impart information, or to use as a selection indicator.
+
+Row overlay, as the name suggests, sits ATOP the row.
 
 An example of a selection indicator using row overlay:
 
@@ -356,8 +357,6 @@ private func rowOverlay(fruit: Fruit) -> some View {
                       antialiased: true)
 }
 ```
-
-Row overlay, as the name suggests, sits ABOVE the row.
 
 ## Hover Effect
 

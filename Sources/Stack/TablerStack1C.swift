@@ -207,4 +207,5 @@ public extension TablerStack1C {
                   rowOverlay: { _ in EmptyView() },
                   results: results,
                   selected: selected)
-    }}
+    }
+}
