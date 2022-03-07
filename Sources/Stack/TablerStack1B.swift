@@ -31,7 +31,6 @@ public struct TablerStack1B<Element, Header, Row, RowBack, RowOver, Results>: Vi
 {
     public typealias Config = TablerStackConfig<Element>
     public typealias Context = TablerContext<Element>
-    public typealias Hovered = Element.ID?
     public typealias HeaderContent = (Binding<Context>) -> Header
     public typealias RowContent = (Binding<Element>) -> Row
     public typealias RowBackground = (Element) -> RowBack
@@ -68,7 +67,6 @@ public struct TablerStack1B<Element, Header, Row, RowBack, RowOver, Results>: Vi
 
     // MARK: Locals
 
-    @State private var hovered: Hovered = nil
     @State private var context: Context
 
     // MARK: Views
@@ -95,7 +93,6 @@ public struct TablerStack1B<Element, Header, Row, RowBack, RowOver, Results>: Vi
         rowContent(element)
             .modifier(StackRowMod1(config: config,
                                    element: element.wrappedValue,
-                                   hovered: $hovered,
                                    selected: $selected))
             .background(rowBackground(element.wrappedValue))
             .overlay(rowOverlay(element.wrappedValue))

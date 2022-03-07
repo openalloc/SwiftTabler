@@ -28,7 +28,6 @@ where Element: Identifiable
     
     let config: Config
     let element: Element
-    @Binding var hovered: Hovered
     @Binding var selected: Selected
     
     func body(content: Content) -> some View {
@@ -44,10 +43,9 @@ where Element: Identifiable
                     selected.insert(element.id)
                 }
             }
-
+        
 #if os(macOS) || targetEnvironment(macCatalyst)
-            .onHover { if $0 { hovered = element.id } else { hovered = nil } }
-            .background(hovered == element.id ? config.hoverColor : Color.clear)
+            .onHover(perform: { config.onHover(element, $0) })
 #endif
     }
 }

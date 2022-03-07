@@ -20,8 +20,6 @@ import SwiftUI
 
 public enum TablerConfigDefaults {
     
-    public static let hoverColor = Color.accentColor.opacity(0.2)
-    
     public static let tablePadding: EdgeInsets = .init()
 
     public static let sortIndicatorForward = AnyView(
@@ -43,9 +41,10 @@ open class TablerConfig<Element>
     where Element: Identifiable
 {
     public typealias Filter = (Element) -> Bool
+    public typealias OnHover = (Element, Bool) -> Void
 
     public let filter: Filter?
-    public let hoverColor: Color
+    public let onHover: OnHover
     public let tablePadding: EdgeInsets
 
     public let sortIndicatorForward: AnyView
@@ -53,14 +52,14 @@ open class TablerConfig<Element>
     public let sortIndicatorNeutral: AnyView
 
     public init(filter: Filter? = nil,
-                hoverColor: Color = TablerConfigDefaults.hoverColor,
+                onHover: @escaping OnHover = { _,_ in },
                 tablePadding: EdgeInsets = TablerConfigDefaults.tablePadding,
                 sortIndicatorForward: AnyView = TablerConfigDefaults.sortIndicatorForward,
                 sortIndicatorReverse: AnyView = TablerConfigDefaults.sortIndicatorReverse,
                 sortIndicatorNeutral: AnyView = TablerConfigDefaults.sortIndicatorNeutral)
     {
         self.filter = filter
-        self.hoverColor = hoverColor
+        self.onHover = onHover
         self.tablePadding = tablePadding
         self.sortIndicatorForward = sortIndicatorForward
         self.sortIndicatorReverse = sortIndicatorReverse

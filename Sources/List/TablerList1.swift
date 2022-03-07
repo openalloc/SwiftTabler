@@ -30,7 +30,6 @@ public struct TablerList1<Element, Header, Row, RowBack, RowOver, Results>: View
 {
     public typealias Config = TablerListConfig<Element>
     public typealias Context = TablerContext<Element>
-    public typealias Hovered = Element.ID?
     public typealias HeaderContent = (Binding<Context>) -> Header
     public typealias RowContent = (Element) -> Row
     public typealias RowBackground = (Element) -> RowBack
@@ -67,7 +66,6 @@ public struct TablerList1<Element, Header, Row, RowBack, RowOver, Results>: View
 
     // MARK: Locals
 
-    @State private var hovered: Hovered = nil
     @State private var context: Context
 
     // MARK: Views
@@ -79,8 +77,7 @@ public struct TablerList1<Element, Header, Row, RowBack, RowOver, Results>: View
             ForEach(results.filter(config.filter ?? { _ in true })) { element in
                 rowContent(element)
                     .modifier(ListRowMod(config: config,
-                                         element: element,
-                                         hovered: $hovered))
+                                         element: element))
                     .listRowBackground(rowBackground(element))
                     .overlay(rowOverlay(element))
             }

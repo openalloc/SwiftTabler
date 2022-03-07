@@ -30,7 +30,6 @@ public struct TablerStack<Element, Header, Row, RowBack, RowOver, Results>: View
 {
     public typealias Config = TablerStackConfig<Element>
     public typealias Context = TablerContext<Element>
-    public typealias Hovered = Element.ID?
     public typealias HeaderContent = (Binding<Context>) -> Header
     public typealias RowContent = (Element) -> Row
     public typealias RowBackground = (Element) -> RowBack
@@ -62,7 +61,6 @@ public struct TablerStack<Element, Header, Row, RowBack, RowOver, Results>: View
 
     // MARK: Locals
 
-    @State private var hovered: Hovered = nil
     @State private var context: Context
 
     // MARK: Views
@@ -72,7 +70,7 @@ public struct TablerStack<Element, Header, Row, RowBack, RowOver, Results>: View
                   header: headerContent) {
             ForEach(results.filter(config.filter ?? { _ in true })) { element in
                 rowContent(element)
-                    .modifier(StackRowMod(config: config, element: element, hovered: $hovered))
+                    .modifier(StackRowMod(config: config, element: element))
                     .background(rowBackground(element))
                     .overlay(rowOverlay(element))
             }

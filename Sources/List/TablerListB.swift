@@ -31,7 +31,6 @@ public struct TablerListB<Element, Header, Row, RowBack, RowOver, Results>: View
 {
     public typealias Config = TablerListConfig<Element>
     public typealias Context = TablerContext<Element>
-    public typealias Hovered = Element.ID?
     public typealias HeaderContent = (Binding<Context>) -> Header
     public typealias RowContent = (Binding<Element>) -> Row
     public typealias RowBackground = (Element) -> RowBack
@@ -64,7 +63,6 @@ public struct TablerListB<Element, Header, Row, RowBack, RowOver, Results>: View
 
     // MARK: Locals
 
-    @State private var hovered: Hovered = nil
     @State private var context: Context
 
     // MARK: Views
@@ -92,8 +90,7 @@ public struct TablerListB<Element, Header, Row, RowBack, RowOver, Results>: View
     private func row(_ element: Binding<Element>) -> some View {
         rowContent(element)
             .modifier(ListRowMod(config: config,
-                                 element: element.wrappedValue,
-                                 hovered: $hovered))
+                                 element: element.wrappedValue))
             .listRowBackground(rowBackground(element.wrappedValue))
             .overlay(rowOverlay(element.wrappedValue))
     }

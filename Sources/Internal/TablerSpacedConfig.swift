@@ -32,7 +32,7 @@ where Element: Identifiable
     public init(headerSpacing: CGFloat = TablerSpacedConfigDefaults.headerSpacing,
                 rowSpacing: CGFloat = TablerSpacedConfigDefaults.rowSpacing,
                 filter: Filter? = nil,
-                hoverColor: Color = TablerConfigDefaults.hoverColor,
+                onHover: @escaping OnHover = { _,_ in },
                 tablePadding: EdgeInsets = TablerConfigDefaults.tablePadding,
                 sortIndicatorForward: AnyView = TablerConfigDefaults.sortIndicatorForward,
                 sortIndicatorReverse: AnyView = TablerConfigDefaults.sortIndicatorReverse,
@@ -42,7 +42,7 @@ where Element: Identifiable
         self.rowSpacing = rowSpacing
         
         super.init(filter: filter,
-                   hoverColor: hoverColor,
+                   onHover: onHover,
                    tablePadding: tablePadding,
                    sortIndicatorForward: sortIndicatorForward,
                    sortIndicatorReverse: sortIndicatorReverse,

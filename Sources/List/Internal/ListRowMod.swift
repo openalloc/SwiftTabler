@@ -26,15 +26,13 @@ where Element: Identifiable
     
     let config: Config
     let element: Element
-    @Binding var hovered: Hovered
     
     func body(content: Content) -> some View {
         content
             .moveDisabled(!config.canMove(element))
         
 #if os(macOS) || targetEnvironment(macCatalyst)
-            .onHover { if $0 { hovered = element.id } else { hovered = nil } }
-            .background(hovered == element.id ? config.hoverColor : Color.clear)
+            .onHover(perform: { config.onHover(element, $0) })
 #endif
     }
 }

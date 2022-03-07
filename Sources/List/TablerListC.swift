@@ -30,7 +30,6 @@ public struct TablerListC<Element, Header, Row, RowBack, RowOver, Results>: View
 {
     public typealias Config = TablerListConfig<Element>
     public typealias Context = TablerContext<Element>
-    public typealias Hovered = Element.ID?
     public typealias HeaderContent = (Binding<Context>) -> Header
     public typealias ProjectedValue = ObservedObject<Element>.Wrapper
     public typealias RowContent = (ProjectedValue) -> Row
@@ -64,7 +63,6 @@ public struct TablerListC<Element, Header, Row, RowBack, RowOver, Results>: View
 
     // MARK: Locals
 
-    @State private var hovered: Hovered = nil
     @State private var context: Context
 
     // MARK: Views
@@ -76,8 +74,7 @@ public struct TablerListC<Element, Header, Row, RowBack, RowOver, Results>: View
                 ObservableHolder(element: rawElem) { obsElem in
                     rowContent(obsElem)
                         .modifier(ListRowMod(config: config,
-                                             element: rawElem,
-                                             hovered: $hovered))
+                                             element: rawElem))
                         .listRowBackground(rowBackground(rawElem))
                         .overlay(rowOverlay(rawElem))
                 }

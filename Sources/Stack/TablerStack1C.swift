@@ -30,7 +30,6 @@ public struct TablerStack1C<Element, Header, Row, RowBack, RowOver, Results>: Vi
 {
     public typealias Config = TablerStackConfig<Element>
     public typealias Context = TablerContext<Element>
-    public typealias Hovered = Element.ID?
     public typealias HeaderContent = (Binding<Context>) -> Header
     public typealias ProjectedValue = ObservedObject<Element>.Wrapper
     public typealias RowContent = (ProjectedValue) -> Row
@@ -68,7 +67,6 @@ public struct TablerStack1C<Element, Header, Row, RowBack, RowOver, Results>: Vi
 
     // MARK: Locals
 
-    @State private var hovered: Hovered = nil
     @State private var context: Context
 
     // MARK: Views
@@ -81,8 +79,7 @@ public struct TablerStack1C<Element, Header, Row, RowBack, RowOver, Results>: Vi
                     rowContent(obsElem)
                         .modifier(StackRowMod1(config: config,
                                                element: rawElem,
-                                               hovered: $hovered,
-                                               selected: $selected))
+                                                           selected: $selected))
                         .background(rowBackground(rawElem))
                         .overlay(rowOverlay(rawElem))
                 }

@@ -19,7 +19,7 @@ macOS | iOS
 * Support for single-select, multi-select, or no selection
 * Option to sort by column, with indicators and concise syntax
 * Option to specify a row background and/or overlay
-* On macOS, option for a hovering highlight, to indicate which row the mouse is over
+* On macOS, option for hover events, such as to highlight row under the mouse cursor
 * MINIMAL use of View erasure (i.e., use of `AnyView`), which can impact scalability and performance\*\*
 * No external dependencies!
 
@@ -308,21 +308,32 @@ private func rowOverlay(fruit: Fruit) -> some View {
 }
 ```
 
-## Hover Effect
+## Hover Events
 
-Available for macOS. It's enabled by default using the system's accent color.
-
-When using a row background or overlay on macOS, you might wish to disable the hover effect.
+For macOS only, you can capture hover events, typically to highlight the row under the mouse cursor.
 
 ```swift
+@State private var hovered: Fruit.ID? = nil
+
 var body: some View {
-    TablerList(.init(hoverColor: .clear),
+    TablerList(.init(onHover: hoverAction),
                header: header,
                row: row,
-               rowBackground: rowBackgroundAction,
+               rowBackground: rowBackground,
                results: fruits)
 }
+
+private func rowBackground(fruit: Fruit) -> some View {
+    RoundedRectangle(cornerRadius: 5)
+        .fill(Color.accentColor.opacity(hovered == fruit.id ? 0.2 : 0.0))
+}
+
+private func hoverAction(fruit: Fruit, isHovered: Bool) {
+    if isHovered { hovered = fruit.id } else { hovered = nil }
+}
 ```
+
+To coordinate hover with other backgrounds, such as for selection on **Stack** tables, see the demo apps.
 
 ## Headless Tables
 
@@ -393,7 +404,7 @@ List configuration is optional.
 - `canMove: CanMove<Element>` - with a default of `{ _ in true }`, allowing any row to move (if `onMove` defined)
 - `onMove: OnMove<Element>?` - with a default of `nil`, prohibiting any move
 - `filter: Filter?` - with a default of `nil`, indicating no filtering
-- `hoverColor: Color` - per Base defaults
+- `onHover: (Element, Bool) -> Void` - defaults to `{ _,_ in }`
 - `tablePadding: EdgeInsets` - per Base defaults
 - `sortIndicatorForward: AnyView` - per Base defaults
 - `sortIndicatorReverse: AnyView` - per Base defaults
@@ -409,7 +420,7 @@ Stack configuration is optional.
 - `headerSpacing: CGFloat` - Stack-specific default, varies by platform
 - `rowSpacing: CGFloat` - Stack-specific default, varies by platform
 - `filter: Filter?` - with a default of `nil`, indicating no filtering
-- `hoverColor: Color` - per Base defaults
+- `onHover: (Element, Bool) -> Void` - defaults to `{ _,_ in }`
 - `tablePadding: EdgeInsets` - per Stack defaults
 - `sortIndicatorForward: AnyView` - per Base defaults
 - `sortIndicatorReverse: AnyView` - per Base defaults
@@ -427,7 +438,7 @@ Grid configuration is required, where you supply a `GridItem` array.
 - `headerSpacing: CGFloat` - Grid-specific default, varies by platform
 - `rowSpacing: CGFloat` - Grid-specific default, varies by platform
 - `filter: Filter?` - with a default of `nil`, indicating no filtering
-- `hoverColor: Color` - per Base defaults
+- `onHover: (Element, Bool) -> Void` - defaults to `{ _,_ in }`
 - `tablePadding: EdgeInsets` - Grid-specific default, varies by platform
 - `sortIndicatorForward: AnyView` - per Base defaults
 - `sortIndicatorReverse: AnyView` - per Base defaults

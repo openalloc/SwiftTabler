@@ -30,7 +30,6 @@ public struct TablerStackM<Element, Header, Row, RowBack, RowOver, Results>: Vie
 {
     public typealias Config = TablerStackConfig<Element>
     public typealias Context = TablerContext<Element>
-    public typealias Hovered = Element.ID?
     public typealias HeaderContent = (Binding<Context>) -> Header
     public typealias RowContent = (Element) -> Row
     public typealias RowBackground = (Element) -> RowBack
@@ -67,7 +66,6 @@ public struct TablerStackM<Element, Header, Row, RowBack, RowOver, Results>: Vie
 
     // MARK: Locals
 
-    @State private var hovered: Hovered = nil
     @State private var context: Context
 
     // MARK: Views
@@ -79,8 +77,7 @@ public struct TablerStackM<Element, Header, Row, RowBack, RowOver, Results>: Vie
                 rowContent(element)
                     .modifier(StackRowModM(config: config,
                                            element: element,
-                                           hovered: $hovered,
-                                           selected: $selected))
+                                                   selected: $selected))
                     .background(rowBackground(element))
                     .overlay(rowOverlay(element))
             }
