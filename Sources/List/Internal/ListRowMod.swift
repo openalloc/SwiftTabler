@@ -33,7 +33,7 @@ where Element: Identifiable
             .moveDisabled(!config.canMove(element))
         
 #if os(macOS) || targetEnvironment(macCatalyst)
-            .onHover { if $0 { hovered = element.id } }
+            .onHover { if $0 { hovered = element.id } else { hovered = nil } }
             .background(hovered == element.id ? config.hoverColor : Color.clear)
 #endif
     }

@@ -46,7 +46,7 @@ struct GridItemMod1<Element>: ViewModifier
             }
 
 #if os(macOS) || targetEnvironment(macCatalyst)
-            .onHover { if $0 { hovered = element.id } }
+            .onHover { if $0 { hovered = element.id } else { hovered = nil } }
             //.frame(maxWidth: .infinity)  // NOTE this centers the grid item
             .background(hovered == element.id ? config.hoverColor : Color.clear)
 #endif
