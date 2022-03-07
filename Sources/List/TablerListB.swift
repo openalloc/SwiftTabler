@@ -101,7 +101,7 @@ public struct TablerListB<Element, Header, Row, RowBack, RowOver, Results>: View
 
 public extension TablerListB {
     // omitting Header
-    init(_ config: Config,
+    init(_ config: Config = .init(),
          @ViewBuilder row: @escaping RowContent,
          @ViewBuilder rowBackground: @escaping RowBackground,
          @ViewBuilder rowOverlay: @escaping RowOverlay,
@@ -117,7 +117,7 @@ public extension TablerListB {
     }
 
     // omitting Overlay
-    init(_ config: Config,
+    init(_ config: Config = .init(),
          @ViewBuilder header: @escaping HeaderContent,
          @ViewBuilder row: @escaping RowContent,
          @ViewBuilder rowBackground: @escaping RowBackground,
@@ -133,7 +133,7 @@ public extension TablerListB {
     }
 
     // omitting Background
-    init(_ config: Config,
+    init(_ config: Config = .init(),
          @ViewBuilder header: @escaping HeaderContent,
          @ViewBuilder row: @escaping RowContent,
          @ViewBuilder rowOverlay: @escaping RowOverlay,
@@ -149,7 +149,7 @@ public extension TablerListB {
     }
 
     // omitting Header AND Overlay
-    init(_ config: Config,
+    init(_ config: Config = .init(),
          @ViewBuilder row: @escaping RowContent,
          @ViewBuilder rowBackground: @escaping RowBackground,
          results: Binding<Results>)
@@ -164,7 +164,7 @@ public extension TablerListB {
     }
     
     // omitting Header AND Background
-    init(_ config: Config,
+    init(_ config: Config = .init(),
          @ViewBuilder row: @escaping RowContent,
          @ViewBuilder rowOverlay: @escaping RowOverlay,
          results: Binding<Results>)
@@ -179,7 +179,7 @@ public extension TablerListB {
     }
     
     // omitting Background AND Overlay
-    init(_ config: Config,
+    init(_ config: Config = .init(),
          @ViewBuilder header: @escaping HeaderContent,
          @ViewBuilder row: @escaping RowContent,
          results: Binding<Results>)
@@ -194,7 +194,7 @@ public extension TablerListB {
     }
 
     // omitting Header, Background, AND Overlay
-    init(_ config: Config,
+    init(_ config: Config = .init(),
          @ViewBuilder row: @escaping RowContent,
          results: Binding<Results>)
         where Header == EmptyView, RowBack == EmptyView, RowOver == EmptyView

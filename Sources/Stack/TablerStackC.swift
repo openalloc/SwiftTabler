@@ -88,7 +88,7 @@ public struct TablerStackC<Element, Header, Row, RowBack, RowOver, Results>: Vie
 
 public extension TablerStackC {
     // omitting Header
-    init(_ config: Config,
+    init(_ config: Config = .init(),
          @ViewBuilder row: @escaping RowContent,
          @ViewBuilder rowBackground: @escaping RowBackground,
          @ViewBuilder rowOverlay: @escaping RowOverlay,
@@ -104,7 +104,7 @@ public extension TablerStackC {
     }
 
     // omitting Overlay
-    init(_ config: Config,
+    init(_ config: Config = .init(),
          @ViewBuilder header: @escaping HeaderContent,
          @ViewBuilder row: @escaping RowContent,
          @ViewBuilder rowBackground: @escaping RowBackground,
@@ -120,7 +120,7 @@ public extension TablerStackC {
     }
 
     // omitting Background
-    init(_ config: Config,
+    init(_ config: Config = .init(),
          @ViewBuilder header: @escaping HeaderContent,
          @ViewBuilder row: @escaping RowContent,
          @ViewBuilder rowOverlay: @escaping RowOverlay,
@@ -136,7 +136,7 @@ public extension TablerStackC {
     }
 
     // omitting Header AND Overlay
-    init(_ config: Config,
+    init(_ config: Config = .init(),
          @ViewBuilder row: @escaping RowContent,
          @ViewBuilder rowBackground: @escaping RowBackground,
          results: Results)
@@ -151,7 +151,7 @@ public extension TablerStackC {
     }
     
     // omitting Header AND Background
-    init(_ config: Config,
+    init(_ config: Config = .init(),
          @ViewBuilder row: @escaping RowContent,
          @ViewBuilder rowOverlay: @escaping RowOverlay,
          results: Results)
@@ -166,7 +166,7 @@ public extension TablerStackC {
     }
     
     // omitting Background AND Overlay
-    init(_ config: Config,
+    init(_ config: Config = .init(),
          @ViewBuilder header: @escaping HeaderContent,
          @ViewBuilder row: @escaping RowContent,
          results: Results)
@@ -181,7 +181,7 @@ public extension TablerStackC {
     }
 
     // omitting Header, Background, AND Overlay
-    init(_ config: Config,
+    init(_ config: Config = .init(),
          @ViewBuilder row: @escaping RowContent,
          results: Results)
         where Header == EmptyView, RowBack == EmptyView, RowOver == EmptyView

@@ -90,7 +90,7 @@ public struct TablerStackM<Element, Header, Row, RowBack, RowOver, Results>: Vie
 
 public extension TablerStackM {
     // omitting Header
-    init(_ config: Config,
+    init(_ config: Config = .init(),
          @ViewBuilder row: @escaping RowContent,
          @ViewBuilder rowBackground: @escaping RowBackground,
          @ViewBuilder rowOverlay: @escaping RowOverlay,
@@ -108,7 +108,7 @@ public extension TablerStackM {
     }
 
     // omitting Overlay
-    init(_ config: Config,
+    init(_ config: Config = .init(),
          @ViewBuilder header: @escaping HeaderContent,
          @ViewBuilder row: @escaping RowContent,
          @ViewBuilder rowBackground: @escaping RowBackground,
@@ -126,7 +126,7 @@ public extension TablerStackM {
     }
 
     // omitting Background
-    init(_ config: Config,
+    init(_ config: Config = .init(),
          @ViewBuilder header: @escaping HeaderContent,
          @ViewBuilder row: @escaping RowContent,
          @ViewBuilder rowOverlay: @escaping RowOverlay,
@@ -144,7 +144,7 @@ public extension TablerStackM {
     }
 
     // omitting Header AND Overlay
-    init(_ config: Config,
+    init(_ config: Config = .init(),
          @ViewBuilder row: @escaping RowContent,
          @ViewBuilder rowBackground: @escaping RowBackground,
          results: Results,
@@ -161,7 +161,7 @@ public extension TablerStackM {
     }
 
     // omitting Header AND Background
-    init(_ config: Config,
+    init(_ config: Config = .init(),
          @ViewBuilder row: @escaping RowContent,
          @ViewBuilder rowOverlay: @escaping RowOverlay,
          results: Results,
@@ -178,7 +178,7 @@ public extension TablerStackM {
     }
 
     // omitting Background AND Overlay
-    init(_ config: Config,
+    init(_ config: Config = .init(),
          @ViewBuilder header: @escaping HeaderContent,
          @ViewBuilder row: @escaping RowContent,
          results: Results,
@@ -195,7 +195,7 @@ public extension TablerStackM {
     }
 
     // omitting Header, Background, AND Overlay
-    init(_ config: Config,
+    init(_ config: Config = .init(),
          @ViewBuilder row: @escaping RowContent,
          results: Results,
          selected: Binding<Selected>)

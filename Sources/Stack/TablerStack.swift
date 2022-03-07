@@ -82,7 +82,7 @@ public struct TablerStack<Element, Header, Row, RowBack, RowOver, Results>: View
 
 public extension TablerStack {
     // omitting Header
-    init(_ config: Config,
+    init(_ config: Config = .init(),
          @ViewBuilder row: @escaping RowContent,
          @ViewBuilder rowBackground: @escaping RowBackground,
          @ViewBuilder rowOverlay: @escaping RowOverlay,
@@ -98,7 +98,7 @@ public extension TablerStack {
     }
 
     // omitting Overlay
-    init(_ config: Config,
+    init(_ config: Config = .init(),
          @ViewBuilder header: @escaping HeaderContent,
          @ViewBuilder row: @escaping RowContent,
          @ViewBuilder rowBackground: @escaping RowBackground,
@@ -114,7 +114,7 @@ public extension TablerStack {
     }
 
     // omitting Background
-    init(_ config: Config,
+    init(_ config: Config = .init(),
          @ViewBuilder header: @escaping HeaderContent,
          @ViewBuilder row: @escaping RowContent,
          @ViewBuilder rowOverlay: @escaping RowOverlay,
@@ -130,7 +130,7 @@ public extension TablerStack {
     }
 
     // omitting Header AND Overlay
-    init(_ config: Config,
+    init(_ config: Config = .init(),
          @ViewBuilder row: @escaping RowContent,
          @ViewBuilder rowBackground: @escaping RowBackground,
          results: Results)
@@ -145,7 +145,7 @@ public extension TablerStack {
     }
 
     // omitting Header AND Background
-    init(_ config: Config,
+    init(_ config: Config = .init(),
          @ViewBuilder row: @escaping RowContent,
          @ViewBuilder rowOverlay: @escaping RowOverlay,
          results: Results)
@@ -160,7 +160,7 @@ public extension TablerStack {
     }
 
     // omitting Background AND Overlay
-    init(_ config: Config,
+    init(_ config: Config = .init(),
          @ViewBuilder header: @escaping HeaderContent,
          @ViewBuilder row: @escaping RowContent,
          results: Results)
@@ -175,7 +175,7 @@ public extension TablerStack {
     }
 
     // omitting Header, Background, AND Overlay
-    init(_ config: Config,
+    init(_ config: Config = .init(),
          @ViewBuilder row: @escaping RowContent,
          results: Results)
         where Header == EmptyView, RowBack == EmptyView, RowOver == EmptyView
