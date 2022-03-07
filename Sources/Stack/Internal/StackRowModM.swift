@@ -1,5 +1,5 @@
 //
-//  GridItemMod1.swift
+//  StackRowModM.swift
 //
 // Copyright 2022 FlowAllocator LLC
 //
@@ -18,36 +18,35 @@
 
 import SwiftUI
 
-/// Support for single-select Grid-based rows
-struct GridItemMod1<Element>: ViewModifier
-    where Element: Identifiable
+/// Support for multi-select Stack-based rows
+struct StackRowModM<Element>: ViewModifier
+where Element: Identifiable
 {
-    typealias Config = TablerGridConfig<Element>
+    typealias Config = TablerStackConfig<Element>
     typealias Hovered = Element.ID?
-    typealias Selected = Element.ID?
+    typealias Selected = Set<Element.ID>
     
     let config: Config
     let element: Element
     @Binding var hovered: Hovered
     @Binding var selected: Selected
-
+    
     func body(content: Content) -> some View {
         content
-            .padding(config.itemPadding)
+            .padding(config.rowPadding)
         
             // simple tap to select (or unselect)
             .contentShape(Rectangle())
             .onTapGesture {
-                if selected == element.id {
-                    selected = nil
+                if selected.contains(element.id) {
+                    selected.remove(element.id)
                 } else {
-                    selected = element.id
+                    selected.insert(element.id)
                 }
             }
 
 #if os(macOS) || targetEnvironment(macCatalyst)
             .onHover { if $0 { hovered = element.id } }
-            //.frame(maxWidth: .infinity)  // NOTE this centers the grid item
             .background(hovered == element.id ? config.hoverColor : Color.clear)
 #endif
     }

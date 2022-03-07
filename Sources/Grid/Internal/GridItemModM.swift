@@ -1,5 +1,5 @@
 //
-//  GridItemMod1.swift
+//  GridItemModM.swift
 //
 // Copyright 2022 FlowAllocator LLC
 //
@@ -18,13 +18,13 @@
 
 import SwiftUI
 
-/// Support for single-select Grid-based rows
-struct GridItemMod1<Element>: ViewModifier
+/// Support for multi-select Grid-based rows
+struct GridItemModM<Element>: ViewModifier
     where Element: Identifiable
 {
     typealias Config = TablerGridConfig<Element>
     typealias Hovered = Element.ID?
-    typealias Selected = Element.ID?
+    typealias Selected = Set<Element.ID>
     
     let config: Config
     let element: Element
@@ -38,10 +38,10 @@ struct GridItemMod1<Element>: ViewModifier
             // simple tap to select (or unselect)
             .contentShape(Rectangle())
             .onTapGesture {
-                if selected == element.id {
-                    selected = nil
+                if selected.contains(element.id) {
+                    selected.remove(element.id)
                 } else {
-                    selected = element.id
+                    selected.insert(element.id)
                 }
             }
 

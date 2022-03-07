@@ -18,7 +18,7 @@
 
 import SwiftUI
 
-/// Grid-based table, with support for single-selection and bound values from RandomAccessCollection
+/// Grid-based table, with support for single-select and bound value types
 public struct TablerGrid1B<Element, Header, Row, RowBack, RowOver, Results>: View
     where Element: Identifiable,
     Header: View,

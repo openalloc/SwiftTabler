@@ -16,7 +16,6 @@
 // limitations under the License.
 //
 
-import CoreData
 import SwiftUI
 
 /// List-based table, with support for reference types

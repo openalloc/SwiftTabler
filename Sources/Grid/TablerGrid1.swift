@@ -18,7 +18,7 @@
 
 import SwiftUI
 
-/// Grid-based table, with support for single-selection
+/// Grid-based table, with support for single-select
 public struct TablerGrid1<Element, Header, Row, RowBack, RowOver, Results>: View
     where Element: Identifiable,
     Header: View,

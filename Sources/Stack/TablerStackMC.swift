@@ -1,5 +1,5 @@
 //
-//  TablerListMC.swift
+//  TablerStackMC.swift
 //
 // Copyright 2022 FlowAllocator LLC
 //
@@ -18,8 +18,8 @@
 
 import SwiftUI
 
-/// List-based table, with support for multi-select and reference types
-public struct TablerListMC<Element, Header, Row, RowBack, RowOver, Results>: View
+/// Stack-based table, with support for multi-select and reference types
+public struct TablerStackMC<Element, Header, Row, RowBack, RowOver, Results>: View
     where Element: Identifiable & ObservableObject,
     Header: View,
     Row: View,
@@ -28,7 +28,7 @@ public struct TablerListMC<Element, Header, Row, RowBack, RowOver, Results>: Vie
     Results: RandomAccessCollection,
     Results.Element == Element
 {
-    public typealias Config = TablerListConfig<Element>
+    public typealias Config = TablerStackConfig<Element>
     public typealias Context = TablerContext<Element>
     public typealias Hovered = Element.ID?
     public typealias HeaderContent = (Binding<Context>) -> Header
@@ -74,25 +74,24 @@ public struct TablerListMC<Element, Header, Row, RowBack, RowOver, Results>: Vie
     // MARK: Views
 
     public var body: some View {
-        BaseListM(context: $context,
-                  selected: $selected,
+        BaseStack(context: $context,
                   header: headerContent) {
             ForEach(results) { rawElem in
                 ObservableHolder(element: rawElem) { obsElem in
                     rowContent(obsElem)
-                        .modifier(ListRowMod(config: config,
-                                             element: rawElem,
-                                             hovered: $hovered))
-                        .listRowBackground(rowBackground(rawElem))
+                        .modifier(StackRowModM(config: config,
+                                               element: rawElem,
+                                               hovered: $hovered,
+                                               selected: $selected))
+                        .background(rowBackground(rawElem))
                         .overlay(rowOverlay(rawElem))
                 }
             }
-            .onMove(perform: config.onMove)
         }
     }
 }
 
-public extension TablerListMC {
+public extension TablerStackMC {
     // omitting Header
     init(_ config: Config,
          @ViewBuilder row: @escaping RowContent,

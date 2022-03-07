@@ -16,10 +16,9 @@
 // limitations under the License.
 //
 
-import CoreData
 import SwiftUI
 
-/// List-based table, with support for single-selection and reference types
+/// List-based table, with support for single-select and reference types
 public struct TablerList1C<Element, Header, Row, RowBack, RowOver, Results>: View
     where Element: Identifiable & ObservableObject,
     Header: View,

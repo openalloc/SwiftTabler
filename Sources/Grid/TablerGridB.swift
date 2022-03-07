@@ -18,7 +18,7 @@
 
 import SwiftUI
 
-/// Grid-based table, with support for bound values from RandomAccessCollection
+/// Grid-based table, with support for bound value types
 public struct TablerGridB<Element, Header, Row, RowBack, RowOver, Results>: View
     where Element: Identifiable,
     Header: View,

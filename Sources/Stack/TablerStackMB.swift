@@ -1,5 +1,5 @@
 //
-//  TablerListMC.swift
+//  TablerStackMB.swift
 //
 // Copyright 2022 FlowAllocator LLC
 //
@@ -18,22 +18,22 @@
 
 import SwiftUI
 
-/// List-based table, with support for multi-select and reference types
-public struct TablerListMC<Element, Header, Row, RowBack, RowOver, Results>: View
-    where Element: Identifiable & ObservableObject,
+/// Stack-based table, with support for multi-select and bound value types
+public struct TablerStackMB<Element, Header, Row, RowBack, RowOver, Results>: View
+    where Element: Identifiable,
     Header: View,
     Row: View,
     RowBack: View,
     RowOver: View,
-    Results: RandomAccessCollection,
-    Results.Element == Element
+    Results: RandomAccessCollection & MutableCollection,
+    Results.Element == Element,
+    Results.Index: Hashable
 {
-    public typealias Config = TablerListConfig<Element>
+    public typealias Config = TablerStackConfig<Element>
     public typealias Context = TablerContext<Element>
     public typealias Hovered = Element.ID?
     public typealias HeaderContent = (Binding<Context>) -> Header
-    public typealias ProjectedValue = ObservedObject<Element>.Wrapper
-    public typealias RowContent = (ProjectedValue) -> Row
+    public typealias RowContent = (Binding<Element>) -> Row
     public typealias RowBackground = (Element) -> RowBack
     public typealias RowOverlay = (Element) -> RowOver
     public typealias Selected = Set<Element.ID>
@@ -45,7 +45,7 @@ public struct TablerListMC<Element, Header, Row, RowBack, RowOver, Results>: Vie
     private let rowContent: RowContent
     private let rowBackground: RowBackground
     private let rowOverlay: RowOverlay
-    private var results: Results
+    @Binding private var results: Results
     @Binding private var selected: Selected
 
     public init(_ config: Config = .init(),
@@ -53,7 +53,7 @@ public struct TablerListMC<Element, Header, Row, RowBack, RowOver, Results>: Vie
                 @ViewBuilder row: @escaping RowContent,
                 @ViewBuilder rowBackground: @escaping RowBackground,
                 @ViewBuilder rowOverlay: @escaping RowOverlay,
-                results: Results,
+                results: Binding<Results>,
                 selected: Binding<Selected>)
     {
         self.config = config
@@ -61,7 +61,7 @@ public struct TablerListMC<Element, Header, Row, RowBack, RowOver, Results>: Vie
         rowContent = row
         self.rowBackground = rowBackground
         self.rowOverlay = rowOverlay
-        self.results = results
+        _results = results
         _selected = selected
         _context = State(initialValue: TablerContext(config))
     }
@@ -74,31 +74,41 @@ public struct TablerListMC<Element, Header, Row, RowBack, RowOver, Results>: Vie
     // MARK: Views
 
     public var body: some View {
-        BaseListM(context: $context,
-                  selected: $selected,
+        BaseStack(context: $context,
                   header: headerContent) {
-            ForEach(results) { rawElem in
-                ObservableHolder(element: rawElem) { obsElem in
-                    rowContent(obsElem)
-                        .modifier(ListRowMod(config: config,
-                                             element: rawElem,
-                                             hovered: $hovered))
-                        .listRowBackground(rowBackground(rawElem))
-                        .overlay(rowOverlay(rawElem))
+            // TODO: is there a better way to filter bound data source?
+            if let _filter = config.filter {
+                ForEach($results) { $element in
+                    if _filter(element) {
+                        row($element)
+                    }
+                }
+            } else {
+                ForEach($results) { $element in
+                    row($element)
                 }
             }
-            .onMove(perform: config.onMove)
         }
+    }
+
+    private func row(_ element: Binding<Element>) -> some View {
+        rowContent(element)
+            .modifier(StackRowModM(config: config,
+                                   element: element.wrappedValue,
+                                   hovered: $hovered,
+                                   selected: $selected))
+            .background(rowBackground(element.wrappedValue))
+            .overlay(rowOverlay(element.wrappedValue))
     }
 }
 
-public extension TablerListMC {
+public extension TablerStackMB {
     // omitting Header
     init(_ config: Config,
          @ViewBuilder row: @escaping RowContent,
          @ViewBuilder rowBackground: @escaping RowBackground,
          @ViewBuilder rowOverlay: @escaping RowOverlay,
-         results: Results,
+         results: Binding<Results>,
          selected: Binding<Selected>)
         where Header == EmptyView
     {
@@ -116,7 +126,7 @@ public extension TablerListMC {
          @ViewBuilder header: @escaping HeaderContent,
          @ViewBuilder row: @escaping RowContent,
          @ViewBuilder rowBackground: @escaping RowBackground,
-         results: Results,
+         results: Binding<Results>,
          selected: Binding<Selected>)
         where RowOver == EmptyView
     {
@@ -134,7 +144,7 @@ public extension TablerListMC {
          @ViewBuilder header: @escaping HeaderContent,
          @ViewBuilder row: @escaping RowContent,
          @ViewBuilder rowOverlay: @escaping RowOverlay,
-         results: Results,
+         results: Binding<Results>,
          selected: Binding<Selected>)
         where RowBack == EmptyView
     {
@@ -151,7 +161,7 @@ public extension TablerListMC {
     init(_ config: Config,
          @ViewBuilder row: @escaping RowContent,
          @ViewBuilder rowBackground: @escaping RowBackground,
-         results: Results,
+         results: Binding<Results>,
          selected: Binding<Selected>)
         where Header == EmptyView, RowOver == EmptyView
     {
@@ -168,7 +178,7 @@ public extension TablerListMC {
     init(_ config: Config,
          @ViewBuilder row: @escaping RowContent,
          @ViewBuilder rowOverlay: @escaping RowOverlay,
-         results: Results,
+         results: Binding<Results>,
          selected: Binding<Selected>)
         where Header == EmptyView, RowBack == EmptyView
     {
@@ -185,7 +195,7 @@ public extension TablerListMC {
     init(_ config: Config,
          @ViewBuilder header: @escaping HeaderContent,
          @ViewBuilder row: @escaping RowContent,
-         results: Results,
+         results: Binding<Results>,
          selected: Binding<Selected>)
         where RowBack == EmptyView, RowOver == EmptyView
     {
@@ -201,7 +211,7 @@ public extension TablerListMC {
     // omitting Header, Background, AND Overlay
     init(_ config: Config,
          @ViewBuilder row: @escaping RowContent,
-         results: Results,
+         results: Binding<Results>,
          selected: Binding<Selected>)
         where Header == EmptyView, RowBack == EmptyView, RowOver == EmptyView
     {

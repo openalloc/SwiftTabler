@@ -18,7 +18,7 @@
 
 import SwiftUI
 
-/// Stack-based table, with support for bound values from RandomAccessCollection
+/// Stack-based table, with support for bound value types
 public struct TablerStackB<Element, Header, Row, RowBack, RowOver, Results>: View
     where Element: Identifiable,
     Header: View,

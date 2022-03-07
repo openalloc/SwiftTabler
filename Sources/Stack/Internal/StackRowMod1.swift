@@ -18,6 +18,7 @@
 
 import SwiftUI
 
+/// Support for single-select Stack-based rows
 struct StackRowMod1<Element>: ViewModifier
 where Element: Identifiable
 {
@@ -34,10 +35,17 @@ where Element: Identifiable
         content
             .padding(config.rowPadding)
         
-#if os(macOS) || targetEnvironment(macCatalyst)
+            // simple tap to select (or unselect)
             .contentShape(Rectangle())
-            .onTapGesture { selected = element.id }
+            .onTapGesture {
+                if selected == element.id {
+                    selected = nil
+                } else {
+                    selected = element.id
+                }
+            }
 
+#if os(macOS) || targetEnvironment(macCatalyst)
             .onHover { if $0 { hovered = element.id } }
             .background(hovered == element.id ? config.hoverColor : Color.clear)
 #endif

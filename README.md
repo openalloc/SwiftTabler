@@ -16,9 +16,9 @@ macOS | iOS
 * Presently targeting macOS v11+ and iOS v14+\*
 * Supporting both value and reference semantics (including Core Data, which uses the latter)
 * Option to support a bound data source, where inline controls can directly mutate your data model
+* Support for single-select, multi-select, or no selection
 * Option to sort by column, with indicators and concise syntax
-* Option to specify a row background
-* Option to specify a row overlay
+* Option to specify a row background and/or overlay
 * On macOS, option for a hovering highlight, to indicate which row the mouse is over
 * MINIMAL use of View erasure (i.e., use of `AnyView`), which can impact scalability and performance\*\*
 * No external dependencies!
@@ -28,11 +28,9 @@ Three table types are supported, as determined by the mechanism by which their h
 ### List
 * Based on SwiftUI's `List`
 * Option to support moving of rows through drag and drop
-* Support for single-select, multi-select, or no selection at all
 
 ### Stack
 * Based on `ScrollView`/`LazyVStack`
-* Support for single-select and no selection at all
 
 ### Grid
 * Based on `ScrollView`/`LazyVGrid`
@@ -107,14 +105,14 @@ While `LazyVGrid` is used here to wrap the header and row items, you could alter
 
 ## Tabler Views
 
-_Tabler_ offers twenty-one (21) variants of table views from which you can choose. They break down along the following lines:
+_Tabler_ offers twenty-seven (27) variants of table views from which you can choose. They break down along the following lines:
 
 * Table View - the View name
 * Type - each of the three table types differ in how they render:
   - **List** - based on `List`
   - **Stack** - based on `ScrollView`/`LazyVStack`
   - **Grid** - based on `ScrollView`/`LazyVGrid`
-* Select - single-select, multi-select, or selection not supported
+* Select - single-select, multi-select, or no selection
 * Value - if checked, can be used with value types (e.g., struct values)
 * Reference - if checked, can be used with reference types (e.g., class objects, Core Data, etc.)
 * Filter - if checked, `config.filter` is supported (see caveat below)
@@ -136,12 +134,18 @@ Table View      | Type      | Select | Value | Reference | Filter
 `TablerStack1`  | **Stack** | Single |  ✓    |  ✓        |  ✓     
 `TablerStack1B` | **Stack** | Single |  ✓    |           |  ✓\*   
 `TablerStack1C` | **Stack** | Single |       |  ✓        |         
+`TablerStackM`  | **Stack** | Multi  |  ✓    |  ✓        |  ✓     
+`TablerStackMB` | **Stack** | Multi  |  ✓    |           |  ✓\*   
+`TablerStackMC` | **Stack** | Multi  |       |  ✓        |         
 `TablerGrid`    | **Grid**  |        |  ✓    |  ✓        |  ✓     
 `TablerGridB`   | **Grid**  |        |  ✓    |           |              
 `TablerGridC`   | **Grid**  |        |       |  ✓        |                
 `TablerGrid1`   | **Grid**  | Single |  ✓    |  ✓        |  ✓     
 `TablerGrid1B`  | **Grid**  | Single |  ✓    |           |              
 `TablerGrid1C`  | **Grid**  | Single |       |  ✓        |                
+`TablerGridM`   | **Grid**  | Multi  |  ✓    |  ✓        |  ✓     
+`TablerGridMB`  | **Grid**  | Multi  |  ✓    |           |              
+`TablerGridMC`  | **Grid**  | Multi  |       |  ✓        |                
 
 \* filtering with bound values likely not scalable as implemented. If you can find a better way to implement, please submit a pull request!
 
