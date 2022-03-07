@@ -464,7 +464,7 @@ public struct SidewaysScroller<Content: View>: View {
 
 ## See Also
 
-* [TablerDemo](https://github.com/openalloc/TablerDemo) - the demonstration app for this library, for `RandomAccessCollection` data sources
+* [TablerDemo](https://github.com/openalloc/TablerDemo) - the demonstration app for this library, for value data sources
 * [TablerCoreDemo](https://github.com/openalloc/TablerCoreDemo) - the demonstration app for this library, for Core Data sources
 
 Swift open-source libraries (by the same author):
