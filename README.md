@@ -404,7 +404,7 @@ List configuration is optional.
 - `canMove: CanMove<Element>` - with a default of `{ _ in true }`, allowing any row to move (if `onMove` defined)
 - `onMove: OnMove<Element>?` - with a default of `nil`, prohibiting any move
 - `filter: Filter?` - with a default of `nil`, indicating no filtering
-- `onHover: (Element, Bool) -> Void` - defaults to `{ _,_ in }`
+- `onHover: (Element.ID, Bool) -> Void` - defaults to `{ _,_ in }`
 - `tablePadding: EdgeInsets` - per Base defaults
 - `sortIndicatorForward: AnyView` - per Base defaults
 - `sortIndicatorReverse: AnyView` - per Base defaults
@@ -420,7 +420,7 @@ Stack configuration is optional.
 - `headerSpacing: CGFloat` - Stack-specific default, varies by platform
 - `rowSpacing: CGFloat` - Stack-specific default, varies by platform
 - `filter: Filter?` - with a default of `nil`, indicating no filtering
-- `onHover: (Element, Bool) -> Void` - defaults to `{ _,_ in }`
+- `onHover: (Element.ID, Bool) -> Void` - defaults to `{ _,_ in }`
 - `tablePadding: EdgeInsets` - per Stack defaults
 - `sortIndicatorForward: AnyView` - per Base defaults
 - `sortIndicatorReverse: AnyView` - per Base defaults
@@ -438,7 +438,7 @@ Grid configuration is required, where you supply a `GridItem` array.
 - `headerSpacing: CGFloat` - Grid-specific default, varies by platform
 - `rowSpacing: CGFloat` - Grid-specific default, varies by platform
 - `filter: Filter?` - with a default of `nil`, indicating no filtering
-- `onHover: (Element, Bool) -> Void` - defaults to `{ _,_ in }`
+- `onHover: (Element.ID, Bool) -> Void` - defaults to `{ _,_ in }`
 - `tablePadding: EdgeInsets` - Grid-specific default, varies by platform
 - `sortIndicatorForward: AnyView` - per Base defaults
 - `sortIndicatorReverse: AnyView` - per Base defaults
