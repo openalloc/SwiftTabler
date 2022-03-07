@@ -328,8 +328,8 @@ private func rowBackground(fruit: Fruit) -> some View {
         .fill(Color.accentColor.opacity(hovered == fruit.id ? 0.2 : 0.0))
 }
 
-private func hoverAction(fruit: Fruit, isHovered: Bool) {
-    if isHovered { hovered = fruit.id } else { hovered = nil }
+private func hoverAction(fruitID: Fruit.ID, isHovered: Bool) {
+    if isHovered { hovered = fruitID } else { hovered = nil }
 }
 ```
 

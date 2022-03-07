@@ -45,7 +45,7 @@ where Element: Identifiable
             }
         
 #if os(macOS) || targetEnvironment(macCatalyst)
-            .onHover(perform: { config.onHover(element, $0) })
+            .onHover(perform: { config.onHover(element.id, $0) })
 #endif
     }
 }

@@ -41,7 +41,7 @@ open class TablerConfig<Element>
     where Element: Identifiable
 {
     public typealias Filter = (Element) -> Bool
-    public typealias OnHover = (Element, Bool) -> Void
+    public typealias OnHover = (Element.ID, Bool) -> Void
 
     public let filter: Filter?
     public let onHover: OnHover
