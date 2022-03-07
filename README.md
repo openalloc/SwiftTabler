@@ -233,7 +233,7 @@ For reference sources, including Core Data, `BoundValue` is an object wrapper (a
 typealias BoundValue = ObservedObject<Fruit>.Wrapper
 ```
 
-Note that for Core Data, the user's changes will need to be saved to the Managed Object Context. See the _TablerCoreData_ code for an example of how this might be done.
+Note that for Core Data, the user's changes will need to be saved to the Managed Object Context. See the _TablerCoreDemo_ code for an example of how this might be done.
 
 ## Row Background
 
