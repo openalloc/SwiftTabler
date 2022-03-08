@@ -372,7 +372,7 @@ TODO need Core Data example, if it's possible to do so.
 var body: some View {
     TablerList(.init(onMove: moveAction,
                      filter: { $0.weight > 10 },
-                     hoverColor: .orange.opacity(0.4)),
+                     onHover: hoverAction),
                header: header,
                row: row,
                results: fruits)
@@ -389,7 +389,6 @@ Spacing defaults are driven by the goal of achieving uniform appearance among ta
 
 Base defaults are defined in the `TablerConfig` module.
 
-- `hoverColor: Color` - accent color with opacity of 0.2
 - `tablePadding: EdgeInsets` - no padding
 - `sortIndicatorForward: AnyView` - "chevron.up" image
 - `sortIndicatorReverse: AnyView` - "chevron.down" image
