@@ -416,9 +416,9 @@ Stack configuration is optional.
 
 `TablerStackConfig<Element>.init` parameters:
 
-- `rowPadding: EdgeInsets` - Stack-specific default, varies by platform
-- `headerSpacing: CGFloat` - Stack-specific default, varies by platform
-- `rowSpacing: CGFloat` - Stack-specific default, varies by platform
+- `rowPadding: EdgeInsets` - Stack-specific default; varies by platform
+- `headerSpacing: CGFloat` - Stack-specific default; varies by platform
+- `rowSpacing: CGFloat` - Stack-specific default of 0
 - `filter: Filter?` - with a default of `nil`, indicating no filtering
 - `onHover: (Element.ID, Bool) -> Void` - defaults to `{ _,_ in }`
 - `tablePadding: EdgeInsets` - per Stack defaults
@@ -434,12 +434,12 @@ Grid configuration is required, where you supply a `GridItem` array.
 
 - `gridItems: [GridItem]` - required
 - `alignment: HorizontalAlignment` - `LazyVGrid` alignment, with a default of `.leading`
-- `itemPadding: EdgeInsets` - with a default of `.init()`, indicating no padding
-- `headerSpacing: CGFloat` - Grid-specific default, varies by platform
-- `rowSpacing: CGFloat` - Grid-specific default, varies by platform
+- `itemPadding: EdgeInsets` - Grid-specific defaults, varies by platform
+- `headerSpacing: CGFloat` - Grid-specific default; varies by platform
+- `rowSpacing: CGFloat` - Grid-specific default of 0
 - `filter: Filter?` - with a default of `nil`, indicating no filtering
 - `onHover: (Element.ID, Bool) -> Void` - defaults to `{ _,_ in }`
-- `tablePadding: EdgeInsets` - Grid-specific default, varies by platform
+- `tablePadding: EdgeInsets` - Grid-specific default; varies by platform
 - `sortIndicatorForward: AnyView` - per Base defaults
 - `sortIndicatorReverse: AnyView` - per Base defaults
 - `sortIndicatorNeutral: AnyView` - per Base defaults

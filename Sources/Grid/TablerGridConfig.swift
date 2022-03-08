@@ -20,16 +20,16 @@ import SwiftUI
 
 public enum TablerGridConfigDefaults {
 #if os(macOS)
-    public static let headerSpacing: CGFloat = 8
-    public static let rowSpacing: CGFloat = 8
+    public static let headerSpacing: CGFloat = 4
+    public static let itemPadding = EdgeInsets(top: 4, leading: 0, bottom: 4, trailing: 0)
     public static let tablePadding = EdgeInsets(top: 14, leading: 16, bottom: 15, trailing: 16)
 #elseif os(iOS)
-    public static let headerSpacing: CGFloat = 23.5
-    public static let rowSpacing: CGFloat = 23.5
+    public static let headerSpacing: CGFloat = 12
+    public static let itemPadding = EdgeInsets(top: 11.5, leading: 0, bottom: 12, trailing: 0)
     public static let tablePadding = EdgeInsets(top: 46, leading: 32, bottom: 20, trailing: 32)
 #endif
     
-    public static let itemPadding: EdgeInsets = .init()
+    public static let rowSpacing: CGFloat = 0
     public static let alignment: HorizontalAlignment = .leading
 }
 
