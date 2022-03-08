@@ -115,37 +115,38 @@ _Tabler_ offers twenty-seven (27) variants of table views from which you can cho
 * Select - single-select, multi-select, or no selection
 * Value - if checked, can be used with value types (e.g., struct values)
 * Reference - if checked, can be used with reference types (e.g., class objects, Core Data, etc.)
+* Bound - if checked, can be used with inline controls (`TextField`, etc.) to mutate model
 * Filter - if checked, `config.filter` is supported (see caveat below)
 
-Table View      | Type      | Select | Value | Reference | Filter
-:---            | :---      | :---   | :---: | :---:     | :---:   
-`TablerList`    | **List**  |        |  ✓    |  ✓        |  ✓     
-`TablerListB`   | **List**  |        |  ✓    |           |  ✓\*  
-`TablerListC`   | **List**  |        |       |  ✓        |         
-`TablerList1`   | **List**  | Single |  ✓    |  ✓        |  ✓     
-`TablerList1B`  | **List**  | Single |  ✓    |           |  ✓\*   
-`TablerList1C`  | **List**  | Single |       |  ✓        |         
-`TablerListM`   | **List**  | Multi  |  ✓    |  ✓        |  ✓     
-`TablerListMB`  | **List**  | Multi  |  ✓    |           |  ✓\*   
-`TablerListMC`  | **List**  | Multi  |       |  ✓        |         
-`TablerStack`   | **Stack** |        |  ✓    |  ✓        |  ✓     
-`TablerStackB`  | **Stack** |        |  ✓    |           |  ✓\*   
-`TablerStackC`  | **Stack** |        |       |  ✓        |         
-`TablerStack1`  | **Stack** | Single |  ✓    |  ✓        |  ✓     
-`TablerStack1B` | **Stack** | Single |  ✓    |           |  ✓\*   
-`TablerStack1C` | **Stack** | Single |       |  ✓        |         
-`TablerStackM`  | **Stack** | Multi  |  ✓    |  ✓        |  ✓     
-`TablerStackMB` | **Stack** | Multi  |  ✓    |           |  ✓\*   
-`TablerStackMC` | **Stack** | Multi  |       |  ✓        |         
-`TablerGrid`    | **Grid**  |        |  ✓    |  ✓        |  ✓     
-`TablerGridB`   | **Grid**  |        |  ✓    |           |              
-`TablerGridC`   | **Grid**  |        |       |  ✓        |                
-`TablerGrid1`   | **Grid**  | Single |  ✓    |  ✓        |  ✓     
-`TablerGrid1B`  | **Grid**  | Single |  ✓    |           |              
-`TablerGrid1C`  | **Grid**  | Single |       |  ✓        |                
-`TablerGridM`   | **Grid**  | Multi  |  ✓    |  ✓        |  ✓     
-`TablerGridMB`  | **Grid**  | Multi  |  ✓    |           |              
-`TablerGridMC`  | **Grid**  | Multi  |       |  ✓        |                
+Table View      | Type      | Select | Value | Reference | Bound | Filter
+:---            | :---      | :---   | :---: | :---:     | :---: | :---:   
+`TablerList`    | **List**  |        |  ✓    |  ✓        |       |  ✓     
+`TablerListB`   | **List**  |        |  ✓    |           |  ✓    |  ✓\*  
+`TablerListC`   | **List**  |        |       |  ✓        |  ✓    |         
+`TablerList1`   | **List**  | Single |  ✓    |  ✓        |       |  ✓     
+`TablerList1B`  | **List**  | Single |  ✓    |           |  ✓    |  ✓\*   
+`TablerList1C`  | **List**  | Single |       |  ✓        |  ✓    |         
+`TablerListM`   | **List**  | Multi  |  ✓    |  ✓        |       |  ✓     
+`TablerListMB`  | **List**  | Multi  |  ✓    |           |  ✓    |  ✓\*   
+`TablerListMC`  | **List**  | Multi  |       |  ✓        |  ✓    |         
+`TablerStack`   | **Stack** |        |  ✓    |  ✓        |       |  ✓     
+`TablerStackB`  | **Stack** |        |  ✓    |           |  ✓    |  ✓\*   
+`TablerStackC`  | **Stack** |        |       |  ✓        |  ✓    |         
+`TablerStack1`  | **Stack** | Single |  ✓    |  ✓        |       |  ✓     
+`TablerStack1B` | **Stack** | Single |  ✓    |           |  ✓    |  ✓\*   
+`TablerStack1C` | **Stack** | Single |       |  ✓        |  ✓    |         
+`TablerStackM`  | **Stack** | Multi  |  ✓    |  ✓        |       |  ✓     
+`TablerStackMB` | **Stack** | Multi  |  ✓    |           |  ✓    |  ✓\*   
+`TablerStackMC` | **Stack** | Multi  |       |  ✓        |  ✓    |         
+`TablerGrid`    | **Grid**  |        |  ✓    |  ✓        |       |  ✓     
+`TablerGridB`   | **Grid**  |        |  ✓    |           |  ✓    |              
+`TablerGridC`   | **Grid**  |        |       |  ✓        |  ✓    |                
+`TablerGrid1`   | **Grid**  | Single |  ✓    |  ✓        |       |  ✓     
+`TablerGrid1B`  | **Grid**  | Single |  ✓    |           |  ✓    |              
+`TablerGrid1C`  | **Grid**  | Single |       |  ✓        |  ✓    |                
+`TablerGridM`   | **Grid**  | Multi  |  ✓    |  ✓        |       |  ✓     
+`TablerGridMB`  | **Grid**  | Multi  |  ✓    |           |  ✓    |              
+`TablerGridMC`  | **Grid**  | Multi  |       |  ✓        |  ✓    |                
 
 \* filtering with bound values likely not scalable as implemented. If you can find a better way to implement, please submit a pull request!
 
