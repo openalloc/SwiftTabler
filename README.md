@@ -448,17 +448,17 @@ Grid configuration is required, where you supply a `GridItem` array.
 
 On compact displays you may wish to scroll the table horizontally. 
 
-You can wrap in your own `ScrollView`, or alternatively import the [SwiftTablerScroller](https://github.com/openalloc/SwiftTablerScroller) package:
+You can wrap in your own `ScrollView`, or alternatively import the [SwiftSideways](https://github.com/openalloc/SwiftSideways) package:
 
 ```swift
 import Tabler
-import TablerScroller
+import Sideways
 
 var body: some View {
     TablerList(header: header,
                row: row,
                results: fruits)
-        .tablerScroller(minWidth: 400)
+        .sideways(minWidth: 400)
 }
 ```
 
@@ -469,7 +469,7 @@ var body: some View {
 
 Swift open-source libraries (by the same author):
 
-* [SwiftTablerScroller](https://github.com/openalloc/SwiftTablerScroller) - multi-platform SwiftUI component for the horizontal scrolling of tabular data in compact areas
+* [SwiftSideways](https://github.com/openalloc/SwiftSideways) - multi-platform SwiftUI component for the horizontal scrolling of tabular data in compact areas
 * [SwiftDetailer](https://github.com/openalloc/SwiftDetailer) - multi-platform SwiftUI component for editing fielded data
 * [SwiftDetailerMenu](https://github.com/openalloc/SwiftDetailerMenu) - optional menu support for _SwiftDetailer_
 * [AllocData](https://github.com/openalloc/AllocData) - standardized data formats for investing-focused apps and tools
