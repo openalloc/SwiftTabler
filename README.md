@@ -446,30 +446,19 @@ Grid configuration is required, where you supply a `GridItem` array.
 
 ## Horizontal Scrolling
 
-On compact displays you may wish to scroll the table horizontally. _TablerDemo_ does this through a `ScrollView` wrapper:
+On compact displays you may wish to scroll the table horizontally. 
+
+You can wrap in your own `ScrollView`, or alternatively import the [SwiftTablerScroller](https://github.com/openalloc/SwiftTablerScroller) package:
 
 ```swift
-public struct SidewaysScroller<Content: View>: View {
-    var minWidth: CGFloat
-    @ViewBuilder var content: () -> Content
+import Tabler
+import TablerScroller
 
-    public init(minWidth: CGFloat,
-                @ViewBuilder content: @escaping () -> Content)
-    {
-        self.minWidth = minWidth
-        self.content = content
-    }
-
-    public var body: some View {
-        GeometryReader { geo in
-            ScrollView(.horizontal) {
-                VStack(alignment: .leading) {
-                    content()
-                }
-                .frame(minWidth: max(minWidth, geo.size.width))
-            }
-        }
-    }
+var body: some View {
+    TablerList(header: header,
+               row: row,
+               results: fruits)
+        .tablerScroller(minWidth: 400)
 }
 ```
 
@@ -480,6 +469,7 @@ public struct SidewaysScroller<Content: View>: View {
 
 Swift open-source libraries (by the same author):
 
+* [SwiftTablerScroller](https://github.com/openalloc/SwiftTablerScroller) - multi-platform SwiftUI component for the horizontal scrolling of tabular data in compact areas
 * [SwiftDetailer](https://github.com/openalloc/SwiftDetailer) - multi-platform SwiftUI component for editing fielded data
 * [SwiftDetailerMenu](https://github.com/openalloc/SwiftDetailerMenu) - optional menu support for _SwiftDetailer_
 * [AllocData](https://github.com/openalloc/AllocData) - standardized data formats for investing-focused apps and tools
