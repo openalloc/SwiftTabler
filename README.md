@@ -201,6 +201,36 @@ private func header(ctx: Binding<Context>) -> some View {
 }
 ```
 
+### Sorting on a calculated column
+
+Where there is no key path available to store in the sort context, such as for a calculated value, create a placeholder to serve as a non-functional key path.
+
+```swift
+struct Holding {
+    // ...
+    func getMarketValue(_ priceMap: [String: Double]) -> Double {
+        shareCount * (priceMap[ticker] ?? 0)
+    }
+
+    var marketValuePlaceholder: Double { 0 }
+}
+
+struct HoldingsTable: View {
+    // ...
+    private func header(_ ctx: Binding<Context>) -> some View {
+        LazyVGrid(columns: gridItems) {
+            // ...
+            Sort.columnTitle("Market Value", ctx, \.marketValuePlaceholder)
+                .onTapGesture {
+                    tablerSort(ctx, &model.holdings, \.marketValuePlaceholder) { 
+                        $0.getMarketValue(priceMap) < $1.getMarketValue(priceMap) 
+                    }
+                }
+        }
+    }
+}
+```
+
 ## Bound data
 
 macOS | iOS
