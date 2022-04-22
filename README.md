@@ -201,9 +201,9 @@ private func header(ctx: Binding<Context>) -> some View {
 }
 ```
 
-### Sorting on a calculated column
+### Sorting on a computed column
 
-Where there is no key path available to store in the sort context, such as for a calculated value, create a placeholder to serve as a non-functional key path.
+Where there is no key path available to store in the sort context, such as for a computed value, create a place holder key path.
 
 ```swift
 struct Holding {
