@@ -38,7 +38,7 @@ Three table types are supported, as determined by the mechanism by which their h
 
 \* Other platforms like macCatalyst, iPad on Mac, watchOS, tvOS, etc. are poorly supported, if at all. Please contribute to improve support!
 
-\*\* AnyView only used to specify sort configuration images in configuration, which shouldn't impact scalability.
+\*\* AnyView only used to specify sort images in configuration, which shouldn't impact scalability.
 
 ## Tabler Example
 
@@ -206,8 +206,7 @@ private func header(ctx: Binding<Context>) -> some View {
 Where there is no key path available to store in the sort context, such as for a computed value, create a place holder key path.
 
 ```swift
-struct Holding {
-    // ...
+extension Holding {
     func getMarketValue(_ priceMap: [String: Double]) -> Double {
         shareCount * (priceMap[ticker] ?? 0)
     }
@@ -216,7 +215,8 @@ struct Holding {
 }
 
 struct HoldingsTable: View {
-    // ...
+    private typealias Context = TablerContext<Holding>
+    
     private func header(_ ctx: Binding<Context>) -> some View {
         LazyVGrid(columns: gridItems) {
             // ...
