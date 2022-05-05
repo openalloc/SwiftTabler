@@ -3,9 +3,9 @@
 
 import SwiftUI
 
-extension TablerStackB {
+public extension TablerStackB {
     // omitting Header
-    init(_ config: Config,
+    init(_ config: Config = .init(),
          @ViewBuilder row: @escaping RowContent,
          @ViewBuilder rowBackground: @escaping RowBackground,
          @ViewBuilder rowOverlay: @escaping RowOverlay
@@ -23,7 +23,7 @@ extension TablerStackB {
     }
 
     // omitting Overlay
-    init(_ config: Config,
+    init(_ config: Config = .init(),
          @ViewBuilder header: @escaping HeaderContent,
          @ViewBuilder row: @escaping RowContent,
          @ViewBuilder rowBackground: @escaping RowBackground
@@ -42,7 +42,7 @@ extension TablerStackB {
     }
 
     // omitting Background
-    init(_ config: Config,
+    init(_ config: Config = .init(),
          @ViewBuilder header: @escaping HeaderContent,
          @ViewBuilder row: @escaping RowContent,
          @ViewBuilder rowOverlay: @escaping RowOverlay
@@ -60,7 +60,7 @@ extension TablerStackB {
     }
 
     // omitting Header AND Overlay
-    init(_ config: Config,
+    init(_ config: Config = .init(),
          @ViewBuilder row: @escaping RowContent,
          @ViewBuilder rowBackground: @escaping RowBackground
         , results: Binding<Results>
@@ -77,7 +77,7 @@ extension TablerStackB {
     }
 
     // omitting Header AND Background
-    init(_ config: Config,
+    init(_ config: Config = .init(),
          @ViewBuilder row: @escaping RowContent,
          @ViewBuilder rowOverlay: @escaping RowOverlay
         , results: Binding<Results>
@@ -94,7 +94,7 @@ extension TablerStackB {
     }
 
     // omitting Background AND Overlay
-    init(_ config: Config,
+    init(_ config: Config = .init(),
          @ViewBuilder header: @escaping HeaderContent,
          @ViewBuilder row: @escaping RowContent
         , results: Binding<Results>
@@ -111,7 +111,7 @@ extension TablerStackB {
     }
 
     // omitting Header, Background, AND Overlay
-    init(_ config: Config,
+    init(_ config: Config = .init(),
          @ViewBuilder row: @escaping RowContent
         , results: Binding<Results>
                   )

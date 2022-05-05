@@ -492,6 +492,20 @@ var body: some View {
 }
 ```
 
+## AutoInit Code Generation
+
+**This applies only to those forking and customizing the _Tabler_ code.**
+
+Many additional `init()` functions for each table variant are generated via the code template `Templates/AutoInit.stencil`.
+
+To regenerate, run the [Sourcery](https://github.com/krzysztofzablocki/Sourcery) command from the project directory.
+
+```
+$ sourcery
+```
+
+The generated code will be found in the `Sources/Generated` directory.
+
 ## See Also
 
 * [TablerDemo](https://github.com/openalloc/TablerDemo) - the demonstration app for this library, for value data sources
