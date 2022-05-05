@@ -4,7 +4,7 @@
 import SwiftUI
 
 extension TablerListC {
-        // omitting Header
+    // omitting Header
     init(_ config: Config,
          @ViewBuilder row: @escaping RowContent,
          @ViewBuilder rowBackground: @escaping RowBackground,
