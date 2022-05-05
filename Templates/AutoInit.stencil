@@ -1,0 +1,196 @@
+{% for type in types.structs %}
+{% if type|annotated:"AutoInit" %}
+// sourcery:file:{{ type.name }}+AutoInit
+
+import SwiftUI
+
+extension {{type.name}} {
+        // omitting Header
+    init(_ config: Config,
+         @ViewBuilder row: @escaping RowContent,
+         @ViewBuilder rowBackground: @escaping RowBackground,
+         @ViewBuilder rowOverlay: @escaping RowOverlay
+        {% if type|annotated:"resultsBinding" %}
+        , results: Binding<Results>
+        {% else %}
+        , results: Results
+        {% endif %}
+        {% if type|annotated:"selectBinding" %}
+        , selected: Binding<Selected>
+        {% endif %}
+                  )
+        where Header == EmptyView
+    {
+        self.init(config,
+                  header: { _ in EmptyView() },
+                  row: row,
+                  rowBackground: rowBackground,
+                  rowOverlay: rowOverlay,
+                  results: results
+                  {% if type|annotated:"selectBinding" %}
+                  , selected: selected
+                  {% endif %})
+    }
+
+    // omitting Overlay
+    init(_ config: Config,
+         @ViewBuilder header: @escaping HeaderContent,
+         @ViewBuilder row: @escaping RowContent,
+         @ViewBuilder rowBackground: @escaping RowBackground
+        {% if type|annotated:"resultsBinding" %}
+        , results: Binding<Results>
+        {% else %}
+        , results: Results
+        {% endif %}
+        {% if type|annotated:"selectBinding" %}
+        , selected: Binding<Selected>
+        {% endif %}
+                  )
+        where RowOver == EmptyView
+    {
+        self.init(config,
+                  header: header,
+                  row: row,
+                  rowBackground: rowBackground,
+                  rowOverlay: { _ in EmptyView() },
+                  results: results
+                  {% if type|annotated:"selectBinding" %}
+                  , selected: selected
+                  {% endif %})
+
+    }
+
+    // omitting Background
+    init(_ config: Config,
+         @ViewBuilder header: @escaping HeaderContent,
+         @ViewBuilder row: @escaping RowContent,
+         @ViewBuilder rowOverlay: @escaping RowOverlay
+        {% if type|annotated:"resultsBinding" %}
+        , results: Binding<Results>
+        {% else %}
+        , results: Results
+        {% endif %}
+        {% if type|annotated:"selectBinding" %}
+        , selected: Binding<Selected>
+        {% endif %}
+                  )
+        where RowBack == EmptyView
+    {
+        self.init(config,
+                  header: header,
+                  row: row,
+                  rowBackground: { _ in EmptyView() },
+                  rowOverlay: rowOverlay,
+                  results: results
+                  {% if type|annotated:"selectBinding" %}
+                  , selected: selected
+                  {% endif %})
+    }
+
+    // omitting Header AND Overlay
+    init(_ config: Config,
+         @ViewBuilder row: @escaping RowContent,
+         @ViewBuilder rowBackground: @escaping RowBackground
+        {% if type|annotated:"resultsBinding" %}
+        , results: Binding<Results>
+        {% else %}
+        , results: Results
+        {% endif %}
+        {% if type|annotated:"selectBinding" %}
+        , selected: Binding<Selected>
+        {% endif %}
+                  )
+        where Header == EmptyView, RowOver == EmptyView
+    {
+        self.init(config,
+                  header: { _ in EmptyView() },
+                  row: row,
+                  rowBackground: rowBackground,
+                  rowOverlay: { _ in EmptyView() },
+                  results: results
+                  {% if type|annotated:"selectBinding" %}
+                  , selected: selected
+                  {% endif %})
+    }
+
+    // omitting Header AND Background
+    init(_ config: Config,
+         @ViewBuilder row: @escaping RowContent,
+         @ViewBuilder rowOverlay: @escaping RowOverlay
+        {% if type|annotated:"resultsBinding" %}
+        , results: Binding<Results>
+        {% else %}
+        , results: Results
+        {% endif %}
+        {% if type|annotated:"selectBinding" %}
+        , selected: Binding<Selected>
+        {% endif %}
+                  )
+        where Header == EmptyView, RowBack == EmptyView
+    {
+        self.init(config,
+                  header: { _ in EmptyView() },
+                  row: row,
+                  rowBackground: { _ in EmptyView() },
+                  rowOverlay: rowOverlay,
+                  results: results
+                  {% if type|annotated:"selectBinding" %}
+                  , selected: selected
+                  {% endif %})
+    }
+
+    // omitting Background AND Overlay
+    init(_ config: Config,
+         @ViewBuilder header: @escaping HeaderContent,
+         @ViewBuilder row: @escaping RowContent
+        {% if type|annotated:"resultsBinding" %}
+        , results: Binding<Results>
+        {% else %}
+        , results: Results
+        {% endif %}
+        {% if type|annotated:"selectBinding" %}
+        , selected: Binding<Selected>
+        {% endif %}
+                  )
+        where RowBack == EmptyView, RowOver == EmptyView
+    {
+        self.init(config,
+                  header: header,
+                  row: row,
+                  rowBackground: { _ in EmptyView() },
+                  rowOverlay: { _ in EmptyView() },
+                  results: results
+                  {% if type|annotated:"selectBinding" %}
+                  , selected: selected
+                  {% endif %})
+    }
+
+    // omitting Header, Background, AND Overlay
+    init(_ config: Config,
+         @ViewBuilder row: @escaping RowContent
+        {% if type|annotated:"resultsBinding" %}
+        , results: Binding<Results>
+        {% else %}
+        , results: Results
+        {% endif %}
+        {% if type|annotated:"selectBinding" %}
+        , selected: Binding<Selected>
+        {% endif %}
+                  )
+
+        where Header == EmptyView, RowBack == EmptyView, RowOver == EmptyView
+    {
+        self.init(config,
+                  header: { _ in EmptyView() },
+                  row: row,
+                  rowBackground: { _ in EmptyView() },
+                  rowOverlay: { _ in EmptyView() },
+                  results: results
+                  {% if type|annotated:"selectBinding" %}
+                  , selected: selected
+                  {% endif %})
+    }
+}
+// sourcery:end
+{% endif %}
+{% endfor %}

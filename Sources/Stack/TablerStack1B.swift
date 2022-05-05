@@ -18,6 +18,7 @@
 
 import SwiftUI
 
+// sourcery: AutoInit, selectBinding, resultsBinding
 /// Stack-based table, with support for single-select and bound value types
 public struct TablerStack1B<Element, Header, Row, RowBack, RowOver, Results>: View
     where Element: Identifiable,
@@ -96,128 +97,5 @@ public struct TablerStack1B<Element, Header, Row, RowBack, RowOver, Results>: Vi
                                    selected: $selected))
             .background(rowBackground(element.wrappedValue))
             .overlay(rowOverlay(element.wrappedValue))
-    }
-}
-
-public extension TablerStack1B {
-    // omitting Header
-    init(_ config: Config = .init(),
-         @ViewBuilder row: @escaping RowContent,
-         @ViewBuilder rowBackground: @escaping RowBackground,
-         @ViewBuilder rowOverlay: @escaping RowOverlay,
-         results: Binding<Results>,
-         selected: Binding<Selected>)
-        where Header == EmptyView
-    {
-        self.init(config,
-                  header: { _ in EmptyView() },
-                  row: row,
-                  rowBackground: rowBackground,
-                  rowOverlay: rowOverlay,
-                  results: results,
-                  selected: selected)
-    }
-
-    // omitting Overlay
-    init(_ config: Config = .init(),
-         @ViewBuilder header: @escaping HeaderContent,
-         @ViewBuilder row: @escaping RowContent,
-         @ViewBuilder rowBackground: @escaping RowBackground,
-         results: Binding<Results>,
-         selected: Binding<Selected>)
-        where RowOver == EmptyView
-    {
-        self.init(config,
-                  header: header,
-                  row: row,
-                  rowBackground: rowBackground,
-                  rowOverlay: { _ in EmptyView() },
-                  results: results,
-                  selected: selected)
-    }
-
-    // omitting Background
-    init(_ config: Config = .init(),
-         @ViewBuilder header: @escaping HeaderContent,
-         @ViewBuilder row: @escaping RowContent,
-         @ViewBuilder rowOverlay: @escaping RowOverlay,
-         results: Binding<Results>,
-         selected: Binding<Selected>)
-        where RowBack == EmptyView
-    {
-        self.init(config,
-                  header: header,
-                  row: row,
-                  rowBackground: { _ in EmptyView() },
-                  rowOverlay: rowOverlay,
-                  results: results,
-                  selected: selected)
-    }
-
-    // omitting Header AND Overlay
-    init(_ config: Config = .init(),
-         @ViewBuilder row: @escaping RowContent,
-         @ViewBuilder rowBackground: @escaping RowBackground,
-         results: Binding<Results>,
-         selected: Binding<Selected>)
-        where Header == EmptyView, RowOver == EmptyView
-    {
-        self.init(config,
-                  header: { _ in EmptyView() },
-                  row: row,
-                  rowBackground: rowBackground,
-                  rowOverlay: { _ in EmptyView() },
-                  results: results,
-                  selected: selected)
-    }
-    
-    // omitting Header AND Background
-    init(_ config: Config = .init(),
-         @ViewBuilder row: @escaping RowContent,
-         @ViewBuilder rowOverlay: @escaping RowOverlay,
-         results: Binding<Results>,
-         selected: Binding<Selected>)
-        where Header == EmptyView, RowBack == EmptyView
-    {
-        self.init(config,
-                  header: { _ in EmptyView() },
-                  row: row,
-                  rowBackground: { _ in EmptyView() },
-                  rowOverlay: rowOverlay,
-                  results: results,
-                  selected: selected)
-    }
-    
-    // omitting Background AND Overlay
-    init(_ config: Config = .init(),
-         @ViewBuilder header: @escaping HeaderContent,
-         @ViewBuilder row: @escaping RowContent,
-         results: Binding<Results>,
-         selected: Binding<Selected>)
-        where RowBack == EmptyView, RowOver == EmptyView
-    {
-        self.init(config,
-                  header: header,
-                  row: row,
-                  rowBackground: { _ in EmptyView() },
-                  rowOverlay: { _ in EmptyView() },
-                  results: results,
-                  selected: selected)
-    }
-
-    // omitting Header, Background, AND Overlay
-    init(_ config: Config = .init(),
-         @ViewBuilder row: @escaping RowContent,
-         results: Binding<Results>,
-         selected: Binding<Selected>)
-        where Header == EmptyView, RowBack == EmptyView, RowOver == EmptyView
-    {
-        self.init(config,
-                  header: { _ in EmptyView() },
-                  row: row,
-                  rowBackground: { _ in EmptyView() },
-                  rowOverlay: { _ in EmptyView() },
-                  results: results,
-                  selected: selected)
     }
 }
