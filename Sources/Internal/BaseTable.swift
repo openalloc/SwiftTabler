@@ -18,27 +18,30 @@
 
 import SwiftUI
 
-struct BaseTable<Element, Header, Rows>: View
+struct BaseTable<Element, Header, Footer, Rows>: View
     where Element: Identifiable,
     Header: View,
+    Footer: View,
     Rows: View
 {
     typealias Context = TablerContext<Element>
     typealias HeaderContent = (Binding<Context>) -> Header
+    typealias FooterContent = (Binding<Context>) -> Footer
     typealias HeaderBuilder = () -> Header
-    typealias TableBuilder = (@escaping HeaderBuilder) -> Rows
+    typealias FooterBuilder = () -> Footer
+    typealias TableBuilder = (@escaping HeaderBuilder, @escaping FooterBuilder) -> Rows
 
     // MARK: Parameters
 
     @Binding var context: Context
     let header: HeaderContent
+    let footer: FooterContent
     let tableBuilder: TableBuilder
 
     // MARK: Views
 
     var body: some View {
-        tableBuilder {
-            header($context)
-        }
+        tableBuilder({ header($context) },
+                     { footer($context) })
     }
 }

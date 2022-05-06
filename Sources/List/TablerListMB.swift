@@ -20,9 +20,10 @@ import SwiftUI
 
 // sourcery: AutoInit, selectBinding, resultsBinding
 /// List-based table, with support for multi-select and bound value types
-public struct TablerListMB<Element, Header, Row, RowBack, RowOver, Results>: View
+public struct TablerListMB<Element, Header, Footer, Row, RowBack, RowOver, Results>: View
     where Element: Identifiable,
     Header: View,
+    Footer: View,
     Row: View,
     RowBack: View,
     RowOver: View,
@@ -33,6 +34,7 @@ public struct TablerListMB<Element, Header, Row, RowBack, RowOver, Results>: Vie
     public typealias Config = TablerListConfig<Element>
     public typealias Context = TablerContext<Element>
     public typealias HeaderContent = (Binding<Context>) -> Header
+    public typealias FooterContent = (Binding<Context>) -> Footer
     public typealias RowContent = (Binding<Element>) -> Row
     public typealias RowBackground = (Element) -> RowBack
     public typealias RowOverlay = (Element) -> RowOver
@@ -42,6 +44,7 @@ public struct TablerListMB<Element, Header, Row, RowBack, RowOver, Results>: Vie
 
     private let config: Config
     private let headerContent: HeaderContent
+    private let footerContent: FooterContent
     private let rowContent: RowContent
     private let rowBackground: RowBackground
     private let rowOverlay: RowOverlay
@@ -50,6 +53,7 @@ public struct TablerListMB<Element, Header, Row, RowBack, RowOver, Results>: Vie
 
     public init(_ config: Config = .init(),
                 @ViewBuilder header: @escaping HeaderContent,
+                @ViewBuilder footer: @escaping FooterContent,
                 @ViewBuilder row: @escaping RowContent,
                 @ViewBuilder rowBackground: @escaping RowBackground,
                 @ViewBuilder rowOverlay: @escaping RowOverlay,
@@ -58,6 +62,7 @@ public struct TablerListMB<Element, Header, Row, RowBack, RowOver, Results>: Vie
     {
         self.config = config
         headerContent = header
+        footerContent = footer
         rowContent = row
         self.rowBackground = rowBackground
         self.rowOverlay = rowOverlay
@@ -75,7 +80,8 @@ public struct TablerListMB<Element, Header, Row, RowBack, RowOver, Results>: Vie
     public var body: some View {
         BaseListM(context: $context,
                   selected: $selected,
-                  header: headerContent) {
+                  header: headerContent,
+                  footer: footerContent) {
             // TODO: is there a better way to filter bound data source?
             if let _filter = config.filter {
                 ForEach($results) { $element in

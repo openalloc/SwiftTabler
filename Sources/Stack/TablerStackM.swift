@@ -20,9 +20,10 @@ import SwiftUI
 
 // sourcery: AutoInit, selectBinding
 /// Stack-based table, with support for multi-select
-public struct TablerStackM<Element, Header, Row, RowBack, RowOver, Results>: View
+public struct TablerStackM<Element, Header, Footer, Row, RowBack, RowOver, Results>: View
     where Element: Identifiable,
     Header: View,
+    Footer: View,
     Row: View,
     RowBack: View,
     RowOver: View,
@@ -32,6 +33,7 @@ public struct TablerStackM<Element, Header, Row, RowBack, RowOver, Results>: Vie
     public typealias Config = TablerStackConfig<Element>
     public typealias Context = TablerContext<Element>
     public typealias HeaderContent = (Binding<Context>) -> Header
+    public typealias FooterContent = (Binding<Context>) -> Footer
     public typealias RowContent = (Element) -> Row
     public typealias RowBackground = (Element) -> RowBack
     public typealias RowOverlay = (Element) -> RowOver
@@ -41,6 +43,7 @@ public struct TablerStackM<Element, Header, Row, RowBack, RowOver, Results>: Vie
 
     private let config: Config
     private let headerContent: HeaderContent
+    private let footerContent: FooterContent
     private let rowContent: RowContent
     private let rowBackground: RowBackground
     private let rowOverlay: RowOverlay
@@ -49,6 +52,7 @@ public struct TablerStackM<Element, Header, Row, RowBack, RowOver, Results>: Vie
 
     public init(_ config: Config = .init(),
                 @ViewBuilder header: @escaping HeaderContent,
+                @ViewBuilder footer: @escaping FooterContent,
                 @ViewBuilder row: @escaping RowContent,
                 @ViewBuilder rowBackground: @escaping RowBackground,
                 @ViewBuilder rowOverlay: @escaping RowOverlay,
@@ -57,6 +61,7 @@ public struct TablerStackM<Element, Header, Row, RowBack, RowOver, Results>: Vie
     {
         self.config = config
         headerContent = header
+        footerContent = footer
         rowContent = row
         self.rowBackground = rowBackground
         self.rowOverlay = rowOverlay
@@ -73,7 +78,8 @@ public struct TablerStackM<Element, Header, Row, RowBack, RowOver, Results>: Vie
 
     public var body: some View {
         BaseStack(context: $context,
-                  header: headerContent) {
+                  header: headerContent,
+                  footer: footerContent) {
             ForEach(results.filter(config.filter ?? { _ in true })) { element in
                 rowContent(element)
                     .modifier(StackRowModM(config: config,

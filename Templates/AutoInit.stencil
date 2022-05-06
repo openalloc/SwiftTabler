@@ -7,6 +7,7 @@ import SwiftUI
 public extension {{type.name}} {
     // omitting Header
     init(_ config: Config = .init(),
+         @ViewBuilder footer: @escaping FooterContent,
          @ViewBuilder row: @escaping RowContent,
          @ViewBuilder rowBackground: @escaping RowBackground,
          @ViewBuilder rowOverlay: @escaping RowOverlay
@@ -23,6 +24,7 @@ public extension {{type.name}} {
     {
         self.init(config,
                   header: { _ in EmptyView() },
+                  footer: footer,
                   row: row,
                   rowBackground: rowBackground,
                   rowOverlay: rowOverlay,
@@ -35,6 +37,7 @@ public extension {{type.name}} {
     // omitting Overlay
     init(_ config: Config = .init(),
          @ViewBuilder header: @escaping HeaderContent,
+         @ViewBuilder footer: @escaping FooterContent,
          @ViewBuilder row: @escaping RowContent,
          @ViewBuilder rowBackground: @escaping RowBackground
         {% if type|annotated:"resultsBinding" %}
@@ -50,6 +53,7 @@ public extension {{type.name}} {
     {
         self.init(config,
                   header: header,
+                  footer: footer,
                   row: row,
                   rowBackground: rowBackground,
                   rowOverlay: { _ in EmptyView() },
@@ -63,6 +67,7 @@ public extension {{type.name}} {
     // omitting Background
     init(_ config: Config = .init(),
          @ViewBuilder header: @escaping HeaderContent,
+         @ViewBuilder footer: @escaping FooterContent,
          @ViewBuilder row: @escaping RowContent,
          @ViewBuilder rowOverlay: @escaping RowOverlay
         {% if type|annotated:"resultsBinding" %}
@@ -78,6 +83,7 @@ public extension {{type.name}} {
     {
         self.init(config,
                   header: header,
+                  footer: footer,
                   row: row,
                   rowBackground: { _ in EmptyView() },
                   rowOverlay: rowOverlay,
@@ -89,6 +95,7 @@ public extension {{type.name}} {
 
     // omitting Header AND Overlay
     init(_ config: Config = .init(),
+         @ViewBuilder footer: @escaping FooterContent,
          @ViewBuilder row: @escaping RowContent,
          @ViewBuilder rowBackground: @escaping RowBackground
         {% if type|annotated:"resultsBinding" %}
@@ -104,6 +111,7 @@ public extension {{type.name}} {
     {
         self.init(config,
                   header: { _ in EmptyView() },
+                  footer: footer,
                   row: row,
                   rowBackground: rowBackground,
                   rowOverlay: { _ in EmptyView() },
@@ -115,6 +123,7 @@ public extension {{type.name}} {
 
     // omitting Header AND Background
     init(_ config: Config = .init(),
+         @ViewBuilder footer: @escaping FooterContent,
          @ViewBuilder row: @escaping RowContent,
          @ViewBuilder rowOverlay: @escaping RowOverlay
         {% if type|annotated:"resultsBinding" %}
@@ -130,6 +139,7 @@ public extension {{type.name}} {
     {
         self.init(config,
                   header: { _ in EmptyView() },
+                  footer: footer,
                   row: row,
                   rowBackground: { _ in EmptyView() },
                   rowOverlay: rowOverlay,
@@ -142,6 +152,7 @@ public extension {{type.name}} {
     // omitting Background AND Overlay
     init(_ config: Config = .init(),
          @ViewBuilder header: @escaping HeaderContent,
+         @ViewBuilder footer: @escaping FooterContent,
          @ViewBuilder row: @escaping RowContent
         {% if type|annotated:"resultsBinding" %}
         , results: Binding<Results>
@@ -156,6 +167,7 @@ public extension {{type.name}} {
     {
         self.init(config,
                   header: header,
+                  footer: footer,
                   row: row,
                   rowBackground: { _ in EmptyView() },
                   rowOverlay: { _ in EmptyView() },
@@ -167,6 +179,7 @@ public extension {{type.name}} {
 
     // omitting Header, Background, AND Overlay
     init(_ config: Config = .init(),
+         @ViewBuilder footer: @escaping FooterContent,
          @ViewBuilder row: @escaping RowContent
         {% if type|annotated:"resultsBinding" %}
         , results: Binding<Results>
@@ -182,6 +195,200 @@ public extension {{type.name}} {
     {
         self.init(config,
                   header: { _ in EmptyView() },
+                  footer: footer,
+                  row: row,
+                  rowBackground: { _ in EmptyView() },
+                  rowOverlay: { _ in EmptyView() },
+                  results: results
+                  {% if type|annotated:"selectBinding" %}
+                  , selected: selected
+                  {% endif %})
+    }
+    
+    // omitting Header, Footer
+    init(_ config: Config = .init(),
+         @ViewBuilder row: @escaping RowContent,
+         @ViewBuilder rowBackground: @escaping RowBackground,
+         @ViewBuilder rowOverlay: @escaping RowOverlay
+        {% if type|annotated:"resultsBinding" %}
+        , results: Binding<Results>
+        {% else %}
+        , results: Results
+        {% endif %}
+        {% if type|annotated:"selectBinding" %}
+        , selected: Binding<Selected>
+        {% endif %}
+                  )
+        where Header == EmptyView, Footer == EmptyView
+    {
+        self.init(config,
+                  header: { _ in EmptyView() },
+                  footer: { _ in EmptyView() },
+                  row: row,
+                  rowBackground: rowBackground,
+                  rowOverlay: rowOverlay,
+                  results: results
+                  {% if type|annotated:"selectBinding" %}
+                  , selected: selected
+                  {% endif %})
+    }
+
+    // omitting Footer, Overlay
+    init(_ config: Config = .init(),
+         @ViewBuilder header: @escaping HeaderContent,
+         @ViewBuilder row: @escaping RowContent,
+         @ViewBuilder rowBackground: @escaping RowBackground
+        {% if type|annotated:"resultsBinding" %}
+        , results: Binding<Results>
+        {% else %}
+        , results: Results
+        {% endif %}
+        {% if type|annotated:"selectBinding" %}
+        , selected: Binding<Selected>
+        {% endif %}
+                  )
+        where Footer == EmptyView, RowOver == EmptyView
+    {
+        self.init(config,
+                  header: header,
+                  footer: { _ in EmptyView() },
+                  row: row,
+                  rowBackground: rowBackground,
+                  rowOverlay: { _ in EmptyView() },
+                  results: results
+                  {% if type|annotated:"selectBinding" %}
+                  , selected: selected
+                  {% endif %})
+
+    }
+
+    // omitting Footer, Background
+    init(_ config: Config = .init(),
+         @ViewBuilder header: @escaping HeaderContent,
+         @ViewBuilder row: @escaping RowContent,
+         @ViewBuilder rowOverlay: @escaping RowOverlay
+        {% if type|annotated:"resultsBinding" %}
+        , results: Binding<Results>
+        {% else %}
+        , results: Results
+        {% endif %}
+        {% if type|annotated:"selectBinding" %}
+        , selected: Binding<Selected>
+        {% endif %}
+                  )
+        where Footer == EmptyView, RowBack == EmptyView
+    {
+        self.init(config,
+                  header: header,
+                  footer: { _ in EmptyView() },
+                  row: row,
+                  rowBackground: { _ in EmptyView() },
+                  rowOverlay: rowOverlay,
+                  results: results
+                  {% if type|annotated:"selectBinding" %}
+                  , selected: selected
+                  {% endif %})
+    }
+
+    // omitting Header, Footer AND Overlay
+    init(_ config: Config = .init(),
+         @ViewBuilder row: @escaping RowContent,
+         @ViewBuilder rowBackground: @escaping RowBackground
+        {% if type|annotated:"resultsBinding" %}
+        , results: Binding<Results>
+        {% else %}
+        , results: Results
+        {% endif %}
+        {% if type|annotated:"selectBinding" %}
+        , selected: Binding<Selected>
+        {% endif %}
+                  )
+        where Header == EmptyView, Footer == EmptyView, RowOver == EmptyView
+    {
+        self.init(config,
+                  header: { _ in EmptyView() },
+                  footer: { _ in EmptyView() },
+                  row: row,
+                  rowBackground: rowBackground,
+                  rowOverlay: { _ in EmptyView() },
+                  results: results
+                  {% if type|annotated:"selectBinding" %}
+                  , selected: selected
+                  {% endif %})
+    }
+
+    // omitting Header, Footer AND Background
+    init(_ config: Config = .init(),
+         @ViewBuilder row: @escaping RowContent,
+         @ViewBuilder rowOverlay: @escaping RowOverlay
+        {% if type|annotated:"resultsBinding" %}
+        , results: Binding<Results>
+        {% else %}
+        , results: Results
+        {% endif %}
+        {% if type|annotated:"selectBinding" %}
+        , selected: Binding<Selected>
+        {% endif %}
+                  )
+        where Header == EmptyView, Footer == EmptyView, RowBack == EmptyView
+    {
+        self.init(config,
+                  header: { _ in EmptyView() },
+                  footer: { _ in EmptyView() },
+                  row: row,
+                  rowBackground: { _ in EmptyView() },
+                  rowOverlay: rowOverlay,
+                  results: results
+                  {% if type|annotated:"selectBinding" %}
+                  , selected: selected
+                  {% endif %})
+    }
+
+    // omitting Footer, Background AND Overlay
+    init(_ config: Config = .init(),
+         @ViewBuilder header: @escaping HeaderContent,
+         @ViewBuilder row: @escaping RowContent
+        {% if type|annotated:"resultsBinding" %}
+        , results: Binding<Results>
+        {% else %}
+        , results: Results
+        {% endif %}
+        {% if type|annotated:"selectBinding" %}
+        , selected: Binding<Selected>
+        {% endif %}
+                  )
+        where Footer == EmptyView, RowBack == EmptyView, RowOver == EmptyView
+    {
+        self.init(config,
+                  header: header,
+                  footer: { _ in EmptyView() },
+                  row: row,
+                  rowBackground: { _ in EmptyView() },
+                  rowOverlay: { _ in EmptyView() },
+                  results: results
+                  {% if type|annotated:"selectBinding" %}
+                  , selected: selected
+                  {% endif %})
+    }
+
+    // omitting Header, Footer, Background, AND Overlay
+    init(_ config: Config = .init(),
+         @ViewBuilder row: @escaping RowContent
+        {% if type|annotated:"resultsBinding" %}
+        , results: Binding<Results>
+        {% else %}
+        , results: Results
+        {% endif %}
+        {% if type|annotated:"selectBinding" %}
+        , selected: Binding<Selected>
+        {% endif %}
+                  )
+
+        where Header == EmptyView, Footer == EmptyView, RowBack == EmptyView, RowOver == EmptyView
+    {
+        self.init(config,
+                  header: { _ in EmptyView() },
+                  footer: { _ in EmptyView() },
                   row: row,
                   rowBackground: { _ in EmptyView() },
                   rowOverlay: { _ in EmptyView() },

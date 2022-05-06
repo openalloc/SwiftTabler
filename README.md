@@ -16,6 +16,7 @@ macOS | iOS
 * Presently targeting macOS v11+ and iOS v14+\*
 * Supporting both value and reference semantics (including Core Data, which uses the latter)
 * Option to support a bound data source, where inline controls can directly mutate your data model
+* Option to specify a header and/or footer
 * Support for single-select, multi-select, or no selection
 * Option to sort by column, with indicators and concise syntax
 * Option to specify a row background and/or overlay
@@ -376,6 +377,30 @@ var body: some View {
                results: fruits)
 }
 ```
+
+## Table Footer
+
+Optionally display a table footer, similarly to specifying a table header:
+
+```swift
+var body: some View {
+    TablerList(header: header,
+               footer: footer,
+               row: row,
+               results: fruits)
+}
+
+private func footer(ctx: Binding<Context>) -> some View {
+    LazyVGrid(columns: gridItems) {
+        Text("ID")
+        Text("Name")
+        Text("Weight")
+        Text("Color")
+    }
+}
+```
+
+Where you don't want a footer, simply omit it from the declaration of the table.
 
 ## Moving Rows
 

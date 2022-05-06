@@ -20,9 +20,10 @@ import SwiftUI
 
 // sourcery: AutoInit, resultsBinding
 /// Grid-based table, with support for bound value types
-public struct TablerGridB<Element, Header, Row, RowBack, RowOver, Results>: View
+public struct TablerGridB<Element, Header, Footer, Row, RowBack, RowOver, Results>: View
     where Element: Identifiable,
     Header: View,
+    Footer: View,
     Row: View,
     RowBack: View,
     RowOver: View,
@@ -33,6 +34,7 @@ public struct TablerGridB<Element, Header, Row, RowBack, RowOver, Results>: View
     public typealias Config = TablerGridConfig<Element>
     public typealias Context = TablerContext<Element>
     public typealias HeaderContent = (Binding<Context>) -> Header
+    public typealias FooterContent = (Binding<Context>) -> Footer
     public typealias RowContent = (Binding<Element>) -> Row
     public typealias RowBackground = (Element) -> RowBack
     public typealias RowOverlay = (Element) -> RowOver
@@ -41,6 +43,7 @@ public struct TablerGridB<Element, Header, Row, RowBack, RowOver, Results>: View
 
     private let config: Config
     private let headerContent: HeaderContent
+    private let footerContent: FooterContent
     private let rowContent: RowContent
     private let rowBackground: RowBackground
     private let rowOverlay: RowOverlay
@@ -48,6 +51,7 @@ public struct TablerGridB<Element, Header, Row, RowBack, RowOver, Results>: View
 
     public init(_ config: Config,
                 @ViewBuilder header: @escaping HeaderContent,
+                @ViewBuilder footer: @escaping FooterContent,
                 @ViewBuilder row: @escaping RowContent,
                 @ViewBuilder rowBackground: @escaping RowBackground,
                 @ViewBuilder rowOverlay: @escaping RowOverlay,
@@ -55,6 +59,7 @@ public struct TablerGridB<Element, Header, Row, RowBack, RowOver, Results>: View
     {
         self.config = config
         headerContent = header
+        footerContent = footer
         rowContent = row
         self.rowBackground = rowBackground
         self.rowOverlay = rowOverlay
@@ -70,7 +75,8 @@ public struct TablerGridB<Element, Header, Row, RowBack, RowOver, Results>: View
 
     public var body: some View {
         BaseGrid(context: $context,
-                 header: headerContent) {
+                 header: headerContent,
+                  footer: footerContent) {
             ForEach($results) { $element in
                 rowContent($element)
                     .modifier(GridItemMod(config: config,
