@@ -19,32 +19,54 @@
 import SwiftUI
 
 // Stack-based list
-struct BaseStack<Element, Header, Rows>: View
+struct BaseStack<Element, Header, Footer, Rows>: View
     where Element: Identifiable,
     Header: View,
+    Footer: View,
     Rows: View
 {
     typealias Config = TablerStackConfig<Element>
     typealias Context = TablerContext<Element>
     typealias HeaderContent = (Binding<Context>) -> Header
+    typealias FooterContent = (Binding<Context>) -> Footer
     typealias RowContent = () -> Rows
 
     @Binding var context: Context
     @ViewBuilder let header: HeaderContent
+    @ViewBuilder let footer: FooterContent
     @ViewBuilder let rows: RowContent
 
     var body: some View {
         BaseTable(context: $context,
-                  header: header) { buildHeader in
+                  header: header,
+                  footer: footer) { buildHeader, buildFooter in
 
-            VStack(spacing: config.headerSpacing) {
-                buildHeader()
+            VStack(spacing: 0) {
+//                if config.headerFixed {
+                    buildHeader()
+                        .padding(.vertical, config.headerSpacing)
+//                }
 
                 ScrollView {
+//                    if !config.headerFixed {
+//                        buildHeader()
+//                            .padding(.vertical, config.headerSpacing)
+//                    }
+                    
                     LazyVStack(alignment: .leading, spacing: config.rowSpacing) {
                         rows()
                     }
+                    
+//                    if !config.footerFixed {
+//                        buildFooter()
+//                            .padding(.vertical, config.footerSpacing)
+//                    }
                 }
+                
+//                if config.footerFixed {
+                    buildFooter()
+                        .padding(.vertical, config.footerSpacing)
+//                }
             }
         }
         .padding(config.tablePadding)

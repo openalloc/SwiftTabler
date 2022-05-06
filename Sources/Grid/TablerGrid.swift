@@ -20,9 +20,10 @@ import SwiftUI
 
 // sourcery: AutoInit
 /// Grid-based table
-public struct TablerGrid<Element, Header, Row, RowBack, RowOver, Results>: View
+public struct TablerGrid<Element, Header, Footer, Row, RowBack, RowOver, Results>: View
     where Element: Identifiable,
     Header: View,
+    Footer: View,
     Row: View,
     RowBack: View,
     RowOver: View,
@@ -32,6 +33,7 @@ public struct TablerGrid<Element, Header, Row, RowBack, RowOver, Results>: View
     public typealias Config = TablerGridConfig<Element>
     public typealias Context = TablerContext<Element>
     public typealias HeaderContent = (Binding<Context>) -> Header
+    public typealias FooterContent = (Binding<Context>) -> Footer
     public typealias RowContent = (Element) -> Row
     public typealias RowBackground = (Element) -> RowBack
     public typealias RowOverlay = (Element) -> RowOver
@@ -40,6 +42,7 @@ public struct TablerGrid<Element, Header, Row, RowBack, RowOver, Results>: View
 
     private let config: Config
     private let headerContent: HeaderContent
+    private let footerContent: FooterContent
     private let rowContent: RowContent
     private let rowBackground: RowBackground
     private let rowOverlay: RowOverlay
@@ -47,12 +50,14 @@ public struct TablerGrid<Element, Header, Row, RowBack, RowOver, Results>: View
 
     public init(_ config: Config,
                 @ViewBuilder header: @escaping HeaderContent,
+                @ViewBuilder footer: @escaping FooterContent,
                 @ViewBuilder row: @escaping RowContent,
                 @ViewBuilder rowBackground: @escaping RowBackground,
                 @ViewBuilder rowOverlay: @escaping RowOverlay,
                 results: Results)    {
         self.config = config
         headerContent = header
+        footerContent = footer
         rowContent = row
         self.rowBackground = rowBackground
         self.rowOverlay = rowOverlay
@@ -68,7 +73,8 @@ public struct TablerGrid<Element, Header, Row, RowBack, RowOver, Results>: View
 
     public var body: some View {
         BaseGrid(context: $context,
-                 header: headerContent) {
+                 header: headerContent,
+                  footer: footerContent) {
             ForEach(results.filter(config.filter ?? { _ in true })) { element in
                 rowContent(element)
                     .modifier(GridItemMod(config: config,

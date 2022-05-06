@@ -20,9 +20,10 @@ import SwiftUI
 
 // sourcery: AutoInit
 /// List-based table
-public struct TablerList<Element, Header, Row, RowBack, RowOver, Results>: View
+public struct TablerList<Element, Header, Footer, Row, RowBack, RowOver, Results>: View
 where Element: Identifiable,
       Header: View,
+      Footer: View,
       Row: View,
       RowBack: View,
       RowOver: View,
@@ -32,6 +33,7 @@ where Element: Identifiable,
     public typealias Config = TablerListConfig<Element>
     public typealias Context = TablerContext<Element>
     public typealias HeaderContent = (Binding<Context>) -> Header
+    public typealias FooterContent = (Binding<Context>) -> Footer
     public typealias RowContent = (Element) -> Row
     public typealias RowBackground = (Element) -> RowBack
     public typealias RowOverlay = (Element) -> RowOver
@@ -40,6 +42,7 @@ where Element: Identifiable,
     
     private let config: Config
     private let headerContent: HeaderContent
+    private let footerContent: FooterContent
     private let rowContent: RowContent
     private let rowBackground: RowBackground
     private let rowOverlay: RowOverlay
@@ -47,6 +50,7 @@ where Element: Identifiable,
     
     public init(_ config: Config = .init(),
                 @ViewBuilder header: @escaping HeaderContent,
+                @ViewBuilder footer: @escaping FooterContent,
                 @ViewBuilder row: @escaping RowContent,
                 @ViewBuilder rowBackground: @escaping RowBackground,
                 @ViewBuilder rowOverlay: @escaping RowOverlay,
@@ -54,6 +58,7 @@ where Element: Identifiable,
     {
         self.config = config
         headerContent = header
+        footerContent = footer
         rowContent = row
         self.rowBackground = rowBackground
         self.rowOverlay = rowOverlay
@@ -69,7 +74,8 @@ where Element: Identifiable,
     
     public var body: some View {
         BaseList(context: $context,
-                 header: headerContent) {
+                 header: headerContent,
+                 footer: footerContent) {
             ForEach(results.filter(config.filter ?? { _ in true })) { element in
                 rowContent(element)
                     .modifier(ListRowMod(config: config,

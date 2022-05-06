@@ -17,7 +17,8 @@ macOS | iOS
 * Supporting both value and reference semantics (including Core Data, which uses the latter)
 * Option to support a bound data source, where inline controls can directly mutate your data model
 * Support for single-select, multi-select, or no selection
-* Option to sort by column, with indicators and concise syntax
+* Option to specify a header and/or footer
+* Option to sort by column in header/footer, with indicators and concise syntax
 * Option to specify a row background and/or overlay
 * On macOS, option for hover events, such as to highlight row under the mouse cursor
 * MINIMAL use of View erasure (i.e., use of `AnyView`), which can impact scalability and performance\*\*
@@ -149,6 +150,41 @@ Table View      | Type      | Select | Value | Reference | Bound | Filter
 `TablerGridMC`  | **Grid**  | Multi  |       |  ✓        |  ✓    |                
 
 \* filtering with bound values likely not scalable as implemented. If you can find a better way to implement, please submit a pull request!
+
+## Header/Footer
+
+Optionally attach a header (or footer) to your table:
+
+```swift
+var body: some View {
+    TablerList(header: header,
+               footer: footer,
+               row: row,
+               results: fruits)
+}
+
+private func header(ctx: Binding<Context>) -> some View {
+    LazyVGrid(columns: gridItems) {
+        Text("ID")
+        Text("Name")
+        Text("Weight")
+        Text("Color")
+    }
+}
+
+private func footer(ctx: Binding<Context>) -> some View {
+    LazyVGrid(columns: gridItems) {
+        Text("ID")
+        Text("Name")
+        Text("Weight")
+        Text("Color")
+    }
+}
+```
+
+Where you don't want a header (or footer), simply omit from the declaration of the table.
+
+For **List** based variants, the header and footer are *inside* the scrolling region. For **Stack** and **Grid** based variants, they are *outside*. (This may be configurable at some point once any scaling/performance issues are resolved.)
 
 ## Column Sorting
 
@@ -366,17 +402,6 @@ private func hoverAction(fruitID: Fruit.ID, isHovered: Bool) {
 
 To coordinate hover with other backgrounds, such as for selection on **Stack** tables, see the demo apps.
 
-## Headless Tables
-
-Where you don't want a header, simply omit it from the declaration of the table:
-
-```swift
-var body: some View {
-    TablerList(row: row,
-               results: fruits)
-}
-```
-
 ## Moving Rows
 
 Row moving via drag and drop is available for the **List** based variants.
@@ -446,12 +471,15 @@ Stack configuration is optional.
 
 `TablerStackConfig<Element>.init` parameters:
 
-- `rowPadding: EdgeInsets` - Stack-specific default; varies by platform
-- `headerSpacing: CGFloat` - Stack-specific default; varies by platform
-- `rowSpacing: CGFloat` - Stack-specific default of 0
+- `rowPadding: EdgeInsets` - Stack-specific defaults; varies by platform
+- `headerSpacing: CGFloat` - default varies by platform
+- `footerSpacing: CGFloat` - default varies by platform
+- `rowSpacing: CGFloat` - default of 0
+- `headerFixed: Bool` - defaults to `true`
+- `footerFixed: Bool` - defaults to `false`
 - `filter: Filter?` - with a default of `nil`, indicating no filtering
 - `onHover: (Element.ID, Bool) -> Void` - defaults to `{ _,_ in }`
-- `tablePadding: EdgeInsets` - per Stack defaults
+- `tablePadding: EdgeInsets` - default varies by platform
 - `sortIndicatorForward: AnyView` - per Base defaults
 - `sortIndicatorReverse: AnyView` - per Base defaults
 - `sortIndicatorNeutral: AnyView` - per Base defaults
@@ -465,11 +493,14 @@ Grid configuration is required, where you supply a `GridItem` array.
 - `gridItems: [GridItem]` - required
 - `alignment: HorizontalAlignment` - `LazyVGrid` alignment, with a default of `.leading`
 - `itemPadding: EdgeInsets` - Grid-specific defaults, varies by platform
-- `headerSpacing: CGFloat` - Grid-specific default; varies by platform
-- `rowSpacing: CGFloat` - Grid-specific default of 0
+- `headerSpacing: CGFloat` - default varies by platform
+- `footerSpacing: CGFloat` - default varies by platform
+- `rowSpacing: CGFloat` - default of 0
+- `headerFixed: Bool` - defaults to `true`
+- `footerFixed: Bool` - defaults to `false`
 - `filter: Filter?` - with a default of `nil`, indicating no filtering
 - `onHover: (Element.ID, Bool) -> Void` - defaults to `{ _,_ in }`
-- `tablePadding: EdgeInsets` - Grid-specific default; varies by platform
+- `tablePadding: EdgeInsets` - default varies by platform
 - `sortIndicatorForward: AnyView` - per Base defaults
 - `sortIndicatorReverse: AnyView` - per Base defaults
 - `sortIndicatorNeutral: AnyView` - per Base defaults

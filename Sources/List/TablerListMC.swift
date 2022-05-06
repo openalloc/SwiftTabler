@@ -20,9 +20,10 @@ import SwiftUI
 
 // sourcery: AutoInit, selectBinding
 /// List-based table, with support for multi-select and reference types
-public struct TablerListMC<Element, Header, Row, RowBack, RowOver, Results>: View
+public struct TablerListMC<Element, Header, Footer, Row, RowBack, RowOver, Results>: View
     where Element: Identifiable & ObservableObject,
     Header: View,
+    Footer: View,
     Row: View,
     RowBack: View,
     RowOver: View,
@@ -32,6 +33,7 @@ public struct TablerListMC<Element, Header, Row, RowBack, RowOver, Results>: Vie
     public typealias Config = TablerListConfig<Element>
     public typealias Context = TablerContext<Element>
     public typealias HeaderContent = (Binding<Context>) -> Header
+    public typealias FooterContent = (Binding<Context>) -> Footer
     public typealias ProjectedValue = ObservedObject<Element>.Wrapper
     public typealias RowContent = (ProjectedValue) -> Row
     public typealias RowBackground = (Element) -> RowBack
@@ -42,6 +44,7 @@ public struct TablerListMC<Element, Header, Row, RowBack, RowOver, Results>: Vie
 
     private let config: Config
     private let headerContent: HeaderContent
+    private let footerContent: FooterContent
     private let rowContent: RowContent
     private let rowBackground: RowBackground
     private let rowOverlay: RowOverlay
@@ -50,6 +53,7 @@ public struct TablerListMC<Element, Header, Row, RowBack, RowOver, Results>: Vie
 
     public init(_ config: Config = .init(),
                 @ViewBuilder header: @escaping HeaderContent,
+                @ViewBuilder footer: @escaping FooterContent,
                 @ViewBuilder row: @escaping RowContent,
                 @ViewBuilder rowBackground: @escaping RowBackground,
                 @ViewBuilder rowOverlay: @escaping RowOverlay,
@@ -58,6 +62,7 @@ public struct TablerListMC<Element, Header, Row, RowBack, RowOver, Results>: Vie
     {
         self.config = config
         headerContent = header
+        footerContent = footer
         rowContent = row
         self.rowBackground = rowBackground
         self.rowOverlay = rowOverlay
@@ -75,7 +80,8 @@ public struct TablerListMC<Element, Header, Row, RowBack, RowOver, Results>: Vie
     public var body: some View {
         BaseListM(context: $context,
                   selected: $selected,
-                  header: headerContent) {
+                  header: headerContent,
+                  footer: footerContent) {
             ForEach(results) { rawElem in
                 ObservableHolder(element: rawElem) { obsElem in
                     rowContent(obsElem)
