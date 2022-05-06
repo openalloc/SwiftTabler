@@ -41,8 +41,9 @@ struct BaseGrid<Element, Header, Footer, Rows>: View
                   header: header,
                   footer: footer) { buildHeader, buildFooter in
 
-            VStack(spacing: config.headerSpacing) {
+            VStack(spacing: 0) {
                 buildHeader()
+                    .padding(.vertical, config.headerSpacing)
 
                 ScrollView {
                     LazyVGrid(columns: config.gridItems,
@@ -52,6 +53,7 @@ struct BaseGrid<Element, Header, Footer, Rows>: View
                     }
                     
                     buildFooter()
+                        .padding(.vertical, config.footerSpacing)
                 }
             }
         }

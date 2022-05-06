@@ -21,12 +21,14 @@ import SwiftUI
 public enum TablerStackConfigDefaults {
 #if os(macOS)
     public static let headerSpacing: CGFloat = 4
+    public static let footerSpacing: CGFloat = -4
     public static let rowPadding = EdgeInsets(top: 4, leading: 0, bottom: 4, trailing: 0)
-    public static let tablePadding = EdgeInsets(top: 14, leading: 16, bottom: 15, trailing: 16)
+    public static let tablePadding = EdgeInsets(top: 10, leading: 16, bottom: 15, trailing: 16)
 #elseif os(iOS)
-    public static let headerSpacing: CGFloat = 12
+    public static let headerSpacing: CGFloat = 10
+    public static let footerSpacing: CGFloat = 3
     public static let rowPadding = EdgeInsets(top: 11, leading: 0, bottom: 12, trailing: 0)
-    public static let tablePadding = EdgeInsets(top: 46, leading: 32, bottom: 20, trailing: 32)
+    public static let tablePadding = EdgeInsets(top: 36, leading: 32, bottom: 20, trailing: 32)
 #endif
 
     public static let rowSpacing: CGFloat = 0
@@ -39,6 +41,7 @@ where Element: Identifiable
     
     public init(rowPadding: EdgeInsets =  TablerStackConfigDefaults.rowPadding,
                 headerSpacing: CGFloat = TablerStackConfigDefaults.headerSpacing,
+                footerSpacing: CGFloat = TablerStackConfigDefaults.footerSpacing,
                 rowSpacing: CGFloat = TablerStackConfigDefaults.rowSpacing,
                 filter: Filter? = nil,
                 onHover: @escaping OnHover = { _,_ in },
@@ -50,6 +53,7 @@ where Element: Identifiable
         self.rowPadding = rowPadding
         
         super.init(headerSpacing: headerSpacing,
+                   footerSpacing: footerSpacing,
                    rowSpacing: rowSpacing,
                    filter: filter,
                    onHover: onHover,

@@ -41,14 +41,17 @@ struct BaseStack<Element, Header, Footer, Rows>: View
                   header: header,
                   footer: footer) { buildHeader, buildFooter in
 
-            VStack(spacing: config.headerSpacing) {
+            VStack(spacing: 0) {
                 buildHeader()
+                    .padding(.vertical, config.headerSpacing)
 
                 ScrollView {
                     LazyVStack(alignment: .leading, spacing: config.rowSpacing) {
                         rows()
                     }
+                    
                     buildFooter()
+                        .padding(.vertical, config.footerSpacing)
                 }
             }
         }

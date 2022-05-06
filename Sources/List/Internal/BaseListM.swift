@@ -18,7 +18,7 @@
 
 import SwiftUI
 
-// List with multi selection
+// List with multi-selection
 struct BaseListM<Element, Header, Footer, Rows>: View
     where Element: Identifiable,
     Header: View,

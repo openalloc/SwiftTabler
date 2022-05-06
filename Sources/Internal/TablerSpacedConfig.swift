@@ -21,15 +21,18 @@ import SwiftUI
 public enum TablerSpacedConfigDefaults {
     public static let headerSpacing: CGFloat = 0
     public static let rowSpacing: CGFloat = 0
+    public static let footerSpacing: CGFloat = 0
 }
 
 public class TablerSpacedConfig<Element>: TablerConfig<Element>
 where Element: Identifiable
 {
     public let headerSpacing: CGFloat
+    public let footerSpacing: CGFloat
     public let rowSpacing: CGFloat
     
     public init(headerSpacing: CGFloat = TablerSpacedConfigDefaults.headerSpacing,
+                footerSpacing: CGFloat = TablerSpacedConfigDefaults.footerSpacing,
                 rowSpacing: CGFloat = TablerSpacedConfigDefaults.rowSpacing,
                 filter: Filter? = nil,
                 onHover: @escaping OnHover = { _,_ in },
@@ -39,6 +42,7 @@ where Element: Identifiable
                 sortIndicatorNeutral: AnyView = TablerConfigDefaults.sortIndicatorNeutral)
     {
         self.headerSpacing = headerSpacing
+        self.footerSpacing = footerSpacing
         self.rowSpacing = rowSpacing
         
         super.init(filter: filter,
