@@ -140,6 +140,26 @@ public extension TablerList {
                   results: results
                   )
     }
+    // omitting Footer
+    init(_ config: Config = .init(),
+         @ViewBuilder header: @escaping HeaderContent,
+         @ViewBuilder row: @escaping RowContent,
+         @ViewBuilder rowBackground: @escaping RowBackground,
+         @ViewBuilder rowOverlay: @escaping RowOverlay
+        , results: Results
+                  )
+        where Footer == EmptyView
+    {
+        self.init(config,
+                  header: header,
+                  footer: { _ in EmptyView() },
+                  row: row,
+                  rowBackground: rowBackground,
+                  rowOverlay: rowOverlay,
+                  results: results
+                  )
+    }
+
     // omitting Header, Footer
     init(_ config: Config = .init(),
          @ViewBuilder row: @escaping RowContent,

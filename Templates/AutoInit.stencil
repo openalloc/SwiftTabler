@@ -205,6 +205,35 @@ public extension {{type.name}} {
                   {% endif %})
     }
     
+    // omitting Footer
+    init(_ config: Config = .init(),
+         @ViewBuilder header: @escaping HeaderContent,
+         @ViewBuilder row: @escaping RowContent,
+         @ViewBuilder rowBackground: @escaping RowBackground,
+         @ViewBuilder rowOverlay: @escaping RowOverlay
+        {% if type|annotated:"resultsBinding" %}
+        , results: Binding<Results>
+        {% else %}
+        , results: Results
+        {% endif %}
+        {% if type|annotated:"selectBinding" %}
+        , selected: Binding<Selected>
+        {% endif %}
+                  )
+        where Footer == EmptyView
+    {
+        self.init(config,
+                  header: header,
+                  footer: { _ in EmptyView() },
+                  row: row,
+                  rowBackground: rowBackground,
+                  rowOverlay: rowOverlay,
+                  results: results
+                  {% if type|annotated:"selectBinding" %}
+                  , selected: selected
+                  {% endif %})
+    }
+
     // omitting Header, Footer
     init(_ config: Config = .init(),
          @ViewBuilder row: @escaping RowContent,
