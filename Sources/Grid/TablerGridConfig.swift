@@ -1,5 +1,5 @@
 //
-//  TablerConfig.swift
+//  TablerGridConfig.swift
 //
 // Copyright 2022 FlowAllocator LLC
 //
@@ -19,19 +19,13 @@
 import SwiftUI
 
 public enum TablerGridConfigDefaults {
-#if os(macOS)
-    public static let headerSpacing: CGFloat = 4
-    public static let footerSpacing: CGFloat = -4
-    public static let itemPadding = EdgeInsets(top: 4, leading: 0, bottom: 4, trailing: 0)
-    public static let tablePadding = EdgeInsets(top: 10, leading: 16, bottom: 15, trailing: 16)
-#elseif os(iOS)
-    public static let headerSpacing: CGFloat = 10
-    public static let footerSpacing: CGFloat = 3
-    public static let itemPadding = EdgeInsets(top: 11.5, leading: 0, bottom: 12, trailing: 0)
-    public static let tablePadding = EdgeInsets(top: 36, leading: 32, bottom: 20, trailing: 32)
-#endif
     
-    public static let rowSpacing: CGFloat = 0
+#if os(macOS)
+    public static let itemPadding = EdgeInsets(top: 4, leading: 0, bottom: 4, trailing: 0)
+#elseif os(iOS)
+    public static let itemPadding = EdgeInsets(top: 11.5, leading: 0, bottom: 12, trailing: 0)
+#endif
+
     public static let alignment: HorizontalAlignment = .leading
 }
 
@@ -45,12 +39,14 @@ where Element: Identifiable
     public init(gridItems: [GridItem] = [],
                 alignment: HorizontalAlignment = TablerGridConfigDefaults.alignment,
                 itemPadding: EdgeInsets = TablerGridConfigDefaults.itemPadding,
-                headerSpacing: CGFloat = TablerGridConfigDefaults.headerSpacing,
-                footerSpacing: CGFloat = TablerGridConfigDefaults.footerSpacing,
-                rowSpacing: CGFloat = TablerGridConfigDefaults.rowSpacing,
+                headerSpacing: CGFloat = TablerSpacedConfigDefaults.headerSpacing,
+                footerSpacing: CGFloat = TablerSpacedConfigDefaults.footerSpacing,
+                rowSpacing: CGFloat = TablerSpacedConfigDefaults.rowSpacing,
+                headerFixed: Bool = TablerSpacedConfigDefaults.headerFixed,
+                footerFixed: Bool = TablerSpacedConfigDefaults.footerFixed,
                 filter: Filter? = nil,
                 onHover: @escaping OnHover = { _,_ in },
-                tablePadding: EdgeInsets = TablerGridConfigDefaults.tablePadding,
+                tablePadding: EdgeInsets = TablerSpacedConfigDefaults.tablePadding,
                 sortIndicatorForward: AnyView = TablerConfigDefaults.sortIndicatorForward,
                 sortIndicatorReverse: AnyView = TablerConfigDefaults.sortIndicatorReverse,
                 sortIndicatorNeutral: AnyView = TablerConfigDefaults.sortIndicatorNeutral)
@@ -62,6 +58,8 @@ where Element: Identifiable
         super.init(headerSpacing: headerSpacing,
                    footerSpacing: footerSpacing,
                    rowSpacing: rowSpacing,
+                   headerFixed: headerFixed,
+                   footerFixed: footerFixed,
                    filter: filter,
                    onHover: onHover,
                    tablePadding: tablePadding,

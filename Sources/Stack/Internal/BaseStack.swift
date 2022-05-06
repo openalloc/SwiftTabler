@@ -42,14 +42,28 @@ struct BaseStack<Element, Header, Footer, Rows>: View
                   footer: footer) { buildHeader, buildFooter in
 
             VStack(spacing: 0) {
-                buildHeader()
-                    .padding(.vertical, config.headerSpacing)
+                if config.headerFixed {
+                    buildHeader()
+                        .padding(.vertical, config.headerSpacing)
+                }
 
                 ScrollView {
+                    if !config.headerFixed {
+                        buildHeader()
+                            .padding(.vertical, config.headerSpacing)
+                    }
+                    
                     LazyVStack(alignment: .leading, spacing: config.rowSpacing) {
                         rows()
                     }
                     
+                    if !config.footerFixed {
+                        buildFooter()
+                            .padding(.vertical, config.footerSpacing)
+                    }
+                }
+                
+                if config.footerFixed {
                     buildFooter()
                         .padding(.vertical, config.footerSpacing)
                 }

@@ -380,7 +380,7 @@ var body: some View {
 
 ## Table Footer
 
-Optionally display a table footer, similarly to specifying a table header:
+Optionally display a table footer, similar to how you would specify a table header:
 
 ```swift
 var body: some View {
@@ -471,12 +471,15 @@ Stack configuration is optional.
 
 `TablerStackConfig<Element>.init` parameters:
 
-- `rowPadding: EdgeInsets` - Stack-specific default; varies by platform
-- `headerSpacing: CGFloat` - Stack-specific default; varies by platform
-- `rowSpacing: CGFloat` - Stack-specific default of 0
+- `rowPadding: EdgeInsets` - Stack-specific defaults; varies by platform
+- `headerSpacing: CGFloat` - Default varies by platform
+- `footerSpacing: CGFloat` - Default varies by platform
+- `rowSpacing: CGFloat` - default of 0
+- `headerFixed: Bool` - defaults to `true`
+- `footerFixed: Bool` - defaults to `false`
 - `filter: Filter?` - with a default of `nil`, indicating no filtering
 - `onHover: (Element.ID, Bool) -> Void` - defaults to `{ _,_ in }`
-- `tablePadding: EdgeInsets` - per Stack defaults
+- `tablePadding: EdgeInsets` - Default varies by platform
 - `sortIndicatorForward: AnyView` - per Base defaults
 - `sortIndicatorReverse: AnyView` - per Base defaults
 - `sortIndicatorNeutral: AnyView` - per Base defaults
@@ -490,11 +493,14 @@ Grid configuration is required, where you supply a `GridItem` array.
 - `gridItems: [GridItem]` - required
 - `alignment: HorizontalAlignment` - `LazyVGrid` alignment, with a default of `.leading`
 - `itemPadding: EdgeInsets` - Grid-specific defaults, varies by platform
-- `headerSpacing: CGFloat` - Grid-specific default; varies by platform
-- `rowSpacing: CGFloat` - Grid-specific default of 0
+- `headerSpacing: CGFloat` - Default varies by platform
+- `footerSpacing: CGFloat` - Default varies by platform
+- `rowSpacing: CGFloat` - default of 0
+- `headerFixed: Bool` - defaults to `true`
+- `footerFixed: Bool` - defaults to `false`
 - `filter: Filter?` - with a default of `nil`, indicating no filtering
 - `onHover: (Element.ID, Bool) -> Void` - defaults to `{ _,_ in }`
-- `tablePadding: EdgeInsets` - Grid-specific default; varies by platform
+- `tablePadding: EdgeInsets` - Default varies by platform
 - `sortIndicatorForward: AnyView` - per Base defaults
 - `sortIndicatorReverse: AnyView` - per Base defaults
 - `sortIndicatorNeutral: AnyView` - per Base defaults

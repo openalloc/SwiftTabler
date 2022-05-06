@@ -1,5 +1,5 @@
 //
-//  TablerConfig.swift
+//  TablerStackConfig.swift
 //
 // Copyright 2022 FlowAllocator LLC
 //
@@ -20,18 +20,10 @@ import SwiftUI
 
 public enum TablerStackConfigDefaults {
 #if os(macOS)
-    public static let headerSpacing: CGFloat = 4
-    public static let footerSpacing: CGFloat = -4
     public static let rowPadding = EdgeInsets(top: 4, leading: 0, bottom: 4, trailing: 0)
-    public static let tablePadding = EdgeInsets(top: 10, leading: 16, bottom: 15, trailing: 16)
 #elseif os(iOS)
-    public static let headerSpacing: CGFloat = 10
-    public static let footerSpacing: CGFloat = 3
     public static let rowPadding = EdgeInsets(top: 11, leading: 0, bottom: 12, trailing: 0)
-    public static let tablePadding = EdgeInsets(top: 36, leading: 32, bottom: 20, trailing: 32)
 #endif
-
-    public static let rowSpacing: CGFloat = 0
 }
 
 public class TablerStackConfig<Element>: TablerSpacedConfig<Element>
@@ -39,13 +31,15 @@ where Element: Identifiable
 {
     public let rowPadding: EdgeInsets
     
-    public init(rowPadding: EdgeInsets =  TablerStackConfigDefaults.rowPadding,
-                headerSpacing: CGFloat = TablerStackConfigDefaults.headerSpacing,
-                footerSpacing: CGFloat = TablerStackConfigDefaults.footerSpacing,
-                rowSpacing: CGFloat = TablerStackConfigDefaults.rowSpacing,
+    public init(rowPadding: EdgeInsets = TablerStackConfigDefaults.rowPadding,
+                headerSpacing: CGFloat = TablerSpacedConfigDefaults.headerSpacing,
+                footerSpacing: CGFloat = TablerSpacedConfigDefaults.footerSpacing,
+                rowSpacing: CGFloat = TablerSpacedConfigDefaults.rowSpacing,
+                headerFixed: Bool = TablerSpacedConfigDefaults.headerFixed,
+                footerFixed: Bool = TablerSpacedConfigDefaults.footerFixed,
                 filter: Filter? = nil,
                 onHover: @escaping OnHover = { _,_ in },
-                tablePadding: EdgeInsets = TablerStackConfigDefaults.tablePadding,
+                tablePadding: EdgeInsets = TablerSpacedConfigDefaults.tablePadding,
                 sortIndicatorForward: AnyView = TablerConfigDefaults.sortIndicatorForward,
                 sortIndicatorReverse: AnyView = TablerConfigDefaults.sortIndicatorReverse,
                 sortIndicatorNeutral: AnyView = TablerConfigDefaults.sortIndicatorNeutral)
@@ -55,6 +49,8 @@ where Element: Identifiable
         super.init(headerSpacing: headerSpacing,
                    footerSpacing: footerSpacing,
                    rowSpacing: rowSpacing,
+                   headerFixed: headerFixed,
+                   footerFixed: footerFixed,
                    filter: filter,
                    onHover: onHover,
                    tablePadding: tablePadding,
