@@ -16,9 +16,9 @@ macOS | iOS
 * Presently targeting macOS v11+ and iOS v14+\*
 * Supporting both value and reference semantics (including Core Data, which uses the latter)
 * Option to support a bound data source, where inline controls can directly mutate your data model
-* Option to specify a header and/or footer
 * Support for single-select, multi-select, or no selection
-* Option to sort by column, with indicators and concise syntax
+* Option to specify a header and/or footer
+* Option to sort by column in header/footer, with indicators and concise syntax
 * Option to specify a row background and/or overlay
 * On macOS, option for hover events, such as to highlight row under the mouse cursor
 * MINIMAL use of View erasure (i.e., use of `AnyView`), which can impact scalability and performance\*\*
@@ -402,6 +402,8 @@ private func footer(ctx: Binding<Context>) -> some View {
 
 Where you don't want a footer, simply omit it from the declaration of the table.
 
+For Stack and Grid variants, you have the option to configure the footer (or header) as either fixed or part of the scrolling region. See configuration section below.
+
 ## Moving Rows
 
 Row moving via drag and drop is available for the **List** based variants.
@@ -472,14 +474,14 @@ Stack configuration is optional.
 `TablerStackConfig<Element>.init` parameters:
 
 - `rowPadding: EdgeInsets` - Stack-specific defaults; varies by platform
-- `headerSpacing: CGFloat` - Default varies by platform
-- `footerSpacing: CGFloat` - Default varies by platform
+- `headerSpacing: CGFloat` - default varies by platform
+- `footerSpacing: CGFloat` - default varies by platform
 - `rowSpacing: CGFloat` - default of 0
 - `headerFixed: Bool` - defaults to `true`
 - `footerFixed: Bool` - defaults to `false`
 - `filter: Filter?` - with a default of `nil`, indicating no filtering
 - `onHover: (Element.ID, Bool) -> Void` - defaults to `{ _,_ in }`
-- `tablePadding: EdgeInsets` - Default varies by platform
+- `tablePadding: EdgeInsets` - default varies by platform
 - `sortIndicatorForward: AnyView` - per Base defaults
 - `sortIndicatorReverse: AnyView` - per Base defaults
 - `sortIndicatorNeutral: AnyView` - per Base defaults
@@ -493,14 +495,14 @@ Grid configuration is required, where you supply a `GridItem` array.
 - `gridItems: [GridItem]` - required
 - `alignment: HorizontalAlignment` - `LazyVGrid` alignment, with a default of `.leading`
 - `itemPadding: EdgeInsets` - Grid-specific defaults, varies by platform
-- `headerSpacing: CGFloat` - Default varies by platform
-- `footerSpacing: CGFloat` - Default varies by platform
+- `headerSpacing: CGFloat` - default varies by platform
+- `footerSpacing: CGFloat` - default varies by platform
 - `rowSpacing: CGFloat` - default of 0
 - `headerFixed: Bool` - defaults to `true`
 - `footerFixed: Bool` - defaults to `false`
 - `filter: Filter?` - with a default of `nil`, indicating no filtering
 - `onHover: (Element.ID, Bool) -> Void` - defaults to `{ _,_ in }`
-- `tablePadding: EdgeInsets` - Default varies by platform
+- `tablePadding: EdgeInsets` - default varies by platform
 - `sortIndicatorForward: AnyView` - per Base defaults
 - `sortIndicatorReverse: AnyView` - per Base defaults
 - `sortIndicatorNeutral: AnyView` - per Base defaults
