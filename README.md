@@ -475,8 +475,6 @@ Stack configuration is optional.
 - `headerSpacing: CGFloat` - default varies by platform
 - `footerSpacing: CGFloat` - default varies by platform
 - `rowSpacing: CGFloat` - default of 0
-- `headerFixed: Bool` - defaults to `true`
-- `footerFixed: Bool` - defaults to `false`
 - `filter: Filter?` - with a default of `nil`, indicating no filtering
 - `onHover: (Element.ID, Bool) -> Void` - defaults to `{ _,_ in }`
 - `tablePadding: EdgeInsets` - default varies by platform
@@ -496,8 +494,6 @@ Grid configuration is required, where you supply a `GridItem` array.
 - `headerSpacing: CGFloat` - default varies by platform
 - `footerSpacing: CGFloat` - default varies by platform
 - `rowSpacing: CGFloat` - default of 0
-- `headerFixed: Bool` - defaults to `true`
-- `footerFixed: Bool` - defaults to `false`
 - `filter: Filter?` - with a default of `nil`, indicating no filtering
 - `onHover: (Element.ID, Bool) -> Void` - defaults to `{ _,_ in }`
 - `tablePadding: EdgeInsets` - default varies by platform
