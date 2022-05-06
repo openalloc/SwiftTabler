@@ -31,8 +31,8 @@ public enum TablerSpacedConfigDefaults {
 
     public static let rowSpacing: CGFloat = 0
 
-    public static let headerFixed: Bool = true
-    public static let footerFixed: Bool = false
+//    public static let headerFixed: Bool = true
+//    public static let footerFixed: Bool = false
 }
 
 public class TablerSpacedConfig<Element>: TablerConfig<Element>
@@ -41,14 +41,14 @@ where Element: Identifiable
     public let headerSpacing: CGFloat
     public let footerSpacing: CGFloat
     public let rowSpacing: CGFloat
-    public let headerFixed: Bool
-    public let footerFixed: Bool
+//    public let headerFixed: Bool
+//    public let footerFixed: Bool
     
     public init(headerSpacing: CGFloat = TablerSpacedConfigDefaults.headerSpacing,
                 footerSpacing: CGFloat = TablerSpacedConfigDefaults.footerSpacing,
                 rowSpacing: CGFloat = TablerSpacedConfigDefaults.rowSpacing,
-                headerFixed: Bool = TablerSpacedConfigDefaults.headerFixed,
-                footerFixed: Bool = TablerSpacedConfigDefaults.footerFixed,
+//                headerFixed: Bool = TablerSpacedConfigDefaults.headerFixed,
+//                footerFixed: Bool = TablerSpacedConfigDefaults.footerFixed,
                 filter: Filter? = nil,
                 onHover: @escaping OnHover = { _,_ in },
                 tablePadding: EdgeInsets = TablerConfigDefaults.tablePadding,
@@ -59,8 +59,8 @@ where Element: Identifiable
         self.headerSpacing = headerSpacing
         self.footerSpacing = footerSpacing
         self.rowSpacing = rowSpacing
-        self.headerFixed = headerFixed
-        self.footerFixed = footerFixed
+//        self.headerFixed = headerFixed
+//        self.footerFixed = footerFixed
 
         super.init(filter: filter,
                    onHover: onHover,

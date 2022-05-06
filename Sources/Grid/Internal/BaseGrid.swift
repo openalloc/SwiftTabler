@@ -42,16 +42,16 @@ struct BaseGrid<Element, Header, Footer, Rows>: View
                   footer: footer) { buildHeader, buildFooter in
 
             VStack(spacing: 0) {
-                if config.headerFixed {
+//                if config.headerFixed {
                     buildHeader()
                         .padding(.vertical, config.headerSpacing)
-                }
+//                }
 
                 ScrollView {
-                    if !config.headerFixed {
-                        buildHeader()
-                            .padding(.vertical, config.headerSpacing)
-                    }
+//                    if !config.headerFixed {
+//                        buildHeader()
+//                            .padding(.vertical, config.headerSpacing)
+//                    }
                     
                     LazyVGrid(columns: config.gridItems,
                               alignment: config.alignment,
@@ -59,16 +59,16 @@ struct BaseGrid<Element, Header, Footer, Rows>: View
                         rows()
                     }
                     
-                    if !config.footerFixed {
-                        buildFooter()
-                            .padding(.vertical, config.footerSpacing)
-                    }
+//                    if !config.footerFixed {
+//                        buildFooter()
+//                            .padding(.vertical, config.footerSpacing)
+//                    }
                 }
                 
-                if config.footerFixed {
+//                if config.footerFixed {
                     buildFooter()
                         .padding(.vertical, config.footerSpacing)
-                }
+//                }
             }
         }
         .padding(config.tablePadding)

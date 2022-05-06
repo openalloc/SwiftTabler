@@ -151,6 +151,41 @@ Table View      | Type      | Select | Value | Reference | Bound | Filter
 
 \* filtering with bound values likely not scalable as implemented. If you can find a better way to implement, please submit a pull request!
 
+## Header/Footer
+
+Optionally attach a header (or footer) to your table:
+
+```swift
+var body: some View {
+    TablerList(header: header,
+               footer: footer,
+               row: row,
+               results: fruits)
+}
+
+private func header(ctx: Binding<Context>) -> some View {
+    LazyVGrid(columns: gridItems) {
+        Text("ID")
+        Text("Name")
+        Text("Weight")
+        Text("Color")
+    }
+}
+
+private func footer(ctx: Binding<Context>) -> some View {
+    LazyVGrid(columns: gridItems) {
+        Text("ID")
+        Text("Name")
+        Text("Weight")
+        Text("Color")
+    }
+}
+```
+
+Where you don't want a header (or footer), simply omit from the declaration of the table.
+
+For **List** based variants, the header and footer are *inside* the scrolling region. For **Stack** and **Grid** based variants, they are *outside*. (This may be configurable at some point once any scaling/performance issues are resolved.)
+
 ## Column Sorting
 
 Column sorting is available through the `tablerSort` view function.
@@ -366,43 +401,6 @@ private func hoverAction(fruitID: Fruit.ID, isHovered: Bool) {
 ```
 
 To coordinate hover with other backgrounds, such as for selection on **Stack** tables, see the demo apps.
-
-## Headless Tables
-
-Where you don't want a header, simply omit it from the declaration of the table:
-
-```swift
-var body: some View {
-    TablerList(row: row,
-               results: fruits)
-}
-```
-
-## Table Footer
-
-Optionally display a table footer, similar to how you would specify a table header:
-
-```swift
-var body: some View {
-    TablerList(header: header,
-               footer: footer,
-               row: row,
-               results: fruits)
-}
-
-private func footer(ctx: Binding<Context>) -> some View {
-    LazyVGrid(columns: gridItems) {
-        Text("ID")
-        Text("Name")
-        Text("Weight")
-        Text("Color")
-    }
-}
-```
-
-Where you don't want a footer, simply omit it from the declaration of the table.
-
-For Stack and Grid variants, you have the option to configure the footer (or header) as either fixed or part of the scrolling region. See configuration section below.
 
 ## Moving Rows
 
