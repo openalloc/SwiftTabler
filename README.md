@@ -29,13 +29,16 @@ Three table types are supported, as determined by the mechanism by which their h
 ### List
 * Based on SwiftUI's `List`
 * Option to support moving of rows through drag and drop
+* Header/Footer are **inside** scrolling region
 
 ### Stack
 * Based on `ScrollView`/`LazyVStack`
+* Header/Footer are **outside** scrolling region
 
 ### Grid
 * Based on `ScrollView`/`LazyVGrid`
 * Likely the most scalable and efficient, but least flexible
+* Header/Footer are **outside** scrolling region
 
 \* Other platforms like macCatalyst, iPad on Mac, watchOS, tvOS, etc. are poorly supported, if at all. Please contribute to improve support!
 
