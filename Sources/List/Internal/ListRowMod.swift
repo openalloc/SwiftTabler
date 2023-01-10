@@ -29,6 +29,7 @@ where Element: Identifiable
     
     func body(content: Content) -> some View {
         content
+            .deleteDisabled(!config.canDelete(element))
             .moveDisabled(!config.canMove(element))
         
 #if os(macOS) || targetEnvironment(macCatalyst)

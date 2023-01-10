@@ -87,6 +87,7 @@ public struct TablerListC<Element, Header, Footer, Row, RowBack, RowOver, Result
                 }
             }
             .onMove(perform: config.onMove)
+            .onDelete(perform: config.onDelete)
         }
     }
 }

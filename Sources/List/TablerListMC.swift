@@ -92,6 +92,7 @@ public struct TablerListMC<Element, Header, Footer, Row, RowBack, RowOver, Resul
                 }
             }
             .onMove(perform: config.onMove)
+            .onDelete(perform: config.onDelete)
         }
     }
 }

@@ -460,7 +460,9 @@ List configuration is optional.
 `TablerListConfig<Element>.init` parameters:
 
 - `canMove: CanMove<Element>` - with a default of `{ _ in true }`, allowing any row to move (if `onMove` defined)
+- `canDelete: CanDelete<Element>` - with a default of `{ _ in true }`, allowing any row to be deleted (if `onDelete` defined), currently only via swipe menu on iOS
 - `onMove: OnMove<Element>?` - with a default of `nil`, prohibiting any move
+- `onDelete: OnDelete<Element>?` - with a default of `nil`, prohibiting any delete, currently only via swipe menu on iOS
 - `filter: Filter?` - with a default of `nil`, indicating no filtering
 - `onHover: (Element.ID, Bool) -> Void` - defaults to `{ _,_ in }`
 - `tablePadding: EdgeInsets` - per Base defaults

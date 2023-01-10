@@ -89,6 +89,7 @@ public struct TablerList1<Element, Header, Footer, Row, RowBack, RowOver, Result
                     .overlay(rowOverlay(element))
             }
             .onMove(perform: config.onMove)
+            .onDelete(perform: config.onDelete)
         }
     }
 }

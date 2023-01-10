@@ -85,11 +85,13 @@ public struct TablerListB<Element, Header, Footer, Row, RowBack, RowOver, Result
                     }
                 }
                 .onMove(perform: config.onMove)
+            .onDelete(perform: config.onDelete)
             } else {
                 ForEach($results) { $element in
                     row($element)
                 }
                 .onMove(perform: config.onMove)
+            .onDelete(perform: config.onDelete)
             }
         }
     }

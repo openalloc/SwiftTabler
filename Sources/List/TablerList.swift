@@ -84,6 +84,7 @@ where Element: Identifiable,
                     .overlay(rowOverlay(element))
             }
             .onMove(perform: config.onMove)
+            .onDelete(perform: config.onDelete)
         }
     }
 }

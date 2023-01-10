@@ -23,12 +23,18 @@ public class TablerListConfig<Element>: TablerConfig<Element>
 {
     public typealias CanMove<Element> = (Element) -> Bool
     public typealias OnMove<Element> = (IndexSet, Int) -> Void
+    public typealias CanDelete<Element> = (Element) -> Bool
+    public typealias OnDelete<Element> = (IndexSet) -> Void
 
     public let canMove: CanMove<Element>
     public let onMove: OnMove<Element>?
+    public let canDelete: CanDelete<Element>
+    public let onDelete: OnDelete<Element>?
 
     public init(canMove: @escaping CanMove<Element> = { _ in true },
                 onMove: OnMove<Element>? = nil,
+                canDelete: @escaping CanDelete<Element> = { _ in true },
+                onDelete: OnDelete<Element>? = nil,
                 filter: Filter? = nil,
                 onHover: @escaping OnHover = { _,_ in },
                 tablePadding: EdgeInsets = TablerConfigDefaults.tablePadding,
@@ -38,6 +44,8 @@ public class TablerListConfig<Element>: TablerConfig<Element>
     {
         self.canMove = canMove
         self.onMove = onMove
+        self.canDelete = canDelete
+        self.onDelete = onDelete
 
         super.init(filter: filter,
                    onHover: onHover,
