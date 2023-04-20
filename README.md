@@ -530,10 +530,13 @@ var body: some View {
 
 Many additional `init()` functions for each table variant are generated via the code template `Templates/AutoInit.stencil`.
 
-To regenerate, run the [Sourcery](https://github.com/krzysztofzablocki/Sourcery) command from the project directory.
+To regenerate and re-format, run the [Sourcery](https://github.com/krzysztofzablocki/Sourcery) command from the project directory.
 
 ```
+$ brew install sourcery
 $ sourcery
+$ brew install swiftformat
+$ swiftformat **/*.swift   
 ```
 
 The generated code will be found in the `Sources/Generated` directory.
