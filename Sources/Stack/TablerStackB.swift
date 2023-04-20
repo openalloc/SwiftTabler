@@ -76,7 +76,8 @@ public struct TablerStackB<Element, Header, Footer, Row, RowBack, RowOver, Resul
     public var body: some View {
         BaseStack(context: $context,
                   header: headerContent,
-                  footer: footerContent) {
+                  footer: footerContent)
+        {
             // TODO: is there a better way to filter bound data source?
             if let _filter = config.filter {
                 ForEach($results) { $element in
@@ -98,5 +99,5 @@ public struct TablerStackB<Element, Header, Footer, Row, RowBack, RowOver, Resul
                                   element: element.wrappedValue))
             .background(rowBackground(element.wrappedValue))
             .overlay(rowOverlay(element.wrappedValue))
-   }
+    }
 }

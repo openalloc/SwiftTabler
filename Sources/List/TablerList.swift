@@ -21,14 +21,14 @@ import SwiftUI
 // sourcery: AutoInit
 /// List-based table
 public struct TablerList<Element, Header, Footer, Row, RowBack, RowOver, Results>: View
-where Element: Identifiable,
-      Header: View,
-      Footer: View,
-      Row: View,
-      RowBack: View,
-      RowOver: View,
-      Results: RandomAccessCollection,
-      Results.Element == Element
+    where Element: Identifiable,
+    Header: View,
+    Footer: View,
+    Row: View,
+    RowBack: View,
+    RowOver: View,
+    Results: RandomAccessCollection,
+    Results.Element == Element
 {
     public typealias Config = TablerListConfig<Element>
     public typealias Context = TablerContext<Element>
@@ -39,7 +39,7 @@ where Element: Identifiable,
     public typealias RowOverlay = (Element) -> RowOver
 
     // MARK: Parameters
-    
+
     private let config: Config
     private let headerContent: HeaderContent
     private let footerContent: FooterContent
@@ -47,7 +47,7 @@ where Element: Identifiable,
     private let rowBackground: RowBackground
     private let rowOverlay: RowOverlay
     private var results: Results
-    
+
     public init(_ config: Config = .init(),
                 @ViewBuilder header: @escaping HeaderContent,
                 @ViewBuilder footer: @escaping FooterContent,
@@ -65,17 +65,18 @@ where Element: Identifiable,
         self.results = results
         _context = State(initialValue: TablerContext(config))
     }
-    
+
     // MARK: Locals
-    
+
     @State private var context: Context
-    
+
     // MARK: Views
-    
+
     public var body: some View {
         BaseList(context: $context,
                  header: headerContent,
-                 footer: footerContent) {
+                 footer: footerContent)
+        {
             ForEach(results.filter(config.filter ?? { _ in true })) { element in
                 rowContent(element)
                     .modifier(ListRowMod(config: config,

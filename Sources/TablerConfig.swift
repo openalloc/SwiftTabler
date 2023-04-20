@@ -19,7 +19,6 @@
 import SwiftUI
 
 public enum TablerConfigDefaults {
-    
     public static let tablePadding: EdgeInsets = .init()
 
     public static let sortIndicatorForward = AnyView(
@@ -52,7 +51,7 @@ open class TablerConfig<Element>
     public let sortIndicatorNeutral: AnyView
 
     public init(filter: Filter? = nil,
-                onHover: @escaping OnHover = { _,_ in },
+                onHover: @escaping OnHover = { _, _ in },
                 tablePadding: EdgeInsets = TablerConfigDefaults.tablePadding,
                 sortIndicatorForward: AnyView = TablerConfigDefaults.sortIndicatorForward,
                 sortIndicatorReverse: AnyView = TablerConfigDefaults.sortIndicatorReverse,

@@ -80,13 +80,14 @@ public struct TablerStack1C<Element, Header, Footer, Row, RowBack, RowOver, Resu
     public var body: some View {
         BaseStack(context: $context,
                   header: headerContent,
-                  footer: footerContent) {
+                  footer: footerContent)
+        {
             ForEach(results) { rawElem in
                 ObservableHolder(element: rawElem) { obsElem in
                     rowContent(obsElem)
                         .modifier(StackRowMod1(config: config,
                                                element: rawElem,
-                                                           selected: $selected))
+                                               selected: $selected))
                         .background(rowBackground(rawElem))
                         .overlay(rowOverlay(rawElem))
                 }

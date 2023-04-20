@@ -20,19 +20,19 @@ import SwiftUI
 
 /// Support for single-select Stack-based rows
 struct StackRowMod1<Element>: ViewModifier
-where Element: Identifiable
+    where Element: Identifiable
 {
     typealias Config = TablerStackConfig<Element>
     typealias Selected = Element.ID?
-    
+
     let config: Config
     let element: Element
     @Binding var selected: Selected
-    
+
     func body(content: Content) -> some View {
         content
             .padding(config.rowPadding)
-        
+
             // simple tap to select (or unselect)
             .contentShape(Rectangle())
             .onTapGesture {
@@ -42,9 +42,9 @@ where Element: Identifiable
                     selected = element.id
                 }
             }
-        
-#if os(macOS) || targetEnvironment(macCatalyst)
+
+        #if os(macOS) || targetEnvironment(macCatalyst)
             .onHover(perform: { config.onHover(element.id, $0) })
-#endif
+        #endif
     }
 }

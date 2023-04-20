@@ -19,21 +19,21 @@
 import SwiftUI
 
 struct ListRowMod<Element>: ViewModifier
-where Element: Identifiable
+    where Element: Identifiable
 {
     typealias Config = TablerListConfig<Element>
     typealias Hovered = Element.ID?
-    
+
     let config: Config
     let element: Element
-    
+
     func body(content: Content) -> some View {
         content
             .deleteDisabled(!config.canDelete(element))
             .moveDisabled(!config.canMove(element))
-        
-#if os(macOS) || targetEnvironment(macCatalyst)
+
+        #if os(macOS) || targetEnvironment(macCatalyst)
             .onHover(perform: { config.onHover(element.id, $0) })
-#endif
+        #endif
     }
 }

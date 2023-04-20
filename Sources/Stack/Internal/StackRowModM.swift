@@ -20,20 +20,20 @@ import SwiftUI
 
 /// Support for multi-select Stack-based rows
 struct StackRowModM<Element>: ViewModifier
-where Element: Identifiable
+    where Element: Identifiable
 {
     typealias Config = TablerStackConfig<Element>
     typealias Hovered = Element.ID?
     typealias Selected = Set<Element.ID>
-    
+
     let config: Config
     let element: Element
     @Binding var selected: Selected
-    
+
     func body(content: Content) -> some View {
         content
             .padding(config.rowPadding)
-        
+
             // simple tap to select (or unselect)
             .contentShape(Rectangle())
             .onTapGesture {
@@ -43,9 +43,9 @@ where Element: Identifiable
                     selected.insert(element.id)
                 }
             }
-        
-#if os(macOS) || targetEnvironment(macCatalyst)
+
+        #if os(macOS) || targetEnvironment(macCatalyst)
             .onHover(perform: { config.onHover(element.id, $0) })
-#endif
+        #endif
     }
 }

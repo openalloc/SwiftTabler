@@ -76,7 +76,8 @@ public struct TablerGridB<Element, Header, Footer, Row, RowBack, RowOver, Result
     public var body: some View {
         BaseGrid(context: $context,
                  header: headerContent,
-                  footer: footerContent) {
+                 footer: footerContent)
+        {
             ForEach($results) { $element in
                 rowContent($element)
                     .modifier(GridItemMod(config: config,

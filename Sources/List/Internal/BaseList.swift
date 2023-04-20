@@ -39,7 +39,8 @@ struct BaseList<Element, Header, Footer, Rows>: View
     var body: some View {
         BaseTable(context: $context,
                   header: header,
-                  footer: footer) { buildHeader, buildFooter in
+                  footer: footer)
+        { buildHeader, buildFooter in
             List {
                 buildHeader()
                 rows()

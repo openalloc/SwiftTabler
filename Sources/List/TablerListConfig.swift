@@ -36,7 +36,7 @@ public class TablerListConfig<Element>: TablerConfig<Element>
                 canDelete: @escaping CanDelete<Element> = { _ in true },
                 onDelete: OnDelete<Element>? = nil,
                 filter: Filter? = nil,
-                onHover: @escaping OnHover = { _,_ in },
+                onHover: @escaping OnHover = { _, _ in },
                 tablePadding: EdgeInsets = TablerConfigDefaults.tablePadding,
                 sortIndicatorForward: AnyView = TablerConfigDefaults.sortIndicatorForward,
                 sortIndicatorReverse: AnyView = TablerConfigDefaults.sortIndicatorReverse,

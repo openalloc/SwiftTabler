@@ -74,7 +74,7 @@ public struct TablerSort<Element>
             Spacer()
             indicator(ctx, keyPath)
         }
-        .contentShape(Rectangle())  // NOTE to support tap area across entire title view
+        .contentShape(Rectangle()) // NOTE to support tap area across entire title view
     }
 }
 

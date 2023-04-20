@@ -81,7 +81,8 @@ public struct TablerListMC<Element, Header, Footer, Row, RowBack, RowOver, Resul
         BaseListM(context: $context,
                   selected: $selected,
                   header: headerContent,
-                  footer: footerContent) {
+                  footer: footerContent)
+        {
             ForEach(results) { rawElem in
                 ObservableHolder(element: rawElem) { obsElem in
                     rowContent(obsElem)

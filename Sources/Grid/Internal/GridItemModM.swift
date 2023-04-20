@@ -24,7 +24,7 @@ struct GridItemModM<Element>: ViewModifier
 {
     typealias Config = TablerGridConfig<Element>
     typealias Selected = Set<Element.ID>
-    
+
     let config: Config
     let element: Element
     @Binding var selected: Selected
@@ -32,7 +32,7 @@ struct GridItemModM<Element>: ViewModifier
     func body(content: Content) -> some View {
         content
             .padding(config.itemPadding)
-        
+
             // simple tap to select (or unselect)
             .contentShape(Rectangle())
             .onTapGesture {
@@ -42,9 +42,9 @@ struct GridItemModM<Element>: ViewModifier
                     selected.insert(element.id)
                 }
             }
-        
-#if os(macOS) || targetEnvironment(macCatalyst)
+
+        #if os(macOS) || targetEnvironment(macCatalyst)
             .onHover(perform: { config.onHover(element.id, $0) })
-#endif
+        #endif
     }
 }

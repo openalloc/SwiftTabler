@@ -19,20 +19,20 @@
 import SwiftUI
 
 struct StackRowMod<Element>: ViewModifier
-where Element: Identifiable
+    where Element: Identifiable
 {
     typealias Config = TablerStackConfig<Element>
     typealias Hovered = Element.ID?
-    
+
     let config: Config
     let element: Element
-    
+
     func body(content: Content) -> some View {
         content
             .padding(config.rowPadding)
-        
-#if os(macOS) || targetEnvironment(macCatalyst)
+
+        #if os(macOS) || targetEnvironment(macCatalyst)
             .onHover(perform: { config.onHover(element.id, $0) })
-#endif
+        #endif
     }
 }

@@ -79,12 +79,13 @@ public struct TablerGrid1<Element, Header, Footer, Row, RowBack, RowOver, Result
     public var body: some View {
         BaseGrid(context: $context,
                  header: headerContent,
-                  footer: footerContent) {
+                 footer: footerContent)
+        {
             ForEach(results.filter(config.filter ?? { _ in true })) { element in
                 rowContent(element)
                     .modifier(GridItemMod1(config: config,
                                            element: element,
-                                                   selected: $selected))
+                                           selected: $selected))
                     .background(rowBackground(element))
                     .overlay(rowOverlay(element))
             }

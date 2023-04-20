@@ -39,12 +39,13 @@ struct BaseGrid<Element, Header, Footer, Rows>: View
     var body: some View {
         BaseTable(context: $context,
                   header: header,
-                  footer: footer) { buildHeader, buildFooter in
+                  footer: footer)
+        { buildHeader, buildFooter in
 
             VStack(spacing: 0) {
 //                if config.headerFixed {
-                    buildHeader()
-                        .padding(.vertical, config.headerSpacing)
+                buildHeader()
+                    .padding(.vertical, config.headerSpacing)
 //                }
 
                 ScrollView {
@@ -52,22 +53,23 @@ struct BaseGrid<Element, Header, Footer, Rows>: View
 //                        buildHeader()
 //                            .padding(.vertical, config.headerSpacing)
 //                    }
-                    
+
                     LazyVGrid(columns: config.gridItems,
                               alignment: config.alignment,
-                              spacing: config.rowSpacing) {
+                              spacing: config.rowSpacing)
+                    {
                         rows()
                     }
-                    
+
 //                    if !config.footerFixed {
 //                        buildFooter()
 //                            .padding(.vertical, config.footerSpacing)
 //                    }
                 }
-                
+
 //                if config.footerFixed {
-                    buildFooter()
-                        .padding(.vertical, config.footerSpacing)
+                buildFooter()
+                    .padding(.vertical, config.footerSpacing)
 //                }
             }
         }

@@ -76,7 +76,8 @@ public struct TablerStackC<Element, Header, Footer, Row, RowBack, RowOver, Resul
     public var body: some View {
         BaseStack(context: $context,
                   header: headerContent,
-                  footer: footerContent) {
+                  footer: footerContent)
+        {
             ForEach(results) { rawElem in
                 ObservableHolder(element: rawElem) { obsElem in
                     rowContent(obsElem)

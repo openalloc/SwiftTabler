@@ -79,12 +79,13 @@ public struct TablerStackM<Element, Header, Footer, Row, RowBack, RowOver, Resul
     public var body: some View {
         BaseStack(context: $context,
                   header: headerContent,
-                  footer: footerContent) {
+                  footer: footerContent)
+        {
             ForEach(results.filter(config.filter ?? { _ in true })) { element in
                 rowContent(element)
                     .modifier(StackRowModM(config: config,
                                            element: element,
-                                                   selected: $selected))
+                                           selected: $selected))
                     .background(rowBackground(element))
                     .overlay(rowOverlay(element))
             }

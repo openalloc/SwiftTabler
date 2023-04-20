@@ -54,7 +54,8 @@ public struct TablerGrid<Element, Header, Footer, Row, RowBack, RowOver, Results
                 @ViewBuilder row: @escaping RowContent,
                 @ViewBuilder rowBackground: @escaping RowBackground,
                 @ViewBuilder rowOverlay: @escaping RowOverlay,
-                results: Results)    {
+                results: Results)
+    {
         self.config = config
         headerContent = header
         footerContent = footer
@@ -74,7 +75,8 @@ public struct TablerGrid<Element, Header, Footer, Row, RowBack, RowOver, Results
     public var body: some View {
         BaseGrid(context: $context,
                  header: headerContent,
-                  footer: footerContent) {
+                 footer: footerContent)
+        {
             ForEach(results.filter(config.filter ?? { _ in true })) { element in
                 rowContent(element)
                     .modifier(GridItemMod(config: config,

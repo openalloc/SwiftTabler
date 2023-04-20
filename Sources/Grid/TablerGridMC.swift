@@ -80,13 +80,14 @@ public struct TablerGridMC<Element, Header, Footer, Row, RowBack, RowOver, Resul
     public var body: some View {
         BaseGrid(context: $context,
                  header: headerContent,
-                  footer: footerContent) {
+                 footer: footerContent)
+        {
             ForEach(results) { rawElem in
                 ObservableHolder(element: rawElem) { obsElem in
                     rowContent(obsElem)
                         .modifier(GridItemModM(config: config,
                                                element: rawElem,
-                                                           selected: $selected))
+                                               selected: $selected))
                         .background(rowBackground(rawElem))
                         .overlay(rowOverlay(rawElem))
                 }

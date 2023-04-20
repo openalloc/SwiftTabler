@@ -80,7 +80,8 @@ public struct TablerStack1B<Element, Header, Footer, Row, RowBack, RowOver, Resu
     public var body: some View {
         BaseStack(context: $context,
                   header: headerContent,
-                  footer: footerContent) {
+                  footer: footerContent)
+        {
             // TODO: is there a better way to filter bound data source?
             if let _filter = config.filter {
                 ForEach($results) { $element in

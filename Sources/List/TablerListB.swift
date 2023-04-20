@@ -76,7 +76,8 @@ public struct TablerListB<Element, Header, Footer, Row, RowBack, RowOver, Result
     public var body: some View {
         BaseList(context: $context,
                  header: headerContent,
-                  footer: footerContent) {
+                 footer: footerContent)
+        {
             // TODO: is there a better way to filter bound data source?
             if let _filter = config.filter {
                 ForEach($results) { $element in
@@ -85,13 +86,13 @@ public struct TablerListB<Element, Header, Footer, Row, RowBack, RowOver, Result
                     }
                 }
                 .onMove(perform: config.onMove)
-            .onDelete(perform: config.onDelete)
+                .onDelete(perform: config.onDelete)
             } else {
                 ForEach($results) { $element in
                     row($element)
                 }
                 .onMove(perform: config.onMove)
-            .onDelete(perform: config.onDelete)
+                .onDelete(perform: config.onDelete)
             }
         }
     }

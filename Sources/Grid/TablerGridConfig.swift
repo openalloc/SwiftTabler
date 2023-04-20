@@ -19,23 +19,22 @@
 import SwiftUI
 
 public enum TablerGridConfigDefaults {
-    
-#if os(macOS)
-    public static let itemPadding = EdgeInsets(top: 4, leading: 0, bottom: 4, trailing: 0)
-#elseif os(iOS)
-    public static let itemPadding = EdgeInsets(top: 11.5, leading: 0, bottom: 12, trailing: 0)
-#endif
+    #if os(macOS)
+        public static let itemPadding = EdgeInsets(top: 4, leading: 0, bottom: 4, trailing: 0)
+    #elseif os(iOS)
+        public static let itemPadding = EdgeInsets(top: 11.5, leading: 0, bottom: 12, trailing: 0)
+    #endif
 
     public static let alignment: HorizontalAlignment = .leading
 }
 
 public class TablerGridConfig<Element>: TablerSpacedConfig<Element>
-where Element: Identifiable
+    where Element: Identifiable
 {
     public let gridItems: [GridItem]
     public let alignment: HorizontalAlignment
     public let itemPadding: EdgeInsets
-    
+
     public init(gridItems: [GridItem] = [],
                 alignment: HorizontalAlignment = TablerGridConfigDefaults.alignment,
                 itemPadding: EdgeInsets = TablerGridConfigDefaults.itemPadding,
@@ -45,7 +44,7 @@ where Element: Identifiable
 //                headerFixed: Bool = TablerSpacedConfigDefaults.headerFixed,
 //                footerFixed: Bool = TablerSpacedConfigDefaults.footerFixed,
                 filter: Filter? = nil,
-                onHover: @escaping OnHover = { _,_ in },
+                onHover: @escaping OnHover = { _, _ in },
                 tablePadding: EdgeInsets = TablerSpacedConfigDefaults.tablePadding,
                 sortIndicatorForward: AnyView = TablerConfigDefaults.sortIndicatorForward,
                 sortIndicatorReverse: AnyView = TablerConfigDefaults.sortIndicatorReverse,
@@ -54,7 +53,7 @@ where Element: Identifiable
         self.gridItems = gridItems
         self.alignment = alignment
         self.itemPadding = itemPadding
-        
+
         super.init(headerSpacing: headerSpacing,
                    footerSpacing: footerSpacing,
                    rowSpacing: rowSpacing,

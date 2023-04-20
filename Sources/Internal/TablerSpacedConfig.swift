@@ -19,15 +19,15 @@
 import SwiftUI
 
 public enum TablerSpacedConfigDefaults {
-#if os(macOS)
-    public static let headerSpacing: CGFloat = 4
-    public static let footerSpacing: CGFloat = -4
-    public static let tablePadding = EdgeInsets(top: 10, leading: 16, bottom: 15, trailing: 16)
-#elseif os(iOS)
-    public static let headerSpacing: CGFloat = 10
-    public static let footerSpacing: CGFloat = 3
-    public static let tablePadding = EdgeInsets(top: 36, leading: 32, bottom: 20, trailing: 32)
-#endif
+    #if os(macOS)
+        public static let headerSpacing: CGFloat = 4
+        public static let footerSpacing: CGFloat = -4
+        public static let tablePadding = EdgeInsets(top: 10, leading: 16, bottom: 15, trailing: 16)
+    #elseif os(iOS)
+        public static let headerSpacing: CGFloat = 10
+        public static let footerSpacing: CGFloat = 3
+        public static let tablePadding = EdgeInsets(top: 36, leading: 32, bottom: 20, trailing: 32)
+    #endif
 
     public static let rowSpacing: CGFloat = 0
 
@@ -36,21 +36,21 @@ public enum TablerSpacedConfigDefaults {
 }
 
 public class TablerSpacedConfig<Element>: TablerConfig<Element>
-where Element: Identifiable
+    where Element: Identifiable
 {
     public let headerSpacing: CGFloat
     public let footerSpacing: CGFloat
     public let rowSpacing: CGFloat
 //    public let headerFixed: Bool
 //    public let footerFixed: Bool
-    
+
     public init(headerSpacing: CGFloat = TablerSpacedConfigDefaults.headerSpacing,
                 footerSpacing: CGFloat = TablerSpacedConfigDefaults.footerSpacing,
                 rowSpacing: CGFloat = TablerSpacedConfigDefaults.rowSpacing,
 //                headerFixed: Bool = TablerSpacedConfigDefaults.headerFixed,
 //                footerFixed: Bool = TablerSpacedConfigDefaults.footerFixed,
                 filter: Filter? = nil,
-                onHover: @escaping OnHover = { _,_ in },
+                onHover: @escaping OnHover = { _, _ in },
                 tablePadding: EdgeInsets = TablerConfigDefaults.tablePadding,
                 sortIndicatorForward: AnyView = TablerConfigDefaults.sortIndicatorForward,
                 sortIndicatorReverse: AnyView = TablerConfigDefaults.sortIndicatorReverse,

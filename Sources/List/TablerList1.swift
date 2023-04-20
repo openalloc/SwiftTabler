@@ -80,7 +80,8 @@ public struct TablerList1<Element, Header, Footer, Row, RowBack, RowOver, Result
         BaseList1(context: $context,
                   selected: $selected,
                   header: headerContent,
-                  footer: footerContent) {
+                  footer: footerContent)
+        {
             ForEach(results.filter(config.filter ?? { _ in true })) { element in
                 rowContent(element)
                     .modifier(ListRowMod(config: config,

@@ -76,7 +76,8 @@ public struct TablerGridC<Element, Header, Footer, Row, RowBack, RowOver, Result
     public var body: some View {
         BaseGrid(context: $context,
                  header: headerContent,
-                  footer: footerContent) {
+                 footer: footerContent)
+        {
             ForEach(results) { rawElem in
                 ObservableHolder(element: rawElem) { obsElem in
                     rowContent(obsElem)
