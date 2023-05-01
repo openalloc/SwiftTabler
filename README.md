@@ -543,6 +543,8 @@ The generated code will be found in the `Sources/Generated` directory.
 
 ## See Also
 
+* [SwiftSideways](https://github.com/openalloc/SwiftSideways) - minimal horizontal scroller wrapper
+
 Apps demonstrating _Tabler_:
 
 * [TablerDemo](https://github.com/openalloc/TablerDemo) - basic use of _Tabler_
