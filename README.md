@@ -543,6 +543,11 @@ The generated code will be found in the `Sources/Generated` directory.
 
 ## See Also
 
+Apps demonstrating _Tabler_:
+
+* [TablerDemo](https://github.com/openalloc/TablerDemo) - basic use of _Tabler_
+* [TablerCoreDemo](https://github.com/openalloc/TablerCoreDemo) - use of _Tabler_ with Core Data sources
+
 This library is a member of the _OpenAlloc Project_.
 
 * [_OpenAlloc_](https://openalloc.github.io) - product website for all the _OpenAlloc_ apps and libraries
